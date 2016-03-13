@@ -9,7 +9,9 @@ include(MSVCMultipleProcessCompile) # /MP
 
 find_package(OpenGL REQUIRED)
 
-set(SFML_STATIC_LIBRARIES TRUE)
+if(NOT APPLE)
+	set(SFML_STATIC_LIBRARIES TRUE)
+endif(NOT APPLE)
 find_package(SFML COMPONENTS system window graphics network audio REQUIRED)
 
 include_directories(
@@ -20,7 +22,7 @@ include_directories(
 	${SFML_INCLUDE_DIR}
 )
 
-# Compile external dependencies 
+# Compile external dependencies
 add_subdirectory (external)
 
 set(ALL_LIBS
@@ -41,13 +43,14 @@ add_definitions(
 set(WARP_SOURCES
 	src/main.cpp
 	src/Mesh.cpp
-	src/ResourcePath.cpp src/ResourcePath.mm
+	src/ResourcePath.cpp
 	src/Shader.cpp
 	src/SimpleRenderer.cpp
 	src/util.cpp
 )
 add_executable(Warp ${WARP_SOURCES})
 target_link_libraries(Warp ${ALL_LIBS})
+set_property(TARGET Warp PROPERTY CXX_STANDARD 11)
 
 # Xcode and Visual working directories
 set_target_properties(Warp PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
