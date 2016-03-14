@@ -10,6 +10,7 @@
 #define SimpleRenderer_hpp
 
 #include "Renderer.hpp"
+#include "Shader.hpp"
 #include "Mesh.hpp"
 
 #include <GL/glew.h>
@@ -17,15 +18,18 @@
 #include <vector>
 #include <chrono>
 
-class SimpleRenderer : Renderer {
+class SimpleRenderer : public Renderer {
 private:
-    std::chrono::time_point<std::chrono::high_resolution_clock> t_start;
+    Shader shader;
     GLint uniColor;
     GLint uniTrans;
     std::vector<std::shared_ptr<Mesh>> objects;
+    std::chrono::time_point<std::chrono::high_resolution_clock> t_last;
+    double t_total;
     
 public:
-    void init(const std::vector<std::shared_ptr<Mesh>>& objects);
+    SimpleRenderer(const std::vector<std::shared_ptr<Mesh>>& objects);
+    void init();
     void draw();
 };
 

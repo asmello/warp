@@ -3,6 +3,8 @@
 #include <fstream>
 #include <cerrno>
 
+#include <glm/gtc/matrix_access.hpp>
+
 namespace util {
     std::string loadFromFile(const std::string& filename) {
         std::ifstream in(filename, std::ios::in | std::ios::binary);
@@ -23,5 +25,15 @@ namespace util {
         char *cstr = new char[str.length()+1];
         std::strcpy(cstr, str.c_str());
         return cstr;
+    }
+    
+    void printMat4(const glm::mat4& matrix) {
+        for (int i = 0; i < 4; ++i) {
+            auto row = glm::row(matrix, i);
+            for (int j = 0; j < 4; ++j) {
+                std::cout << row[j] << " ";
+            }
+            std::cout << std::endl;
+        }
     }
 }

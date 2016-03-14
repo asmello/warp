@@ -35,7 +35,6 @@ set(ALL_LIBS
 
 add_definitions(
 	-DGLEW_STATIC
-	-DSFML_STATIC
 	-D_CRT_SECURE_NO_WARNINGS
 )
 
@@ -49,7 +48,6 @@ set(WARP_SOURCES
 	src/util.cpp
 )
 set(WARP_HEADERS
-	include/Object.hpp
 	include/Mesh.hpp
 	include/ResourcePath.hpp
 	include/Shader.hpp
@@ -62,15 +60,19 @@ target_link_libraries(Warp ${ALL_LIBS})
 set_property(TARGET Warp PROPERTY CXX_STANDARD 11)
 
 # Xcode and Visual working directories
-set_target_properties(Warp PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+set_target_properties(Warp PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 create_target_launcher(Warp WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+
+if(${CMAKE_GENERATOR} MATCHES "Xcode")
+	file(COPY "resources" DESTINATION ".")
+endif(${CMAKE_GENERATOR} MATCHES "Xcode")
 
 # Copy resource files
 # if (NOT ${CMAKE_GENERATOR} MATCHES "Xcode" )
 # add_custom_command(
-   # TARGET Warp POST_BUILD
-   # COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/"
+#    TARGET Warp POST_BUILD
+#    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/resources/" "${CMAKE_CURRENT_SOURCE_DIR}/"
 # )
 # elseif (${CMAKE_GENERATOR} MATCHES "Xcode" )
-
+#
 # endif (NOT ${CMAKE_GENERATOR} MATCHES "Xcode" )

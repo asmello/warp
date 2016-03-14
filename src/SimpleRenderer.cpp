@@ -7,7 +7,6 @@
 //
 
 #include "SimpleRenderer.hpp"
-#include "Shader.hpp"
 #include "Mesh.hpp"
 
 #include "ResourcePath.hpp"
@@ -16,12 +15,14 @@
 
 #include <cmath>
 
-void SimpleRenderer::init(const std::vector<std::shared_ptr<Mesh>>& objects)
+SimpleRenderer::SimpleRenderer(const std::vector<std::shared_ptr<Mesh>>& objects)
 {
     this->objects = objects;
-    
+}
+
+void SimpleRenderer::init()
+{
     // Create and use a vertex/fragment shader program
-    Shader shader;
     shader.loadFromFile(resourcePath() + "vertex.glsl", resourcePath() + "frag.glsl");
     shader.bind();
     
@@ -42,20 +43,27 @@ void SimpleRenderer::init(const std::vector<std::shared_ptr<Mesh>>& objects)
     // Set the background color
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
-    t_start = std::chrono::high_resolution_clock::now();
+    t_last = std::chrono::high_resolution_clock::now();
+    t_total = 0.0;
 }
 
 void SimpleRenderer::draw()
 {
-    // Get current time
-    auto t_now = std::chrono::high_resolution_clock::now();
-    float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
-    
     // Clear the screen to black
     glClear(GL_COLOR_BUFFER_BIT);
     
+    // Get current time
+    auto t_now = std::chrono::high_resolution_clock::now();
+    
+    if (!paused) {
+        t_total += std::chrono::duration_cast<std::chrono::duration<double>>(t_now - t_last).count();
+    }
+    
+    // Update counted time
+    t_last = t_now;
+    
     // Update the triangle color
-    glUniform3f(uniColor, (sin(time * 4.0f) + 1.0f) / 2.0f, 0.0f, 0.0f);
+    glUniform3f(uniColor, (sin(t_total * 4.0f) + 1.0f) / 2.0f, 0.0f, 0.0f);
     
     // Update the transformation matrix
     glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(objects[0]->getTransformation()));

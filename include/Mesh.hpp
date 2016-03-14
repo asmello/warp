@@ -20,7 +20,8 @@ class Mesh {
 private:
     GLuint vao, vbo;
     std::vector<GLfloat> vertices;
-    glm::mat4 trans;
+    float theta, phi;
+    glm::vec3 position, scaleFactors;
     
 public:
     Mesh(std::initializer_list<GLfloat> vertices);
@@ -29,10 +30,12 @@ public:
     void scale(float xfactor, float yfactor, float zfactor);
     void scale(glm::vec3 factors);
     void scale(float factor);
-    void rotate(float angle, glm::vec3 axis);
+    void rotate(float theta, float phi);
+    void rotateZ(float theta);
+    void rotateY(float phi);
     void translate(float x, float y, float z);
     void translate(glm::vec3 delta);
-    glm::mat4& getTransformation();
+    glm::mat4 getTransformation();
 };
 
 
