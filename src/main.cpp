@@ -2,7 +2,6 @@
 
 #include <SFML/Window.hpp>
 
-#include <thread>
 #include <memory>
 
 #include "SimpleRenderer.hpp"
