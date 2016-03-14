@@ -107,8 +107,10 @@ int main(int, char const**)
     shader.loadFromFile(resourcePath() + "vertex.glsl", resourcePath() + "frag.glsl");
     shader.bind();
     
+    // List of active objects
     std::vector<std::shared_ptr<Mesh>> objects;
     
+    // Add a triangle to the scene
     auto triangle = std::make_shared<Mesh, std::initializer_list<float>>({
          0.0f,  0.5f, 0.0f,
          0.5f, -0.5f, 0.0f,
@@ -117,14 +119,17 @@ int main(int, char const**)
     triangle->init(shader);
     objects.push_back(triangle);
     
-    auto square = std::make_shared<Mesh, std::initializer_list<float>>({
+    // Add a square to the scene
+    auto square = std::make_shared<Mesh>();
+    square->setVertices({
         -0.8f, 0.8f, 0.0f,
-        -0.6f, 0.8f, 0.0f,
-        -0.8f, 0.6f, 0.0f,
-        
-        -0.6f, 0.6f, 0.0f,
-        -0.6f, 0.8f, 0.0f,
-        -0.8f, 0.6f, 0.0f
+        -0.4f, 0.8f, 0.0f,
+        -0.8f, 0.4f, 0.0f,
+        -0.4f, 0.4f, 0.0f
+    });
+    square->setElementBuffer({
+        0, 1, 2,
+        2, 3, 1
     });
     square->init(shader);
     objects.push_back(square);

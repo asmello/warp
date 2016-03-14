@@ -20,14 +20,19 @@
 class Mesh {
 private:
     GLint uniTrans, uniColor;
-    GLuint vao, vbo;
+    GLuint vao, vbo, ebo;
     float theta, phi;
+    bool eboEnabled;
     std::vector<GLfloat> vertices;
+    std::vector<GLuint> elements;
     glm::vec3 position, scaleFactors;
     
 public:
+    Mesh();
     Mesh(std::initializer_list<GLfloat> vertices);
     ~Mesh();
+    void setVertices(std::initializer_list<GLfloat> verts);
+    void setElementBuffer(std::initializer_list<GLuint> buffer);
     void init(const Shader& shader);
     void draw(double time);
     void scale(float xfactor, float yfactor, float zfactor);

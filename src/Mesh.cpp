@@ -14,17 +14,28 @@
 
 //static constexpr float TAU = static_cast<float>(2.0 * glm::pi<double>());
 
-Mesh::Mesh(std::initializer_list<GLfloat> verts) : vertices(verts)
-{
-    position = glm::vec3(0, 0, 0);
-    scaleFactors = glm::vec3(1, 1, 1);
-    theta = phi = 0.0f;
-}
+Mesh::Mesh()
+: theta(0.0f), phi(0.0f), eboEnabled(false), position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)) { }
+
+Mesh::Mesh(std::initializer_list<GLfloat> verts)
+: theta(0.0f), phi(0.0f), eboEnabled(false), vertices(verts), position(glm::vec3(0, 0, 0)),
+scaleFactors(glm::vec3(1, 1, 1)) { }
 
 Mesh::~Mesh()
 {
     glDeleteBuffers(1, &vbo);
     glDeleteVertexArrays(1, &vao);
+}
+
+void Mesh::setVertices(std::initializer_list<GLfloat> verts)
+{
+    vertices = verts;
+}
+
+void Mesh::setElementBuffer(std::initializer_list<GLuint> buffer)
+{
+    elements = buffer;
+    eboEnabled = true;
 }
 
 void Mesh::init(const Shader& shader)
@@ -37,7 +48,16 @@ void Mesh::init(const Shader& shader)
     glGenBuffers(1, &vbo);
     
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
+    
+    if (eboEnabled)
+    {
+        // Create an element array
+        glGenBuffers(1, &ebo);
+        
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(GLuint), elements.data(), GL_STATIC_DRAW);
+    }
     
     // Specify the layout of the vertex data
     GLint posAttrib = shader.getAttribLocation("position");
@@ -70,7 +90,11 @@ void Mesh::draw(double time)
     glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(getTransformation()));
     
     // Draw a mesh from the vertices
-    glDrawArrays(GL_TRIANGLES, 0, vertices.size()/3);
+    if (eboEnabled) {
+        glDrawElements(GL_TRIANGLES, elements.size(), GL_UNSIGNED_INT, 0);
+    } else {
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size()/3);
+    }
     
     glBindVertexArray(0);
 }
