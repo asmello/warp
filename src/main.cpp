@@ -12,11 +12,8 @@
 #include "SimpleRenderer.hpp"
 #include "Mesh.hpp"
 
-bool processInput(sf::Window& window, Renderer& renderer, std::shared_ptr<Mesh> activeObject)
+void processInput(Renderer& renderer, std::shared_ptr<Mesh> activeObject)
 {
-    sf::Event windowEvent;
-    
-    // Process user input
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
     {
         activeObject->rotateZ(0.025);
@@ -41,8 +38,27 @@ bool processInput(sf::Window& window, Renderer& renderer, std::shared_ptr<Mesh> 
     {
         activeObject->translate(.0f, .01f, .0f);
     }
-    
-    // Process window events
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        activeObject->rotateX(0.025);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        activeObject->rotateX(-0.025);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        activeObject->rotateY(-0.025);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        activeObject->rotateY(0.025);
+    }
+}
+
+bool processEvents(sf::Window& window, Renderer& renderer, std::shared_ptr<Mesh> activeObject)
+{
+    sf::Event windowEvent;
     while (window.pollEvent(windowEvent))
     {
         switch (windowEvent.type)
@@ -83,7 +99,6 @@ bool processInput(sf::Window& window, Renderer& renderer, std::shared_ptr<Mesh> 
                 break;
         }
     }
-    
     return true;
 }
 
@@ -94,6 +109,7 @@ int main(int, char const**)
     settings.stencilBits = 8;
     settings.majorVersion = 4;
     settings.minorVersion = 1;
+    settings.antialiasingLevel = 4;
     settings.attributeFlags = sf::ContextSettings::Core;
     
     sf::Window window(sf::VideoMode(1024, 1024, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close, settings);
@@ -142,7 +158,10 @@ int main(int, char const**)
     while (running)
     {
         // Process user input
-        running = processInput(window, renderer, triangle);
+        processInput(renderer, triangle);
+        
+        // Process window events
+        running = processEvents(window, renderer, triangle);
         
         // Draw the scene
         renderer.draw();

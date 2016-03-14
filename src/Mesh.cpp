@@ -15,10 +15,10 @@
 //static constexpr float TAU = static_cast<float>(2.0 * glm::pi<double>());
 
 Mesh::Mesh()
-: theta(0.0f), phi(0.0f), eboEnabled(false), position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)) { }
+: eboEnabled(false), position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)) { }
 
 Mesh::Mesh(std::initializer_list<GLfloat> verts)
-: theta(0.0f), phi(0.0f), eboEnabled(false), vertices(verts), position(glm::vec3(0, 0, 0)),
+: eboEnabled(false), vertices(verts), position(glm::vec3(0, 0, 0)),
 scaleFactors(glm::vec3(1, 1, 1)) { }
 
 Mesh::~Mesh()
@@ -114,20 +114,29 @@ void Mesh::scale(glm::vec3 factors)
     scaleFactors *= factors;
 }
 
-void Mesh::rotate(float theta, float phi)
+void Mesh::rotate(float angle, glm::vec3 axis)
 {
-    this->theta += theta;
-    this->phi += phi;
+    rotation = glm::rotate(rotation, angle, axis);
 }
 
-void Mesh::rotateZ(float theta)
+void Mesh::rotate(float angle, float x, float y, float z)
 {
-    this->theta += theta;
+    rotation = glm::rotate(rotation, angle, glm::vec3(x, y, z));
 }
 
-void Mesh::rotateY(float phi)
+void Mesh::rotateX(float angle)
 {
-    this->phi += phi;
+    rotation = glm::rotate(rotation, angle, glm::vec3(1, 0, 0));
+}
+
+void Mesh::rotateY(float angle)
+{
+    rotation = glm::rotate(rotation, angle, glm::vec3(0, 1, 0));
+}
+
+void Mesh::rotateZ(float angle)
+{
+    rotation = glm::rotate(rotation, angle, glm::vec3(0, 0, 1));
 }
 
 void Mesh::translate(float x, float y, float z)
@@ -144,8 +153,7 @@ glm::mat4 Mesh::getTransformation()
 {
     glm::mat4 trans;
     trans = glm::translate(trans, position);
-    trans = glm::rotate(trans, theta, glm::vec3(0, 0, 1));
-    trans = glm::rotate(trans, phi, glm::vec3(0, 1, 0));
+    trans = rotation * trans;
     trans = glm::scale(trans, scaleFactors);
     return trans;
 }

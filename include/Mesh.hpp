@@ -21,11 +21,11 @@ class Mesh {
 private:
     GLint uniTrans, uniColor;
     GLuint vao, vbo, ebo;
-    float theta, phi;
     bool eboEnabled;
     std::vector<GLfloat> vertices;
     std::vector<GLuint> elements;
     glm::vec3 position, scaleFactors;
+    glm::mat4 rotation;
     
 public:
     Mesh();
@@ -38,9 +38,11 @@ public:
     void scale(float xfactor, float yfactor, float zfactor);
     void scale(glm::vec3 factors);
     void scale(float factor);
-    void rotate(float theta, float phi);
-    void rotateZ(float theta);
-    void rotateY(float phi);
+    void rotate(float angle, glm::vec3 axis);
+    void rotate(float angle, float x, float y, float z);
+    void rotateX(float radians);
+    void rotateY(float radians);
+    void rotateZ(float radians);
     void translate(float x, float y, float z);
     void translate(glm::vec3 delta);
     glm::mat4 getTransformation();
