@@ -6,13 +6,11 @@
 //  Copyright © 2016 André Sá de Mello. All rights reserved.
 //
 
-#include "ResourcePath.hpp"
 #include "Mesh.hpp"
-#include "util.hpp"
 
-#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/constants.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 //static constexpr float TAU = static_cast<float>(2.0 * glm::pi<double>());
 
@@ -23,7 +21,13 @@ Mesh::Mesh(std::initializer_list<GLfloat> verts) : vertices(verts)
     theta = phi = 0.0f;
 }
 
-void Mesh::init(const std::string& vertexShader, const std::string& fragmentShader)
+Mesh::~Mesh()
+{
+    glDeleteBuffers(1, &vbo);
+    glDeleteVertexArrays(1, &vao);
+}
+
+void Mesh::init(const Shader& shader)
 {
     // Create Vertex Array Object
     glGenVertexArrays(1, &vao);
@@ -35,29 +39,40 @@ void Mesh::init(const std::string& vertexShader, const std::string& fragmentShad
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
     
-    // Create and use a vertex/fragment shader program
-    shader.loadFromFile(resourcePath() + vertexShader, resourcePath() + fragmentShader);
-    shader.bind();
-    
-    GLuint shaderProgram = shader.getNativeHandle(); // To use with the OpenGL API
-    
     // Specify the layout of the vertex data
-    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+    GLint posAttrib = shader.getAttribLocation("position");
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    
+    // Unbind the buffer
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     // Set the initial triangle color
-    uniColor = glGetUniformLocation(shaderProgram, "triangleColor");
+    uniColor = shader.getUniformLocation("u_Color");
     glUniform3f(uniColor, 1.0f, 0.0f, 0.0f);
     
-    uniTrans = glGetUniformLocation(shaderProgram, "trans");
+    // Set the initial transformation matrix
+    uniTrans = shader.getUniformLocation("u_Model");
     glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(getTransformation()));
 }
 
-Mesh::~Mesh()
+void Mesh::draw(double time)
 {
-    glDeleteBuffers(1, &vbo);
-    glDeleteVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+    
+    // Update the mesh color
+    glUniform3f(uniColor,
+                (sin(time * 4.0f) + 1.0f) / 2.0f,
+                (sin(time * 4.1f + 0.33f) + 1.0f) / 2.0f,
+                (sin(time * 3.7f + 0.80f) + 1.0f) / 2.0f);
+    
+    // Update the transformation matrix
+    glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(getTransformation()));
+    
+    // Draw a mesh from the vertices
+    glDrawArrays(GL_TRIANGLES, 0, vertices.size()/3);
+    
+    glBindVertexArray(0);
 }
 
 void Mesh::scale(float xfactor, float yfactor, float zfactor)
@@ -93,7 +108,7 @@ void Mesh::rotateY(float phi)
 
 void Mesh::translate(float x, float y, float z)
 {
-    position += glm::vec3(x, y, z);;
+    position += glm::vec3(x, y, z);
 }
 
 void Mesh::translate(glm::vec3 delta)
@@ -109,16 +124,4 @@ glm::mat4 Mesh::getTransformation()
     trans = glm::rotate(trans, phi, glm::vec3(0, 1, 0));
     trans = glm::scale(trans, scaleFactors);
     return trans;
-}
-
-void Mesh::draw(double time)
-{
-    // Update the triangle color
-    glUniform3f(uniColor, (sin(time * 4.0f) + 1.0f) / 2.0f, 0.0f, 0.0f);
-    
-    // Update the transformation matrix
-    glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(getTransformation()));
-    
-    // Draw a triangle from the 3 vertices
-    glDrawArrays(GL_TRIANGLES, 0, 3);
 }

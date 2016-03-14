@@ -19,7 +19,6 @@
 
 class Mesh {
 private:
-    Shader shader;
     GLint uniTrans, uniColor;
     GLuint vao, vbo;
     float theta, phi;
@@ -29,7 +28,7 @@ private:
 public:
     Mesh(std::initializer_list<GLfloat> vertices);
     ~Mesh();
-    void init(const std::string& vertexShader, const std::string& fragmentShader);
+    void init(const Shader& shader);
     void draw(double time);
     void scale(float xfactor, float yfactor, float zfactor);
     void scale(glm::vec3 factors);
@@ -44,3 +43,4 @@ public:
 
 
 #endif /* Mesh_h */
+

@@ -15,8 +15,6 @@
 
 class Shader {
 private:
-    GLuint vertexShader;
-    GLuint fragmentShader;
     GLuint shaderProgram;
   
 public:
@@ -24,6 +22,8 @@ public:
     bool loadFromFile(const std::string& vertexShaderFilename, const std::string& fragmentShaderFilename);
     void bind();
     GLuint getNativeHandle();
+    GLint getAttribLocation(const std::string& attributeName) const;
+    GLint getUniformLocation(const std::string& uniformName) const;
 };
 
 #endif /* Shader_hpp */

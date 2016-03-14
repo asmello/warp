@@ -45,3 +45,4 @@ void SimpleRenderer::draw()
         obj->draw(t_total);
     }
 }
+

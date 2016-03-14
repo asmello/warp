@@ -1,10 +1,10 @@
 #version 150
 
-in vec2 position;
+in vec3 position;
 
-uniform mat4 trans;
+uniform mat4 u_Model;
 
 void main()
 {
-    gl_Position = trans * vec4(position, 0.0, 1.0);
+    gl_Position = u_Model * vec4(position, 1.0);
 }

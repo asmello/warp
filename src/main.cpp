@@ -8,6 +8,7 @@
 #include <cmath>
 #include <iostream>
 
+#include "ResourcePath.hpp"
 #include "SimpleRenderer.hpp"
 #include "Mesh.hpp"
 
@@ -101,15 +102,32 @@ int main(int, char const**)
     glewExperimental = GL_TRUE;
     glewInit();
     
-    auto triangle = std::make_shared<Mesh, std::initializer_list<float>>({
-        0.0f,  0.5f,
-        0.5f, -0.5f,
-        -0.5f, -0.5f
-    });
-    triangle->init("vertex.glsl", "frag.glsl");
+    // Create and use a vertex/fragment shader program
+    Shader shader;
+    shader.loadFromFile(resourcePath() + "vertex.glsl", resourcePath() + "frag.glsl");
+    shader.bind();
     
     std::vector<std::shared_ptr<Mesh>> objects;
+    
+    auto triangle = std::make_shared<Mesh, std::initializer_list<float>>({
+         0.0f,  0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f
+    });
+    triangle->init(shader);
     objects.push_back(triangle);
+    
+    auto square = std::make_shared<Mesh, std::initializer_list<float>>({
+        -0.8f, 0.8f, 0.0f,
+        -0.6f, 0.8f, 0.0f,
+        -0.8f, 0.6f, 0.0f,
+        
+        -0.6f, 0.6f, 0.0f,
+        -0.6f, 0.8f, 0.0f,
+        -0.8f, 0.6f, 0.0f
+    });
+    square->init(shader);
+    objects.push_back(square);
     
     // Create and initialize the scene renderer
     SimpleRenderer renderer(objects);
@@ -132,3 +150,4 @@ int main(int, char const**)
 
     return EXIT_SUCCESS;
 }
+
