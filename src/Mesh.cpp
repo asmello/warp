@@ -1,11 +1,3 @@
-//
-//  Mesh.cpp
-//  HelloGL2
-//
-//  Created by André Sá de Mello on 3/10/16.
-//  Copyright © 2016 André Sá de Mello. All rights reserved.
-//
-
 #include "Mesh.hpp"
 
 #include <glm/gtc/type_ptr.hpp>

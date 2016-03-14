@@ -36,4 +36,9 @@ namespace util {
             std::cout << std::endl;
         }
     }
+    
+    std::string resourcePath(void)
+    {
+        return "resources/";
+    }
 }

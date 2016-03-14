@@ -1,11 +1,3 @@
-//
-//  Shader.cpp
-//  HelloGL
-//
-//  Created by André Sá de Mello on 3/10/16.
-//  Copyright © 2016 André Sá de Mello. All rights reserved.
-//
-
 #include "Shader.hpp"
 #include "util.hpp"
 

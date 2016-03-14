@@ -42,17 +42,17 @@ add_definitions(
 set(WARP_SOURCES
 	src/main.cpp
 	src/Mesh.cpp
-	src/ResourcePath.cpp
 	src/Shader.cpp
 	src/SimpleRenderer.cpp
+	src/EventListener.cpp
 	src/util.cpp
 )
 set(WARP_HEADERS
 	include/Mesh.hpp
-	include/ResourcePath.hpp
 	include/Shader.hpp
 	include/Renderer.hpp
 	include/SimpleRenderer.hpp
+	include/EventListener.hpp
 	include/util.hpp
 )
 add_executable(Warp ${WARP_SOURCES} ${WARP_HEADERS})

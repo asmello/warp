@@ -3,14 +3,11 @@
 #include <SFML/Window.hpp>
 
 #include <thread>
-#include <chrono>
 #include <memory>
-#include <cmath>
-#include <iostream>
 
-#include "ResourcePath.hpp"
 #include "SimpleRenderer.hpp"
 #include "Mesh.hpp"
+#include "util.hpp"
 
 void processInput(Renderer& renderer, std::shared_ptr<Mesh> activeObject)
 {
@@ -120,7 +117,7 @@ int main(int, char const**)
     
     // Create and use a vertex/fragment shader program
     Shader shader;
-    shader.loadFromFile(resourcePath() + "vertex.glsl", resourcePath() + "frag.glsl");
+    shader.loadFromFile(util::resourcePath() + "vertex.glsl", util::resourcePath() + "frag.glsl");
     shader.bind();
     
     // List of active objects
