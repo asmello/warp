@@ -106,7 +106,7 @@ int main(int, char const**)
         0.5f, -0.5f,
         -0.5f, -0.5f
     });
-    triangle->bind();
+    triangle->init("vertex.glsl", "frag.glsl");
     
     std::vector<std::shared_ptr<Mesh>> objects;
     objects.push_back(triangle);

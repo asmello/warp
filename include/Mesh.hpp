@@ -9,8 +9,9 @@
 #ifndef Mesh_h
 #define Mesh_h
 
-#include <GL/glew.h>
+#include "Shader.hpp"
 
+#include <GL/glew.h>
 #include <glm/glm.hpp>
 
 #include <vector>
@@ -18,15 +19,18 @@
 
 class Mesh {
 private:
+    Shader shader;
+    GLint uniTrans, uniColor;
     GLuint vao, vbo;
-    std::vector<GLfloat> vertices;
     float theta, phi;
+    std::vector<GLfloat> vertices;
     glm::vec3 position, scaleFactors;
     
 public:
     Mesh(std::initializer_list<GLfloat> vertices);
     ~Mesh();
-    void bind();
+    void init(const std::string& vertexShader, const std::string& fragmentShader);
+    void draw(double time);
     void scale(float xfactor, float yfactor, float zfactor);
     void scale(glm::vec3 factors);
     void scale(float factor);
