@@ -60,12 +60,30 @@ void Mesh::init(const Shader& shader)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     // Set the initial triangle color
-    uniColor = shader.getUniformLocation("u_Color");
+    uniColor = shader.getUniformLocation("uColor");
     glUniform3f(uniColor, 1.0f, 0.0f, 0.0f);
     
-    // Set the initial transformation matrix
-    uniTrans = shader.getUniformLocation("u_Model");
+    // Set the initial model matrix
+    uniTrans = shader.getUniformLocation("uModel");
     glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(getTransformation()));
+    
+    // Set the initial view matrix
+    glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),
+                                 glm::vec3(0.0f, 0.0f, 0.0f),
+                                 glm::vec3(0.0f, 1.0f, 0.0f));
+    uniView = shader.getUniformLocation("uView");
+    glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
+    
+    // Set the initial projection matrix
+    glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1.0f, 1.0f, 10.0f);
+    uniProj = shader.getUniformLocation("uProj");
+    glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+}
+
+void Mesh::reshape(int width, int height)
+{
+    glm::mat4 proj = glm::perspective(glm::radians(45.0f), static_cast<float>(width)/static_cast<float>(height), 1.0f, 10.0f);
+    glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 }
 
 void Mesh::draw(double time)
@@ -145,7 +163,7 @@ glm::mat4 Mesh::getTransformation()
 {
     glm::mat4 trans;
     trans = glm::translate(trans, position);
-    trans = rotation * trans;
+    trans *= rotation;
     trans = glm::scale(trans, scaleFactors);
     return trans;
 }

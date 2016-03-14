@@ -91,6 +91,9 @@ bool processEvents(sf::Window& window, Renderer& renderer, std::shared_ptr<Mesh>
                                         1.0f);
                 }
                 break;
+            case sf::Event::Resized:
+                renderer.reshape(windowEvent.size.width, windowEvent.size.height);
+                break;
             default:
                 break;
         }
@@ -108,7 +111,9 @@ int main(int, char const**)
     settings.antialiasingLevel = 4;
     settings.attributeFlags = sf::ContextSettings::Core;
     
-    sf::Window window(sf::VideoMode(1024, 1024, 32), "OpenGL", sf::Style::Titlebar | sf::Style::Close, settings);
+    sf::Window window(sf::VideoMode(1024, 1024, 32), "Warp",
+                      sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize,
+                      settings);
     window.setVerticalSyncEnabled(true);
     
     glewExperimental = GL_TRUE;

@@ -11,7 +11,7 @@
 
 class Mesh {
 private:
-    GLint uniTrans, uniColor;
+    GLint uniTrans, uniColor, uniView, uniProj;
     GLuint vao, vbo, ebo;
     bool eboEnabled;
     std::vector<GLfloat> vertices;
@@ -27,6 +27,7 @@ public:
     void setElementBuffer(std::initializer_list<GLuint> buffer);
     void init(const Shader& shader);
     void draw(double time);
+    void reshape(int width, int height);
     void scale(float xfactor, float yfactor, float zfactor);
     void scale(glm::vec3 factors);
     void scale(float factor);

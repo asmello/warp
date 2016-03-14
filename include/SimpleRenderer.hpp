@@ -19,6 +19,7 @@ public:
     SimpleRenderer(const std::vector<std::shared_ptr<Mesh>>& objects);
     void init();
     void draw();
+    void reshape(int width, int height);
 };
 
 #endif /* SimpleRenderer_hpp */

@@ -38,3 +38,11 @@ void SimpleRenderer::draw()
     }
 }
 
+void SimpleRenderer::reshape(int width, int height)
+{
+    for (std::shared_ptr<Mesh> obj : objects)
+    {
+        obj->reshape(width, height);
+    }
+}
+
