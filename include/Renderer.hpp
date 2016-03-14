@@ -10,9 +10,7 @@
 #define Renderer_hpp
 
 class Renderer {
-    
 public:
-    virtual void init() = 0;
     virtual void draw() = 0;
 };
 

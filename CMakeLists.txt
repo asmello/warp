@@ -48,7 +48,16 @@ set(WARP_SOURCES
 	src/SimpleRenderer.cpp
 	src/util.cpp
 )
-add_executable(Warp ${WARP_SOURCES})
+set(WARP_HEADERS
+	include/Object.hpp
+	include/Mesh.hpp
+	include/ResourcePath.hpp
+	include/Shader.hpp
+	include/Renderer.hpp
+	include/SimpleRenderer.hpp
+	include/util.hpp
+)
+add_executable(Warp ${WARP_SOURCES} ${WARP_HEADERS})
 target_link_libraries(Warp ${ALL_LIBS})
 set_property(TARGET Warp PROPERTY CXX_STANDARD 11)
 
