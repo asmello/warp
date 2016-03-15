@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <chrono>
+#include <memory>
 
 class SimpleRenderer : public Renderer {
 private:
