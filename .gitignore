@@ -52,3 +52,8 @@ Temporary Items
 *.exe
 *.out
 *.app
+
+# Folders
+[Tt]emp/
+[Bb]uild/
+[Pp]roject/
