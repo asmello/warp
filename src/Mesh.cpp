@@ -19,9 +19,9 @@ Mesh::~Mesh()
     glDeleteVertexArrays(1, &vao);
 }
 
-void Mesh::setVertices(std::initializer_list<GLfloat> verts)
+void Mesh::setVertices(std::initializer_list<GLfloat> vertices)
 {
-    vertices = verts;
+    this->vertices = vertices;
 }
 
 void Mesh::setElementBuffer(std::initializer_list<GLuint> buffer)
@@ -52,31 +52,36 @@ void Mesh::init(const Shader& shader)
     }
     
     // Specify the layout of the vertex data
-    GLint posAttrib = shader.getAttribLocation("position");
+    GLint posAttrib = shader.getAttribLocation("a_position");
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat), 0);
+    
+    // Specify the layout of the normal data
+    GLint normAttrib = shader.getAttribLocation("a_normal");
+    glEnableVertexAttribArray(normAttrib);
+    glVertexAttribPointer(normAttrib, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat), reinterpret_cast<GLvoid*>(3*sizeof(GLfloat)));
     
     // Unbind the buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     // Set the initial triangle color
-    uniColor = shader.getUniformLocation("uColor");
+    uniColor = shader.getUniformLocation("u_Color");
     glUniform3f(uniColor, 1.0f, 0.0f, 0.0f);
     
     // Set the initial model matrix
-    uniTrans = shader.getUniformLocation("uModel");
+    uniTrans = shader.getUniformLocation("u_Model");
     glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(getTransformation()));
     
     // Set the initial view matrix
     glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),
                                  glm::vec3(0.0f, 0.0f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
-    uniView = shader.getUniformLocation("uView");
+    uniView = shader.getUniformLocation("u_View");
     glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
     
     // Set the initial projection matrix
     glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1.0f, 1.0f, 10.0f);
-    uniProj = shader.getUniformLocation("uProj");
+    uniProj = shader.getUniformLocation("u_Proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 }
 

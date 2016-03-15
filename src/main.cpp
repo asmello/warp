@@ -129,9 +129,9 @@ int main(int, char const**)
     
     // Add a triangle to the scene
     auto triangle = std::make_shared<Mesh, std::initializer_list<float>>({
-         0.0f,  0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f
+         0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f
     });
     triangle->init(shader);
     objects.push_back(triangle);
@@ -139,10 +139,10 @@ int main(int, char const**)
     // Add a square to the scene
     auto square = std::make_shared<Mesh>();
     square->setVertices({
-        -0.8f, 0.8f, 0.0f,
-        -0.4f, 0.8f, 0.0f,
-        -0.8f, 0.4f, 0.0f,
-        -0.4f, 0.4f, 0.0f
+        -0.8f, 0.8f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.4f, 0.8f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.8f, 0.4f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.4f, 0.4f, 0.0f, 0.0f, 0.0f, 1.0f
     });
     square->setElementBuffer({
         0, 1, 2,

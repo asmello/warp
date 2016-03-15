@@ -14,7 +14,7 @@ private:
     GLint uniTrans, uniColor, uniView, uniProj;
     GLuint vao, vbo, ebo;
     bool eboEnabled;
-    std::vector<GLfloat> vertices;
+    std::vector<GLfloat> vertices, normals;
     std::vector<GLuint> elements;
     glm::vec3 position, scaleFactors;
     glm::mat4 rotation;
@@ -23,7 +23,7 @@ public:
     Mesh();
     Mesh(std::initializer_list<GLfloat> vertices);
     ~Mesh();
-    void setVertices(std::initializer_list<GLfloat> verts);
+    void setVertices(std::initializer_list<GLfloat> vertices);
     void setElementBuffer(std::initializer_list<GLuint> buffer);
     void init(const Shader& shader);
     void draw(double time);

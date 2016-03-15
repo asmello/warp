@@ -1,12 +1,13 @@
 #version 150
 
-in vec3 position;
+in vec3 a_position;
+in vec3 a_normal;
 
-uniform mat4 uModel;
-uniform mat4 uView;
-uniform mat4 uProj;
+uniform mat4 u_Model;
+uniform mat4 u_View;
+uniform mat4 u_Proj;
 
 void main()
 {
-    gl_Position = uProj * uView * uModel * vec4(position, 1.0);
+    gl_Position = u_Proj * u_View * u_Model * vec4(a_position, 1.0);
 }
