@@ -12,11 +12,11 @@ void processInput(Renderer& renderer, std::shared_ptr<Mesh> activeObject)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
     {
-        activeObject->rotateZ(0.025);
+        activeObject->rotateZ(0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
     {
-        activeObject->rotateZ(-0.025);
+        activeObject->rotateZ(-0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
@@ -36,19 +36,19 @@ void processInput(Renderer& renderer, std::shared_ptr<Mesh> activeObject)
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
-        activeObject->rotateX(0.025);
+        activeObject->rotateX(0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
-        activeObject->rotateX(-0.025);
+        activeObject->rotateX(-0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        activeObject->rotateY(-0.025);
+        activeObject->rotateY(-0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        activeObject->rotateY(0.025);
+        activeObject->rotateY(0.025f);
     }
 }
 
@@ -68,10 +68,10 @@ bool processEvents(sf::Window& window, Renderer& renderer, std::shared_ptr<Mesh>
                         return false;
                         break;
                     case sf::Keyboard::RBracket:
-                        activeObject->scale(1.25, 1.25, 1.0);
+                        activeObject->scale(1.25f, 1.25f, 1.0f);
                         break;
                     case sf::Keyboard::LBracket:
-                        activeObject->scale(0.8, 0.8, 1.0);
+                        activeObject->scale(0.8f, 0.8f, 1.0f);
                         break;
                     case sf::Keyboard::Space:
                         renderer.pause();
@@ -111,7 +111,7 @@ int main(int, char const**)
     settings.antialiasingLevel = 4;
     settings.attributeFlags = sf::ContextSettings::Core;
     
-    sf::Window window(sf::VideoMode(1024, 1024, 32), "Warp",
+    sf::Window window(sf::VideoMode(512, 512, 32), "Warp",
                       sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize,
                       settings);
     window.setVerticalSyncEnabled(true);
