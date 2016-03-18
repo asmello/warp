@@ -1,7 +1,8 @@
 #include "SimpleRenderer.hpp"
 #include "Mesh.hpp"
+#include "util.hpp"
 
-SimpleRenderer::SimpleRenderer(const std::vector<std::shared_ptr<Mesh>>& objects) : t_total(0.0)
+SimpleRenderer::SimpleRenderer(const std::vector<std::shared_ptr<Mesh>>& objects) : t_total(0.0), tex(GL_TEXTURE_2D)
 {
     this->objects = objects;
 }
@@ -13,6 +14,8 @@ void SimpleRenderer::init()
     
     // Start counting time
     t_last = std::chrono::high_resolution_clock::now();
+    
+    tex.loadFromFile(util::resourcePath() + "test.png");
 }
 
 void SimpleRenderer::draw()
@@ -30,6 +33,8 @@ void SimpleRenderer::draw()
     
     // Update last tick
     t_last = t_now;
+    
+    tex.bind(GL_TEXTURE0);
     
     // Draw the objects
     for (std::shared_ptr<Mesh> obj : objects)

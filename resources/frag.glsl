@@ -1,10 +1,11 @@
-#version 150
+#version 330
 
-uniform vec3 u_Color;
-
+in vec2 v_texcoord;
 out vec4 outColor;
+
+uniform sampler2D u_sampler;
 
 void main()
 {
-    outColor = vec4(u_Color, 1.0);
+    outColor = texture(u_sampler, v_texcoord.st);
 }

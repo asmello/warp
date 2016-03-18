@@ -7,7 +7,7 @@
 //static constexpr float TAU = static_cast<float>(2.0 * glm::pi<double>());
 
 Mesh::Mesh()
-: eboEnabled(false), position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)) { }
+: eboEnabled(false), position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1))  { }
 
 Mesh::Mesh(std::initializer_list<GLfloat> verts)
 : eboEnabled(false), vertices(verts), position(glm::vec3(0, 0, 0)),
@@ -54,19 +54,22 @@ void Mesh::init(const Shader& shader)
     // Specify the layout of the vertex data
     GLint posAttrib = shader.getAttribLocation("a_position");
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat), 0);
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), 0);
     
     // Specify the layout of the normal data
     GLint normAttrib = shader.getAttribLocation("a_normal");
     glEnableVertexAttribArray(normAttrib);
-    glVertexAttribPointer(normAttrib, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat), reinterpret_cast<GLvoid*>(3*sizeof(GLfloat)));
+    glVertexAttribPointer(normAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat),
+                          reinterpret_cast<GLvoid*>(3*sizeof(GLfloat)));
+    
+    // Specify the layout of the texture coordinate data
+    GLint texCoordAttrib = shader.getAttribLocation("a_texcoord");
+    glEnableVertexAttribArray(texCoordAttrib);
+    glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float),
+                          reinterpret_cast<GLvoid*>(6*sizeof(GLfloat)));
     
     // Unbind the buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
-    // Set the initial triangle color
-    uniColor = shader.getUniformLocation("u_Color");
-    glUniform3f(uniColor, 1.0f, 0.0f, 0.0f);
     
     // Set the initial model matrix
     uniTrans = shader.getUniformLocation("u_Model");
@@ -83,6 +86,9 @@ void Mesh::init(const Shader& shader)
     glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1.0f, 1.0f, 10.0f);
     uniProj = shader.getUniformLocation("u_Proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+    
+    uniSampler = shader.getUniformLocation("u_sampler");
+    glUniform1i(uniSampler, 0);
 }
 
 void Mesh::reshape(int width, int height)
@@ -93,13 +99,8 @@ void Mesh::reshape(int width, int height)
 
 void Mesh::draw(double time)
 {
-    glBindVertexArray(vao);
     
-    // Update the mesh color
-    glUniform3f(uniColor,
-                (sin(time * 4.0f) + 1.0f) / 2.0f,
-                (sin(time * 4.1f + 0.33f) + 1.0f) / 2.0f,
-                (sin(time * 3.7f + 0.80f) + 1.0f) / 2.0f);
+    glBindVertexArray(vao);
     
     // Update the transformation matrix
     glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(getTransformation()));

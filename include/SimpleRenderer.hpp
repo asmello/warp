@@ -2,6 +2,7 @@
 #define SimpleRenderer_hpp
 
 #include "Renderer.hpp"
+#include "Texture.hpp"
 #include "Mesh.hpp"
 
 #include <GL/glew.h>
@@ -15,6 +16,7 @@ private:
     std::vector<std::shared_ptr<Mesh>> objects;
     std::chrono::time_point<std::chrono::high_resolution_clock> t_last;
     double t_total;
+    warp::Texture tex;
     
 public:
     SimpleRenderer(const std::vector<std::shared_ptr<Mesh>>& objects);

@@ -9,9 +9,11 @@ include(MSVCMultipleProcessCompile) # /MP
 
 find_package(OpenGL REQUIRED)
 
-if(NOT APPLE)
+if(APPLE)
+	find_library(COREFOUNDATION_FRAMEWORK CoreFoundation REQUIRED)
+else(APPLE)
 	set(SFML_STATIC_LIBRARIES TRUE)
-endif(NOT APPLE)
+endif(APPLE)
 find_package(SFML COMPONENTS system window graphics network audio REQUIRED)
 
 include_directories(
@@ -19,6 +21,7 @@ include_directories(
 	external/glm/
 	external/glew-1.13.0/include/
 	external/assimp/include/
+	external/soil2/src/SOIL2/
 	${SFML_INCLUDE_DIR}
 )
 
@@ -30,8 +33,13 @@ set(ALL_LIBS
 	${SFML_LIBRARIES}
 	${SFML_DEPENDENCIES}
 	GLEW
+	SOIL
 	assimp
 )
+
+if(APPLE)
+	list(APPEND ALL_LIBS ${COREFOUNDATION_FRAMEWORK})
+endif(APPLE)
 
 add_definitions(
 	-DGLEW_STATIC
@@ -43,6 +51,9 @@ set(WARP_SOURCES
 	src/main.cpp
 	src/Mesh.cpp
 	src/Shader.cpp
+	src/Camera.cpp
+	src/Texture.cpp
+	src/GameObject.cpp
 	src/SimpleRenderer.cpp
 	src/EventListener.cpp
 	src/util.cpp
@@ -50,7 +61,10 @@ set(WARP_SOURCES
 set(WARP_HEADERS
 	include/Mesh.hpp
 	include/Shader.hpp
+	include/Camera.hpp
+	include/Texture.hpp
 	include/Renderer.hpp
+	include/GameObject.hpp
 	include/SimpleRenderer.hpp
 	include/EventListener.hpp
 	include/util.hpp

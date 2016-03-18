@@ -11,7 +11,7 @@
 
 class Mesh {
 private:
-    GLint uniTrans, uniColor, uniView, uniProj;
+    GLint uniTrans, uniView, uniProj, uniSampler;
     GLuint vao, vbo, ebo;
     bool eboEnabled;
     std::vector<GLfloat> vertices, normals;

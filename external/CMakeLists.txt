@@ -8,6 +8,17 @@ add_definitions(
 	-D_CRT_SECURE_NO_WARNINGS
 )
 
+### SOIL ###
+
+set(SOIL_SOURCES
+	soil2/src/SOIL2/SOIL2.c
+	soil2/src/SOIL2/etc1_utils.c
+	soil2/src/SOIL2/image_DXT.c
+	soil2/src/SOIL2/image_helper.c
+)
+
+add_library(SOIL STATIC ${SOIL_SOURCES})
+
 ### GLEW ###
 
 add_library(GLEW STATIC glew-1.13.0/src/glew.c)
