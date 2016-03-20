@@ -2,27 +2,29 @@
 #define SimpleRenderer_hpp
 
 #include "Renderer.hpp"
-#include "Texture.hpp"
-#include "Mesh.hpp"
+
+#include "GameObject.hpp"
+#include "Camera.hpp"
 
 #include <GL/glew.h>
 
 #include <vector>
 #include <chrono>
-#include <memory>
 
-class SimpleRenderer : public Renderer {
-private:
-    std::vector<std::shared_ptr<Mesh>> objects;
-    std::chrono::time_point<std::chrono::high_resolution_clock> t_last;
-    double t_total;
-    warp::Texture tex;
-    
-public:
-    SimpleRenderer(const std::vector<std::shared_ptr<Mesh>>& objects);
-    void init();
-    void draw();
-    void reshape(int width, int height);
-};
+namespace warp {
+    class SimpleRenderer : public Renderer {
+    private:
+        std::chrono::time_point<std::chrono::high_resolution_clock> t_last;
+        double t_total;
+        
+    public:
+        SimpleRenderer(const std::shared_ptr<warp::Camera> camera,
+                       const std::vector<std::shared_ptr<warp::GameObject>>& objects);
+        SimpleRenderer(const std::vector<std::shared_ptr<warp::GameObject>>& objects);
+        void init(const std::shared_ptr<const Shader> shader);
+        void draw();
+        
+    };
+}
 
 #endif /* SimpleRenderer_hpp */

@@ -2,20 +2,37 @@
 #include "Mesh.hpp"
 #include "util.hpp"
 
-SimpleRenderer::SimpleRenderer(const std::vector<std::shared_ptr<Mesh>>& objects) : t_total(0.0), tex(GL_TEXTURE_2D)
+using namespace warp;
+
+SimpleRenderer::SimpleRenderer(const std::vector<std::shared_ptr<warp::GameObject>>& objs) :
+Renderer(objs), t_total(0.0)
 {
-    this->objects = objects;
+    
 }
 
-void SimpleRenderer::init()
+SimpleRenderer::SimpleRenderer(const std::shared_ptr<warp::Camera> camera,
+                               const std::vector<std::shared_ptr<warp::GameObject>>& objs) :
+Renderer(camera, objs), t_total(0.0)
 {
+    
+}
+
+void SimpleRenderer::init(const std::shared_ptr<const Shader> shader)
+{
+    Renderer::init(shader); // Parent initializer
+    
+    for (auto obj : objects) obj->init(shader);
+    
     // Set the background color
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
     // Start counting time
     t_last = std::chrono::high_resolution_clock::now();
     
-    tex.loadFromFile(util::resourcePath() + "test.png");
+    // Set geometry shader settings
+    glFrontFace(GL_CCW);
+    glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
 }
 
 void SimpleRenderer::draw()
@@ -34,20 +51,10 @@ void SimpleRenderer::draw()
     // Update last tick
     t_last = t_now;
     
-    tex.bind(GL_TEXTURE0);
+    // Update the camera
+    camera->update();
     
     // Draw the objects
-    for (std::shared_ptr<Mesh> obj : objects)
-    {
-        obj->draw(t_total);
-    }
-}
-
-void SimpleRenderer::reshape(int width, int height)
-{
-    for (std::shared_ptr<Mesh> obj : objects)
-    {
-        obj->reshape(width, height);
-    }
+    for (auto obj : objects) obj->draw();
 }
 

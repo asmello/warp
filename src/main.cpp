@@ -3,57 +3,58 @@
 #include <SFML/Window.hpp>
 
 #include <memory>
-#include <iostream>
+#include <cstdio>
 
 #include "SimpleRenderer.hpp"
+#include "GameObject.hpp"
 #include "Mesh.hpp"
 #include "util.hpp"
 
-void processInput(Renderer& renderer, std::shared_ptr<Mesh> activeObject)
+void processInput(warp::Renderer& renderer, std::shared_ptr<warp::GameObject> activeObject)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
     {
-        activeObject->rotateZ(0.025f);
+        activeObject->getTransform()->rotateZ(0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
     {
-        activeObject->rotateZ(-0.025f);
+        activeObject->getTransform()->rotateZ(-0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        activeObject->translate(-.01f, .0f, .0f);
+        activeObject->getTransform()->translate(-.01f, .0f, .0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        activeObject->translate(.0f, -.01f, .0f);
+        activeObject->getTransform()->translate(.0f, -.01f, .0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        activeObject->translate(.01f, .0f, .0f);
+        activeObject->getTransform()->translate(.01f, .0f, .0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-        activeObject->translate(.0f, .01f, .0f);
+        activeObject->getTransform()->translate(.0f, .01f, .0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
-        activeObject->rotateX(0.025f);
+        activeObject->getTransform()->rotateX(0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
-        activeObject->rotateX(-0.025f);
+        activeObject->getTransform()->rotateX(-0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        activeObject->rotateY(-0.025f);
+        activeObject->getTransform()->rotateY(-0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        activeObject->rotateY(0.025f);
+        activeObject->getTransform()->rotateY(0.025f);
     }
 }
 
-bool processEvents(sf::Window& window, Renderer& renderer, std::shared_ptr<Mesh> activeObject)
+bool processEvents(sf::Window& window, warp::Renderer& renderer, std::shared_ptr<warp::GameObject> activeObject)
 {
     sf::Event windowEvent;
     while (window.pollEvent(windowEvent))
@@ -69,10 +70,10 @@ bool processEvents(sf::Window& window, Renderer& renderer, std::shared_ptr<Mesh>
                         return false;
                         break;
                     case sf::Keyboard::RBracket:
-                        activeObject->scale(1.25f, 1.25f, 1.0f);
+                        activeObject->getTransform()->scale(1.25f, 1.25f, 1.0f);
                         break;
                     case sf::Keyboard::LBracket:
-                        activeObject->scale(0.8f, 0.8f, 1.0f);
+                        activeObject->getTransform()->scale(0.8f, 0.8f, 1.0f);
                         break;
                     case sf::Keyboard::Space:
                         renderer.pause();
@@ -83,17 +84,17 @@ bool processEvents(sf::Window& window, Renderer& renderer, std::shared_ptr<Mesh>
                 break;
             case sf::Event::MouseWheelScrolled:
                 if (windowEvent.mouseWheelScroll.delta > 0.0f) {
-                    activeObject->scale(1.0f + windowEvent.mouseWheelScroll.delta/10.0f,
+                    activeObject->getTransform()->scale(1.0f + windowEvent.mouseWheelScroll.delta/10.0f,
                                         1.0f + windowEvent.mouseWheelScroll.delta/10.0f,
                                         1.0f);
                 } else if (windowEvent.mouseWheelScroll.delta < -0.0f) {
-                    activeObject->scale(1.0f / (1.0f + -windowEvent.mouseWheelScroll.delta/10.0f),
+                    activeObject->getTransform()->scale(1.0f / (1.0f + -windowEvent.mouseWheelScroll.delta/10.0f),
                                         1.0f / (1.0f + -windowEvent.mouseWheelScroll.delta/10.0f),
                                         1.0f);
                 }
                 break;
             case sf::Event::Resized:
-                renderer.reshape(windowEvent.size.width, windowEvent.size.height);
+                renderer.getCamera()->reshape(windowEvent.size.width, windowEvent.size.height);
                 break;
             default:
                 break;
@@ -112,58 +113,70 @@ int main(int, char const**)
     settings.antialiasingLevel = 4;
     settings.attributeFlags = sf::ContextSettings::Core;
     
-    sf::Window window(sf::VideoMode(512, 512, 32), "Warp",
+    sf::Window window(sf::VideoMode(800, 800, 32), "Warp",
                       sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize,
                       settings);
     window.setVerticalSyncEnabled(true);
     
     glewExperimental = GL_TRUE;
     glewInit();
-    
-    // Create and use a vertex/fragment shader program
-    Shader shader;
-    shader.loadFromFile(util::resourcePath() + "vertex.glsl", util::resourcePath() + "frag.glsl");
-    shader.bind();
+    glGetError(); // Discard error 500
     
     // List of active objects
-    std::vector<std::shared_ptr<Mesh>> objects;
+    std::vector<std::shared_ptr<warp::GameObject>> objects;
     
-    // Add a triangle to the scene
-    auto triangle = std::make_shared<Mesh, std::initializer_list<float>>({
-         0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f
+    // Create a vertex/fragment shader program
+    auto shader = std::make_shared<warp::Shader>();
+    shader->loadFromFile(util::resourcePath() + "vertex.glsl", util::resourcePath() + "frag.glsl");
+    
+    // Create a texture
+    auto texture = std::make_shared<warp::Texture>(GL_TEXTURE_2D);
+    texture->loadFromFile(util::resourcePath() + "test.png");
+    
+    // Create a pyramid
+    auto pyramid = std::make_shared<warp::Mesh>();
+    pyramid->setVertices({
+        -1.0f, -1.0f,  0.57730f,  0.0f, 0.0f,
+        0.0f, -1.0f, -1.15475f,  0.5f, 0.0f,
+        1.0f, -1.0f,  0.57730f,  1.0f, 0.0f,
+        0.0f,  1.0f,  0.00000f,  0.5f, 1.0f
     });
-    triangle->init(shader);
-    objects.push_back(triangle);
+    pyramid->setElementBuffer({
+        0, 3, 1,
+        1, 3, 2,
+        2, 3, 0,
+        1, 2, 0
+    });
+    objects.push_back(std::make_shared<warp::GameObject>(texture, pyramid));
     
     // Add a square to the scene
-    auto square = std::make_shared<Mesh>();
+    auto square = std::make_shared<warp::Mesh>();
     square->setVertices({
-        -0.8f, 0.8f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-        -0.4f, 0.8f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-        -0.8f, 0.4f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-        -0.4f, 0.4f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f
+        -0.8f, 0.8f, 0.0f,  0.0f, 0.0f,
+        -0.4f, 0.8f, 0.0f,  1.0f, 0.0f,
+        -0.8f, 0.4f, 0.0f,  0.0f, 1.0f,
+        -0.4f, 0.4f, 0.0f,  1.0f, 1.0f
     });
     square->setElementBuffer({
-        0, 1, 2,
+        0, 2, 1,
         2, 3, 1
     });
-    square->init(shader);
-    objects.push_back(square);
+    objects.push_back(std::make_shared<warp::GameObject>(texture, square));
     
     // Create and initialize the scene renderer
-    SimpleRenderer renderer(objects);
-    renderer.init();
+    warp::SimpleRenderer renderer(objects);
+    
+    shader->bind(); // Need this before initializing objects
+    renderer.init(shader);
     
     bool running = true;
     while (running)
     {
         // Process user input
-        processInput(renderer, triangle);
+        processInput(renderer, objects[0]);
         
         // Process window events
-        running = processEvents(window, renderer, triangle);
+        running = processEvents(window, renderer, objects[0]);
         
         // Draw the scene
         renderer.draw();

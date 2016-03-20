@@ -1,4 +1,6 @@
 #include "Shader.hpp"
+using namespace warp;
+
 #include "util.hpp"
 
 #include <GL/glew.h>
@@ -51,7 +53,7 @@ void Shader::bind()
     glUseProgram(shaderProgram);
 }
 
-GLuint Shader::getNativeHandle()
+GLuint Shader::getNativeHandle() const
 {
     return shaderProgram;
 }

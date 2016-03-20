@@ -3,9 +3,17 @@ using namespace warp;
 
 #include <SOIL2.h>
 
-Texture::Texture(GLenum tg) : target(tg)
+Texture::Texture(GLenum tg) : target(tg), initialized(false), loaded(false)
 {
     
+}
+
+void Texture::init(const std::shared_ptr<const warp::Shader> shader)
+{
+    if (initialized) return;
+    uniSampler = shader->getUniformLocation("u_sampler");
+    glUniform1i(uniSampler, 0);
+    initialized = true;
 }
 
 void Texture::loadFromFile(const std::string &path)
@@ -21,15 +29,17 @@ void Texture::loadFromFile(const std::string &path)
     glBindTexture(target, 0);
     
     SOIL_free_image_data(image);
+    
+    loaded = true;
 }
 
-void Texture::bind(GLenum TextureUnit)
+void Texture::bind()
 {
-    glActiveTexture(TextureUnit);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(target, txo);
 }
 
 Texture::~Texture()
 {
-    glDeleteTextures(1, &txo);
+    if (loaded) glDeleteTextures(1, &txo);
 }

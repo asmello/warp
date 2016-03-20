@@ -53,9 +53,10 @@ set(WARP_SOURCES
 	src/Shader.cpp
 	src/Camera.cpp
 	src/Texture.cpp
+	src/Renderer.cpp
+	src/Transform.cpp
 	src/GameObject.cpp
 	src/SimpleRenderer.cpp
-	src/EventListener.cpp
 	src/util.cpp
 )
 set(WARP_HEADERS
@@ -64,9 +65,9 @@ set(WARP_HEADERS
 	include/Camera.hpp
 	include/Texture.hpp
 	include/Renderer.hpp
+	include/Transform.hpp
 	include/GameObject.hpp
 	include/SimpleRenderer.hpp
-	include/EventListener.hpp
 	include/util.hpp
 )
 add_executable(Warp ${WARP_SOURCES} ${WARP_HEADERS})
