@@ -9,7 +9,6 @@ using namespace warp;
 
 void Shader::loadFromFile(const std::string& vertexShaderFilename, const std::string &fragmentShaderFilename)
 {
-    
     char *vsStr = util::createCString(util::loadFromFile(vertexShaderFilename));
     char *fsStr = util::createCString(util::loadFromFile(fragmentShaderFilename));
     

@@ -24,9 +24,11 @@ void Camera::init(const std::shared_ptr<const Shader> shader)
 
 void Camera::update()
 {
-    if (viewChanged) buildView();
-    if (projectionChanged) buildProjection();
-    if (viewChanged || projectionChanged) updateShader();
+    if (viewChanged || projectionChanged) {
+        if (viewChanged) buildView();
+        if (projectionChanged) buildProjection();
+        updateShader();
+    }
 }
 
 void Camera::buildView()
