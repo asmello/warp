@@ -70,10 +70,10 @@ bool processEvents(sf::Window& window, warp::Renderer& renderer, std::shared_ptr
                         return false;
                         break;
                     case sf::Keyboard::RBracket:
-                        activeObject->getTransform()->scale(1.25f, 1.25f, 1.0f);
+                        activeObject->getTransform()->scale(1.25f, 1.25f, 1.25f);
                         break;
                     case sf::Keyboard::LBracket:
-                        activeObject->getTransform()->scale(0.8f, 0.8f, 1.0f);
+                        activeObject->getTransform()->scale(0.8f, 0.8f, 0.8f);
                         break;
                     case sf::Keyboard::Space:
                         renderer.pause();
@@ -85,12 +85,12 @@ bool processEvents(sf::Window& window, warp::Renderer& renderer, std::shared_ptr
             case sf::Event::MouseWheelScrolled:
                 if (windowEvent.mouseWheelScroll.delta > 0.0f) {
                     activeObject->getTransform()->scale(1.0f + windowEvent.mouseWheelScroll.delta/10.0f,
-                                        1.0f + windowEvent.mouseWheelScroll.delta/10.0f,
-                                        1.0f);
+                                                        1.0f + windowEvent.mouseWheelScroll.delta/10.0f,
+                                                        1.0f + windowEvent.mouseWheelScroll.delta/10.0f);
                 } else if (windowEvent.mouseWheelScroll.delta < -0.0f) {
                     activeObject->getTransform()->scale(1.0f / (1.0f + -windowEvent.mouseWheelScroll.delta/10.0f),
-                                        1.0f / (1.0f + -windowEvent.mouseWheelScroll.delta/10.0f),
-                                        1.0f);
+                                                        1.0f / (1.0f + -windowEvent.mouseWheelScroll.delta/10.0f),
+                                                        1.0f / (1.0f + -windowEvent.mouseWheelScroll.delta/10.0f));
                 }
                 break;
             case sf::Event::Resized:
