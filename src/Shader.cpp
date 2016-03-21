@@ -7,45 +7,85 @@ using namespace warp;
 
 #include <cstdio>
 
-bool Shader::loadFromFile(const std::string& vertexShaderFilename, const std::string &fragmentShaderFilename)
+void Shader::loadFromFile(const std::string& vertexShaderFilename, const std::string &fragmentShaderFilename)
 {
     
     char *vsStr = util::createCString(util::loadFromFile(vertexShaderFilename));
     char *fsStr = util::createCString(util::loadFromFile(fragmentShaderFilename));
     
-    char buffer[512];
-    
     // Create and compile the vertex shader
-    GLint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vsStr, NULL);
-    glCompileShader(vertexShader);
-    
-    glGetShaderInfoLog(vertexShader, 512, NULL, buffer);
-    fprintf(stderr, "%s", buffer);
+    GLint vertexShader = compile(GL_VERTEX_SHADER, vsStr);
     
     delete vsStr;
     
     // Create and compile the fragment shader
-    GLint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fsStr, NULL);
-    glCompileShader(fragmentShader);
-    
-    glGetShaderInfoLog(fragmentShader, 512, NULL, buffer);
-    fprintf(stderr, "%s", buffer);
+    GLint fragmentShader = compile(GL_FRAGMENT_SHADER, fsStr);
     
     delete fsStr;
     
     // Link the vertex and fragment shader into a shader program
+    link(vertexShader, fragmentShader);
+    
+    // These aren't necessary anymore
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+}
+
+GLint Shader::compile(GLenum type, char *source)
+{
+    // Create and compile the fragment shader
+    GLint shader = glCreateShader(type);
+    glShaderSource(shader, 1, &source, NULL);
+    glCompileShader(shader);
+    
+    GLint param;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &param);
+    if (param == GL_FALSE)
+    {
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &param);
+        char *infoLog = new char[param];
+        glGetShaderInfoLog(shader, param, NULL, infoLog);
+        fprintf(stderr, "SHADER_CC_ERROR:\n%s", infoLog);
+        delete infoLog;
+    }
+    
+    return shader;
+}
+
+void Shader::link(GLint vertexShader, GLint fragmentShader)
+{
     shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glBindFragDataLocation(shaderProgram, 0, "outColor");
     glLinkProgram(shaderProgram);
     
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    GLint param;
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &param);
+    if (param == GL_FALSE)
+    {
+        glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &param);
+        char *infoLog = new char[param];
+        glGetProgramInfoLog(shaderProgram, param, NULL, infoLog);
+        fprintf(stderr, "*** SHADER_LINKER_ERROR\n%s", infoLog);
+        delete infoLog;
+    }
+}
+
+void Shader::validate()
+{
+    glValidateProgram(shaderProgram);
     
-    return true;
+    GLint param;
+    glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &param);
+    if (param == GL_FALSE)
+    {
+        glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &param);
+        char *infoLog = new char[param];
+        glGetProgramInfoLog(shaderProgram, param, NULL, infoLog);
+        fprintf(stderr, "*** SHADER_PROGRAM_ERROR\n%s", infoLog);
+        delete infoLog;
+    }
 }
 
 void Shader::bind()
@@ -60,12 +100,20 @@ GLuint Shader::getNativeHandle() const
 
 GLint Shader::getAttribLocation(const std::string &attributeName) const
 {
-    return glGetAttribLocation(shaderProgram, attributeName.c_str());
+    GLint loc = glGetAttribLocation(shaderProgram, attributeName.c_str());
+    if (loc < 0) {
+        throw std::runtime_error("invalid shader attribute");
+    }
+    return loc;
 }
 
 GLint Shader::getUniformLocation(const std::string &uniformName) const
 {
-    return glGetUniformLocation(shaderProgram, uniformName.c_str());
+    GLint loc = glGetUniformLocation(shaderProgram, uniformName.c_str());
+    if (loc < 0) {
+        throw std::runtime_error("invalid shader uniform");
+    }
+    return loc;
 }
 
 Shader::~Shader()

@@ -17,7 +17,6 @@ namespace warp {
         bool eboEnabled, initialized;
         std::vector<GLfloat> vertices, normals;
         std::vector<GLuint> elements;
-        std::shared_ptr<warp::Transform> transform;
         
     public:
         Mesh();

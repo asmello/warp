@@ -169,6 +169,8 @@ int main(int, char const**)
     shader->bind(); // Need this before initializing objects
     renderer.init(shader);
     
+    shader->validate(); // Check if shader is ok
+    
     bool running = true;
     while (running)
     {
