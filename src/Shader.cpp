@@ -1,11 +1,11 @@
 #include "Shader.hpp"
-using namespace warp;
-
 #include "util.hpp"
 
 #include <GL/glew.h>
 
 #include <cstdio>
+
+using namespace warp;
 
 void Shader::loadFromFile(const std::string& vertexShaderFilename, const std::string &fragmentShaderFilename)
 {

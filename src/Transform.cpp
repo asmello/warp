@@ -1,9 +1,10 @@
 #include "Transform.hpp"
-using namespace warp;
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+using namespace warp;
 
 Transform::Transform() : position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), initialized(false)
 {

@@ -50,23 +50,29 @@ add_definitions(
 set(WARP_SOURCES
 	src/main.cpp
 	src/Mesh.cpp
+	src/Input.cpp
 	src/Shader.cpp
 	src/Camera.cpp
 	src/Texture.cpp
 	src/Renderer.cpp
+	src/GameLoop.cpp
 	src/Transform.cpp
 	src/GameObject.cpp
+	src/InputListener.cpp
 	src/SimpleRenderer.cpp
 	src/util.cpp
 )
 set(WARP_HEADERS
 	include/Mesh.hpp
+	include/Input.hpp
 	include/Shader.hpp
 	include/Camera.hpp
 	include/Texture.hpp
 	include/Renderer.hpp
+	include/GameLoop.hpp
 	include/Transform.hpp
 	include/GameObject.hpp
+	include/InputListener.hpp
 	include/SimpleRenderer.hpp
 	include/util.hpp
 )

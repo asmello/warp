@@ -1,8 +1,9 @@
 #include "Camera.hpp"
-using namespace warp;
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+using namespace warp;
 
 Camera::Camera() :
 position(glm::vec3(0.0f, 0.0f, 5.0f)),

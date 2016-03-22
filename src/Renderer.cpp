@@ -1,12 +1,5 @@
-//
-//  Renderer.cpp
-//  Warp
-//
-//  Created by André Sá de Mello on 3/19/16.
-//
-//
-
 #include "Renderer.hpp"
+
 using namespace warp;
 
 Renderer::Renderer(const std::vector<std::shared_ptr<GameObject>>& objects_) :

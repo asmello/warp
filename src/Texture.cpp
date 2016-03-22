@@ -1,7 +1,8 @@
 #include "Texture.hpp"
-using namespace warp;
 
 #include <SOIL2.h>
+
+using namespace warp;
 
 Texture::Texture(GLenum tg) : target(tg), initialized(false), loaded(false)
 {

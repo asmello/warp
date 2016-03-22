@@ -7,101 +7,10 @@
 
 #include "SimpleRenderer.hpp"
 #include "GameObject.hpp"
+#include "GameLoop.hpp"
+#include "Input.hpp"
 #include "Mesh.hpp"
 #include "util.hpp"
-
-void processInput(warp::Renderer& renderer, std::shared_ptr<warp::GameObject> activeObject)
-{
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-    {
-        activeObject->getTransform()->rotateZ(0.025f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-    {
-        activeObject->getTransform()->rotateZ(-0.025f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    {
-        activeObject->getTransform()->translate(-.01f, .0f, .0f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    {
-        activeObject->getTransform()->translate(.0f, -.01f, .0f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    {
-        activeObject->getTransform()->translate(.01f, .0f, .0f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    {
-        activeObject->getTransform()->translate(.0f, .01f, .0f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-    {
-        activeObject->getTransform()->rotateX(0.025f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-    {
-        activeObject->getTransform()->rotateX(-0.025f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-        activeObject->getTransform()->rotateY(-0.025f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-        activeObject->getTransform()->rotateY(0.025f);
-    }
-}
-
-bool processEvents(sf::Window& window, warp::Renderer& renderer, std::shared_ptr<warp::GameObject> activeObject)
-{
-    sf::Event windowEvent;
-    while (window.pollEvent(windowEvent))
-    {
-        switch (windowEvent.type)
-        {
-            case sf::Event::Closed:
-                return false;
-                break;
-            case sf::Event::KeyPressed:
-                switch (windowEvent.key.code) {
-                    case sf::Keyboard::Escape:
-                        return false;
-                        break;
-                    case sf::Keyboard::RBracket:
-                        activeObject->getTransform()->scale(1.25f, 1.25f, 1.25f);
-                        break;
-                    case sf::Keyboard::LBracket:
-                        activeObject->getTransform()->scale(0.8f, 0.8f, 0.8f);
-                        break;
-                    case sf::Keyboard::Space:
-                        renderer.pause();
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case sf::Event::MouseWheelScrolled:
-                if (windowEvent.mouseWheelScroll.delta > 0.0f) {
-                    activeObject->getTransform()->scale(1.0f + windowEvent.mouseWheelScroll.delta/10.0f,
-                                                        1.0f + windowEvent.mouseWheelScroll.delta/10.0f,
-                                                        1.0f + windowEvent.mouseWheelScroll.delta/10.0f);
-                } else if (windowEvent.mouseWheelScroll.delta < -0.0f) {
-                    activeObject->getTransform()->scale(1.0f / (1.0f + -windowEvent.mouseWheelScroll.delta/10.0f),
-                                                        1.0f / (1.0f + -windowEvent.mouseWheelScroll.delta/10.0f),
-                                                        1.0f / (1.0f + -windowEvent.mouseWheelScroll.delta/10.0f));
-                }
-                break;
-            case sf::Event::Resized:
-                renderer.getCamera()->reshape(windowEvent.size.width, windowEvent.size.height);
-                break;
-            default:
-                break;
-        }
-    }
-    return true;
-}
 
 int main(int, char const**)
 {
@@ -113,10 +22,12 @@ int main(int, char const**)
     settings.antialiasingLevel = 4;
     settings.attributeFlags = sf::ContextSettings::Core;
     
-    sf::Window window(sf::VideoMode(800, 800, 32), "Warp",
-                      sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize,
-                      settings);
-    window.setVerticalSyncEnabled(true);
+    auto window = std::make_shared<sf::Window>(sf::VideoMode(800, 800, 32), "Warp",
+                                                     sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize,
+                                                     settings);
+    window->setVerticalSyncEnabled(true);
+    
+    warp::Input windowInput(window);
     
     glewExperimental = GL_TRUE;
     glewInit();
@@ -164,30 +75,28 @@ int main(int, char const**)
     objects.push_back(std::make_shared<warp::GameObject>(texture, square));
     
     // Create and initialize the scene renderer
-    warp::SimpleRenderer renderer(objects);
-    
+    auto renderer = std::make_shared<warp::SimpleRenderer>(objects);
+    windowInput.addListener(renderer);
     shader->bind(); // Need this before initializing objects
-    renderer.init(shader);
+    renderer->init(shader);
     
     shader->validate(); // Check if shader is ok
     
-    bool running = true;
-    while (running)
-    {
-        // Process user input
-        processInput(renderer, objects[0]);
-        
+    auto loop = std::make_shared<warp::GameLoop>([&windowInput, renderer, window]() {
         // Process window events
-        running = processEvents(window, renderer, objects[0]);
+        windowInput.flush();
         
         // Draw the scene
-        renderer.draw();
+        renderer->draw();
         
         // Swap buffers
-        window.display();
-    }
+        window->display();
+    });
+    windowInput.addListener(loop);
     
-    window.close();
+    loop->run();
+    
+    window->close();
 
     return EXIT_SUCCESS;
 }
