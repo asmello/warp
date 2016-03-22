@@ -6,12 +6,12 @@
 namespace warp {
     class InputListener {
     public:
-        virtual void onClosed() {};
-        virtual void onKeyDown(Input::Key type) {};
-        virtual void onKeyUp(Input::Key type) {};
-        virtual void onMouseScrolled(float delta) {};
-        virtual void onMouseClicked() {};
-        virtual void onResized(int width, int height) {};
+        virtual void onClosed() {}
+        virtual void onKeyDown(Input::Key type) {}
+        virtual void onKeyUp(Input::Key type) {}
+        virtual void onMouseScrolled(float delta) {}
+        virtual void onMouseClicked() {}
+        virtual void onResized(int width, int height) {}
     };
 }
 

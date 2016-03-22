@@ -72,4 +72,3 @@ void Input::notifyResized(int width, int height)
 {
     for (const auto listener : listeners) listener->onResized(width, height);
 }
-

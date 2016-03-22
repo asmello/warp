@@ -23,8 +23,8 @@ int main(int, char const**)
     settings.attributeFlags = sf::ContextSettings::Core;
     
     auto window = std::make_shared<sf::Window>(sf::VideoMode(800, 800, 32), "Warp",
-                                                     sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize,
-                                                     settings);
+                                               sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize,
+                                               settings);
     window->setVerticalSyncEnabled(true);
     
     warp::Input windowInput(window);
@@ -85,6 +85,9 @@ int main(int, char const**)
     auto loop = std::make_shared<warp::GameLoop>([&windowInput, renderer, window]() {
         // Process window events
         windowInput.flush();
+        
+        // Handle continuous input
+        renderer->processInput();
         
         // Draw the scene
         renderer->draw();

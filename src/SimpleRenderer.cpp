@@ -2,6 +2,8 @@
 #include "Mesh.hpp"
 #include "util.hpp"
 
+#include <SFML/Window.hpp>
+
 using namespace warp;
 
 SimpleRenderer::SimpleRenderer(const std::vector<std::shared_ptr<warp::GameObject>>& objs) :
@@ -96,47 +98,47 @@ void SimpleRenderer::onResized(int width, int height)
     camera->reshape(width, height);
 }
 
-//void processInput(warp::Renderer& renderer, std::shared_ptr<warp::GameObject> activeObject)
-//{
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-//    {
-//        activeObject->getTransform()->rotateZ(0.025f);
-//    }
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-//    {
-//        activeObject->getTransform()->rotateZ(-0.025f);
-//    }
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-//    {
-//        activeObject->getTransform()->translate(-.01f, .0f, .0f);
-//    }
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-//    {
-//        activeObject->getTransform()->translate(.0f, -.01f, .0f);
-//    }
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-//    {
-//        activeObject->getTransform()->translate(.01f, .0f, .0f);
-//    }
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-//    {
-//        activeObject->getTransform()->translate(.0f, .01f, .0f);
-//    }
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-//    {
-//        activeObject->getTransform()->rotateX(0.025f);
-//    }
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-//    {
-//        activeObject->getTransform()->rotateX(-0.025f);
-//    }
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-//    {
-//        activeObject->getTransform()->rotateY(-0.025f);
-//    }
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-//    {
-//        activeObject->getTransform()->rotateY(0.025f);
-//    }
-//}
+void SimpleRenderer::processInput()
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+    {
+        getActiveObject()->getTransform()->rotateZ(0.025f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+    {
+        getActiveObject()->getTransform()->rotateZ(-0.025f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
+        getActiveObject()->getTransform()->translate(-.01f, .0f, .0f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    {
+        getActiveObject()->getTransform()->translate(.0f, -.01f, .0f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
+        getActiveObject()->getTransform()->translate(.01f, .0f, .0f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    {
+        getActiveObject()->getTransform()->translate(.0f, .01f, .0f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        getActiveObject()->getTransform()->rotateX(0.025f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        getActiveObject()->getTransform()->rotateX(-0.025f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        getActiveObject()->getTransform()->rotateY(-0.025f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        getActiveObject()->getTransform()->rotateY(0.025f);
+    }
+}
 

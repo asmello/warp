@@ -29,6 +29,7 @@ namespace warp {
         void onKeyDown(Input::Key type);
         void onMouseScrolled(float delta);
         void onResized(int width, int height);
+        void processInput();
     };
 }
 
