@@ -11,6 +11,7 @@
 
 #include "Shader.hpp"
 
+#include <Memory>
 #include <GL/glew.h>
 
 #include <string>
