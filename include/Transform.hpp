@@ -2,6 +2,7 @@
 #define Transform_hpp
 
 #include "Shader.hpp"
+#include <Memory>
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
