@@ -1,11 +1,3 @@
-//
-//  Texture.hpp
-//  Warp
-//
-//  Created by André Sá de Mello on 3/18/16.
-//
-//
-
 #ifndef Texture_hpp
 #define Texture_hpp
 
