@@ -1,11 +1,3 @@
-//
-//  Transform.hpp
-//  Warp
-//
-//  Created by André Sá de Mello on 3/19/16.
-//
-//
-
 #ifndef Transform_hpp
 #define Transform_hpp
 
