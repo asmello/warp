@@ -19,6 +19,7 @@ find_package(SFML COMPONENTS system window graphics network audio REQUIRED)
 include_directories(
 	include/
 	external/glm/
+	external/jsoncpp/
 	external/glew-1.13.0/include/
 	external/assimp/include/
 	external/soil2/src/SOIL2/

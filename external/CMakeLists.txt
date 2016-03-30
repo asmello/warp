@@ -19,6 +19,10 @@ set(SOIL_SOURCES
 
 add_library(SOIL STATIC ${SOIL_SOURCES})
 
+### JSONCPP ###
+
+add_library(JSONCPP STATIC jsoncpp/jsoncpp.cpp)
+
 ### GLEW ###
 
 add_library(GLEW STATIC glew-1.13.0/src/glew.c)
