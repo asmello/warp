@@ -1,15 +1,17 @@
 #ifndef Camera_hpp
 #define Camera_hpp
 
-#include "Shader.hpp"
+#include "GameObject.hpp"
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
 #include <memory>
 
-namespace warp {
-    class Camera {
+namespace warp
+{
+    class Camera : public GameObject
+    {
     private:
         GLint uniViewProj;
         glm::mat4 view, proj;
@@ -22,7 +24,7 @@ namespace warp {
         
     public:
         Camera();
-        void init(const std::shared_ptr<const Shader> shader);
+        void init();
         void lookAt(glm::vec3 point);
         void reshape(int width, int height);
         void setPosition(glm::vec3 position);

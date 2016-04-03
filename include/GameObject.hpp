@@ -1,28 +1,21 @@
 #ifndef GameObject_hpp
 #define GameObject_hpp
 
-#include "Shader.hpp"
-#include "Texture.hpp"
-#include "Mesh.hpp"
+#include "Transform.hpp"
 
 #include <memory>
 
-namespace warp {
-    class GameObject {
-    private:
+namespace warp
+{
+    class GameObject
+    {
+    protected:
         std::shared_ptr<Transform> transform;
-        std::shared_ptr<Texture> texture;
-        std::shared_ptr<Mesh> mesh;
         
     public:
-        GameObject(const std::shared_ptr<Texture>,
-                   const std::shared_ptr<Mesh>,
-                   const std::shared_ptr<Transform>);
-        GameObject(const std::shared_ptr<Texture>,
-                   const std::shared_ptr<Mesh>);
-        void draw();
-        void init(const std::shared_ptr<const Shader> shader);
-        std::shared_ptr<Transform> getTransform();
+        GameObject();
+        GameObject(std::unique_ptr<Transform> transform);
+        std::shared_ptr<Transform> getTransform() const;
     };
 }
 

@@ -5,8 +5,10 @@
 
 #include <string>
 
-namespace warp {
-    class Shader {
+namespace warp
+{
+    class Shader
+    {
     private:
         GLuint shaderProgram;
         GLint compile(GLenum type, char *source);

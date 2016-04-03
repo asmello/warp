@@ -7,8 +7,10 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-namespace warp {
-    class Transform {
+namespace warp
+{
+    class Transform
+    {
     private:
         GLint uniTrans;
         glm::vec3 position, scaleFactors;

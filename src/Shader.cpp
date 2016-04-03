@@ -45,7 +45,7 @@ GLint Shader::compile(GLenum type, char *source)
         char *infoLog = new char[param];
         glGetShaderInfoLog(shader, param, NULL, infoLog);
         fprintf(stderr, "SHADER_CC_ERROR:\n%s", infoLog);
-        delete infoLog;
+        delete[] infoLog;
     }
     
     return shader;
@@ -67,7 +67,7 @@ void Shader::link(GLint vertexShader, GLint fragmentShader)
         char *infoLog = new char[param];
         glGetProgramInfoLog(shaderProgram, param, NULL, infoLog);
         fprintf(stderr, "*** SHADER_LINKER_ERROR\n%s", infoLog);
-        delete infoLog;
+        delete[] infoLog;
     }
 }
 
@@ -83,7 +83,7 @@ void Shader::validate()
         char *infoLog = new char[param];
         glGetProgramInfoLog(shaderProgram, param, NULL, infoLog);
         fprintf(stderr, "*** SHADER_PROGRAM_ERROR\n%s", infoLog);
-        delete infoLog;
+        delete[] infoLog;
     }
 }
 

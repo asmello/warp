@@ -5,8 +5,10 @@
 
 #include <functional>
 
-namespace warp {
-    class GameLoop : public InputListener {
+namespace warp
+{
+    class GameLoop : public InputListener
+    {
     private:
         bool running;
         std::function<void(void)> body;

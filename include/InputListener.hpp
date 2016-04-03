@@ -3,8 +3,10 @@
 
 #include "Input.hpp"
 
-namespace warp {
-    class InputListener {
+namespace warp
+{
+    class InputListener
+    {
     public:
         virtual void onClosed() {}
         virtual void onKeyDown(Input::Key type) {}

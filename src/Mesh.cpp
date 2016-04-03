@@ -30,7 +30,7 @@ void Mesh::setElementBuffer(std::initializer_list<GLuint> buffer)
     eboEnabled = true;
 }
 
-void Mesh::init(const std::shared_ptr<const warp::Shader> shader)
+void Mesh::init()
 {
     if (initialized) return;
     

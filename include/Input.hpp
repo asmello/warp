@@ -5,7 +5,8 @@
 
 #include <memory>
 
-namespace warp {
+namespace warp
+{
     class InputListener;
     
     class Input {

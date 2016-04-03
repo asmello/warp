@@ -8,8 +8,10 @@
 
 #include <string>
 
-namespace warp {
-    class Texture {
+namespace warp
+{
+    class Texture
+    {
     private:
         GLenum target;
         GLuint txo;

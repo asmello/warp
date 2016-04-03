@@ -57,10 +57,12 @@ set(WARP_SOURCES
 	src/Texture.cpp
 	src/Renderer.cpp
 	src/GameLoop.cpp
+	src/Material.cpp
 	src/Transform.cpp
 	src/GameObject.cpp
+	src/MeshRenderer.cpp
 	src/InputListener.cpp
-	src/SimpleRenderer.cpp
+	src/SceneRenderer.cpp
 	src/util.cpp
 )
 set(WARP_HEADERS
@@ -69,12 +71,14 @@ set(WARP_HEADERS
 	include/Shader.hpp
 	include/Camera.hpp
 	include/Texture.hpp
+	include/Material.hpp
 	include/Renderer.hpp
 	include/GameLoop.hpp
 	include/Transform.hpp
 	include/GameObject.hpp
+	include/MeshRenderer.hpp
 	include/InputListener.hpp
-	include/SimpleRenderer.hpp
+	include/SceneRenderer.hpp
 	include/util.hpp
 )
 add_executable(Warp ${WARP_SOURCES} ${WARP_HEADERS})

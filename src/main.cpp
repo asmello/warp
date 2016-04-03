@@ -5,8 +5,11 @@
 #include <memory>
 #include <cstdio>
 
-#include "SimpleRenderer.hpp"
+#include "SceneRenderer.hpp"
+#include "MeshRenderer.hpp"
 #include "GameObject.hpp"
+#include "Texture.hpp"
+#include "Material.hpp"
 #include "GameLoop.hpp"
 #include "Input.hpp"
 #include "Mesh.hpp"
@@ -44,6 +47,11 @@ int main(int, char const**)
     auto texture = std::make_shared<warp::Texture>(GL_TEXTURE_2D);
     texture->loadFromFile(util::resourcePath() + "test.png");
     
+    // Create a material
+    auto material = std::make_shared<warp::Material>(shader, texture);
+    
+    std::vector<std::shared_ptr<warp::Renderer>> renderers;
+    
     // Create a pyramid
     auto pyramid = std::make_shared<warp::Mesh>();
     pyramid->setVertices({
@@ -58,7 +66,8 @@ int main(int, char const**)
         2, 3, 0,
         1, 2, 0
     });
-    objects.push_back(std::make_shared<warp::GameObject>(texture, pyramid));
+    
+    renderers.push_back(std::make_shared<warp::MeshRenderer>(material, pyramid));
     
     // Add a square to the scene
     auto square = std::make_shared<warp::Mesh>();
@@ -72,25 +81,24 @@ int main(int, char const**)
         0, 2, 1,
         2, 3, 1
     });
-    objects.push_back(std::make_shared<warp::GameObject>(texture, square));
+    
+    renderers.push_back(std::make_shared<warp::MeshRenderer>(material, square));
     
     // Create and initialize the scene renderer
-    auto renderer = std::make_shared<warp::SimpleRenderer>(objects);
-    windowInput.addListener(renderer);
-    shader->bind(); // Need this before initializing objects
-    renderer->init(shader);
+    auto sceneRenderer = std::make_shared<warp::SceneRenderer>(renderers);
+    windowInput.addListener(sceneRenderer);
     
     shader->validate(); // Check if shader is ok
     
-    auto loop = std::make_shared<warp::GameLoop>([&windowInput, renderer, window]() {
+    auto loop = std::make_shared<warp::GameLoop>([&windowInput, sceneRenderer, window]() {
         // Process window events
         windowInput.flush();
         
         // Handle continuous input
-        renderer->processInput();
+        sceneRenderer->processInput();
         
         // Draw the scene
-        renderer->draw();
+        sceneRenderer->draw();
         
         // Swap buffers
         window->display();

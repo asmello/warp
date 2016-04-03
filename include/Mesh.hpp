@@ -1,7 +1,7 @@
 #ifndef Mesh_h
 #define Mesh_h
 
-#include "Shader.hpp"
+#include "GameObject.hpp"
 #include "Transform.hpp"
 
 #include <GL/glew.h>
@@ -10,8 +10,10 @@
 #include <memory>
 #include <initializer_list>
 
-namespace warp {
-    class Mesh {
+namespace warp
+{
+    class Mesh : public GameObject
+    {
     private:
         GLuint vao, vbo, ebo;
         bool eboEnabled, initialized;
@@ -24,7 +26,7 @@ namespace warp {
         ~Mesh();
         void setVertices(std::initializer_list<GLfloat> vertices);
         void setElementBuffer(std::initializer_list<GLuint> buffer);
-        void init(const std::shared_ptr<const warp::Shader> shader);
+        void init();
         void bind();
         void draw();
     };
