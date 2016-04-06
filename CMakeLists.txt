@@ -52,6 +52,7 @@ set(WARP_SOURCES
 	src/main.cpp
 	src/Mesh.cpp
 	src/Input.cpp
+	src/Scene.cpp
 	src/Shader.cpp
 	src/Camera.cpp
 	src/Texture.cpp
@@ -70,6 +71,7 @@ set(WARP_SOURCES
 set(WARP_HEADERS
 	include/Mesh.hpp
 	include/Input.hpp
+	include/Scene.hpp
 	include/Shader.hpp
 	include/Camera.hpp
 	include/Texture.hpp

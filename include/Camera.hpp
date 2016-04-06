@@ -34,6 +34,7 @@ namespace warp
         void setFar(float distance);
         void setFOV(float angle);
         void update();
+        void render();
     };
 }
 

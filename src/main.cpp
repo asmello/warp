@@ -49,10 +49,10 @@ int main(int, char const**)
     auto material = std::make_shared<warp::Material>(shader, texture);
     
     // Create the scene object
-    auto scene = std::make_shared<warp::GameObject>();
+    auto scene = std::make_shared<warp::Scene>();
     
     // Add a camera to the scene
-    scene->createComponent<warp::Camera>();
+    scene->createCamera();
     
     // Create a pyramid
     auto pyramid = std::make_shared<warp::Mesh>();
@@ -70,7 +70,7 @@ int main(int, char const**)
     });
     
     // Create a renderer for the pyramid, add it to the scene
-    scene->createComponent<warp::MeshRenderer>(material, std::make_shared<warp::MeshFilter>(pyramid));
+    scene->createRenderer<warp::MeshRenderer>(material, std::make_shared<warp::MeshFilter>(pyramid));
     
     // Create a square
     auto square = std::make_shared<warp::Mesh>();
@@ -86,7 +86,7 @@ int main(int, char const**)
     });
     
     // Create a renderer for the square, add it to the scene
-    scene->createComponent<warp::MeshRenderer>(material, square);
+    scene->createRenderer<warp::MeshRenderer>(material, square);
     
     // Create and initialize the scene renderer
     auto sceneRenderer = std::make_shared<warp::SceneRenderer>(scene);

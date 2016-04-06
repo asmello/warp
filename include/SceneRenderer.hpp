@@ -3,7 +3,7 @@
 
 #include "Camera.hpp"
 #include "Renderer.hpp"
-#include "GameObject.hpp"
+#include "Scene.hpp"
 #include "InputListener.hpp"
 
 #include <GL/glew.h>
@@ -17,14 +17,14 @@ namespace warp
     {
     private:
         std::chrono::time_point<std::chrono::high_resolution_clock> t_last;
-        std::shared_ptr<GameObject> scene;
+        std::shared_ptr<Scene> scene;
         int activeObjectIndex;
         int activeCameraIndex;
         double t_total;
         bool paused;
         
     public:
-        SceneRenderer(std::shared_ptr<GameObject> scene);
+        SceneRenderer(std::shared_ptr<Scene> scene);
         void init();
         void render();
         void pause();

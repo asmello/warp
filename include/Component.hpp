@@ -7,6 +7,8 @@
 
 namespace warp
 {
+    class GameObject;
+    
     class Component
     {
     private:

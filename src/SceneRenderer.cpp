@@ -6,7 +6,7 @@
 
 using namespace warp;
 
-SceneRenderer::SceneRenderer(std::shared_ptr<GameObject> scene_)
+SceneRenderer::SceneRenderer(std::shared_ptr<Scene> scene_)
 : scene(scene_), activeObjectIndex(0), activeCameraIndex(0), t_total(0.0), paused(false)
 {
     
@@ -52,10 +52,10 @@ void SceneRenderer::render()
     // Update last tick
     t_last = t_now;
     
-    for (std::shared_ptr<Camera>& camera : scene->getComponents<Camera>()) camera->update();
+//    for (std::shared_ptr<Camera>& camera : scene->getCameras()) camera->render();
     
     // Render visible objects
-    for (std::shared_ptr<Renderer>& renderer : scene->getComponents<Renderer>()) renderer->render();
+    for (std::shared_ptr<Renderer>& renderer : scene->getRenderers()) renderer->render();
 }
 
 void SceneRenderer::onKeyDown(Input::Key type)
@@ -88,12 +88,12 @@ void SceneRenderer::onMouseScrolled(float delta)
 
 void SceneRenderer::onResized(int width, int height)
 {
-    // todo
+    scene->getCamera(activeCameraIndex)->reshape(width, height);
 }
 
 std::shared_ptr<GameObject> SceneRenderer::getActiveObject()
 {
-    return scene->getComponents<Renderer>().at(activeObjectIndex)->getGameObject();
+    return scene->getRenderer(activeObjectIndex)->getGameObject();
 }
 
 void SceneRenderer::processInput()
