@@ -74,6 +74,21 @@ void Transform::translate(glm::vec3 delta)
     position += delta;
 }
 
+void Transform::setPosition(glm::vec3 position_)
+{
+    position = position;
+}
+
+void Transform::lookAt(glm::vec3 point)
+{
+    
+}
+
+void Transform::setOrientation(glm::vec3 up)
+{
+    
+}
+
 glm::mat4 Transform::getTransformation()
 {
     glm::mat4 trans;

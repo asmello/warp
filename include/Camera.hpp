@@ -15,12 +15,10 @@ namespace warp
     {
     private:
         GLint uniViewProj;
-        glm::mat4 view, proj;
-        glm::vec3 position, pointOfInterest, upVector;
+        glm::mat4 proj;
         float fieldOfView, aspectRatio, nearField, farField;
         void updateShader();
         void buildProjection();
-        void buildView();
         bool viewChanged, projectionChanged, initialized;
         
     public:

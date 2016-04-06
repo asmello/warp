@@ -34,6 +34,9 @@ namespace warp
         void rotateZ(float radians);
         void translate(float x, float y, float z);
         void translate(glm::vec3 delta);
+        void lookAt(glm::vec3 point);
+        void setOrientation(glm::vec3 up);
+        void setPosition(glm::vec3 position);
         glm::mat4 getTransformation();
     };
 }
