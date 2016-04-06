@@ -2,20 +2,23 @@
 #define Renderer_hpp
 
 #include "GameObject.hpp"
+#include "Material.hpp"
 
 #include <memory>
 
 namespace warp
 {
-    class Renderer
+    class Renderer : public Component
     {
     protected:
-        std::shared_ptr<GameObject> rootObject;
+        std::shared_ptr<GameObject> gameObject;
+        std::shared_ptr<Material> material;
         
     public:
-        virtual void draw() = 0;
-        void setRootObject(std::shared_ptr<GameObject> rootObject);
-        std::shared_ptr<GameObject> getRootObject();
+        Renderer(std::shared_ptr<GameObject> gameObject, std::shared_ptr<Material> material);
+        Renderer(std::shared_ptr<Material> material);
+        std::shared_ptr<GameObject> getGameObject();
+        virtual void render() = 0;
     };
 }
 

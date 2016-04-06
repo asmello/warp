@@ -15,7 +15,7 @@ viewChanged(true), projectionChanged(true), initialized(false)
     
 }
 
-void Camera::init()
+void Camera::init(std::shared_ptr<Shader> shader)
 {
     if (initialized) return;
     uniViewProj = shader->getUniformLocation("u_ViewProj");

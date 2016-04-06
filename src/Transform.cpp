@@ -6,7 +6,7 @@
 
 using namespace warp;
 
-Transform::Transform() : position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), initialized(false)
+Transform::Transform() : position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), initialized(false), parent(nullptr)
 {
     
 }
@@ -80,5 +80,8 @@ glm::mat4 Transform::getTransformation()
     trans = glm::translate(trans, position);
     trans *= rotation;
     trans = glm::scale(trans, scaleFactors);
+    if (parent != nullptr) {
+        trans = parent->getTransformation() * trans;
+    }
     return trans;
 }

@@ -59,7 +59,9 @@ set(WARP_SOURCES
 	src/GameLoop.cpp
 	src/Material.cpp
 	src/Transform.cpp
+	src/Component.cpp
 	src/GameObject.cpp
+	src/MeshFilter.cpp
 	src/MeshRenderer.cpp
 	src/InputListener.cpp
 	src/SceneRenderer.cpp
@@ -75,7 +77,9 @@ set(WARP_HEADERS
 	include/Renderer.hpp
 	include/GameLoop.hpp
 	include/Transform.hpp
+	include/Component.hpp
 	include/GameObject.hpp
+	include/MeshFilter.hpp
 	include/MeshRenderer.hpp
 	include/InputListener.hpp
 	include/SceneRenderer.hpp

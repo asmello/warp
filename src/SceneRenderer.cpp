@@ -6,8 +6,8 @@
 
 using namespace warp;
 
-SceneRenderer::SceneRenderer(const std::vector<std::shared_ptr<Renderer>>& renderers_) :
-t_total(0.0), paused(false)
+SceneRenderer::SceneRenderer(std::shared_ptr<GameObject> scene_)
+: scene(scene_), activeObjectIndex(0), activeCameraIndex(0), t_total(0.0), paused(false)
 {
     
 }
@@ -36,7 +36,7 @@ void SceneRenderer::init()
     glEnable(GL_CULL_FACE);
 }
 
-void SceneRenderer::draw()
+void SceneRenderer::render()
 {
     // Clear the screen to black
     glClear(GL_COLOR_BUFFER_BIT);
@@ -52,18 +52,20 @@ void SceneRenderer::draw()
     // Update last tick
     t_last = t_now;
     
-    // Draw the objects
-    for (std::shared_ptr<Renderer>& renderer : renderers) renderer->draw();
+    for (std::shared_ptr<Camera>& camera : scene->getComponents<Camera>()) camera->update();
+    
+    // Render visible objects
+    for (std::shared_ptr<Renderer>& renderer : scene->getComponents<Renderer>()) renderer->render();
 }
 
 void SceneRenderer::onKeyDown(Input::Key type)
 {
     switch (type) {
         case Input::Key::LBracket:
-            getRootObject()->getTransform()->scale(1.25f, 1.25f, 1.25f);
+            getActiveObject()->getTransform()->scale(1.25f, 1.25f, 1.25f);
             break;
         case Input::Key::RBracket:
-            getRootObject()->getTransform()->scale(0.8f, 0.8f, 0.8f);
+            getActiveObject()->getTransform()->scale(0.8f, 0.8f, 0.8f);
             break;
         case Input::Key::Space:
             pause();
@@ -81,7 +83,7 @@ void SceneRenderer::onMouseScrolled(float delta)
     } else {
         scaleFactor = 1.0f / (1.0f + -delta/10.0f);
     }
-    getRootObject()->getTransform()->scale(scaleFactor);
+    getActiveObject()->getTransform()->scale(scaleFactor);
 }
 
 void SceneRenderer::onResized(int width, int height)
@@ -89,47 +91,52 @@ void SceneRenderer::onResized(int width, int height)
     // todo
 }
 
+std::shared_ptr<GameObject> SceneRenderer::getActiveObject()
+{
+    return scene->getComponents<Renderer>().at(activeObjectIndex)->getGameObject();
+}
+
 void SceneRenderer::processInput()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
     {
-        getRootObject()->getTransform()->rotateZ(0.025f);
+        getActiveObject()->getTransform()->rotateZ(0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
     {
-        getRootObject()->getTransform()->rotateZ(-0.025f);
+        getActiveObject()->getTransform()->rotateZ(-0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        getRootObject()->getTransform()->translate(-.01f, .0f, .0f);
+        getActiveObject()->getTransform()->translate(-.01f, .0f, .0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        getRootObject()->getTransform()->translate(.0f, -.01f, .0f);
+        getActiveObject()->getTransform()->translate(.0f, -.01f, .0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        getRootObject()->getTransform()->translate(.01f, .0f, .0f);
+        getActiveObject()->getTransform()->translate(.01f, .0f, .0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-        getRootObject()->getTransform()->translate(.0f, .01f, .0f);
+        getActiveObject()->getTransform()->translate(.0f, .01f, .0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
-        getRootObject()->getTransform()->rotateX(0.025f);
+        getActiveObject()->getTransform()->rotateX(0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
-        getRootObject()->getTransform()->rotateX(-0.025f);
+        getActiveObject()->getTransform()->rotateX(-0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        getRootObject()->getTransform()->rotateY(-0.025f);
+        getActiveObject()->getTransform()->rotateY(-0.025f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        getRootObject()->getTransform()->rotateY(0.025f);
+        getActiveObject()->getTransform()->rotateY(0.025f);
     }
 }
 

@@ -2,6 +2,7 @@
 #define Transform_hpp
 
 #include "Shader.hpp"
+#include <vector>
 #include <Memory>
 
 #include <GL/glew.h>
@@ -16,6 +17,8 @@ namespace warp
         glm::vec3 position, scaleFactors;
         glm::mat4 rotation;
         bool initialized;
+        std::vector<std::shared_ptr<Transform>> children;
+        std::shared_ptr<Transform> parent;
         
     public:
         Transform();

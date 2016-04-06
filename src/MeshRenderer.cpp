@@ -2,17 +2,17 @@
 
 using namespace warp;
 
-MeshRenderer::MeshRenderer(const std::shared_ptr<Mesh> mesh_,
+MeshRenderer::MeshRenderer(const std::shared_ptr<GameObject> gameObject_,
                            const std::shared_ptr<Material> material_,
-                           const std::shared_ptr<GameObject> gameobject_) :
-gameobject(gameobject_), material(material_), mesh(mesh_)
+                           const std::shared_ptr<Mesh> mesh_) :
+Renderer(gameObject_, material_), mesh(mesh_)
 {
     
 }
 
-MeshRenderer::MeshRenderer(const std::shared_ptr<Mesh> mesh_,
-                           const std::shared_ptr<Material> material_) :
-gameobject(std::make_shared<warp::GameObject>()), material(material_), mesh(mesh_)
+MeshRenderer::MeshRenderer(const std::shared_ptr<Material> material_,
+                           const std::shared_ptr<Mesh> mesh_) :
+Renderer(material_), mesh(mesh_)
 {
     
 }
@@ -20,13 +20,14 @@ gameobject(std::make_shared<warp::GameObject>()), material(material_), mesh(mesh
 void MeshRenderer::init()
 {
     material->bind();
-    mesh->init();
+    mesh->init(material->getShader());
 }
 
-void MeshRenderer::draw()
+void MeshRenderer::render()
 {
-    gameobject->getTransform()->bind();
+    gameObject->getTransform()->bind();
     material->bind();
+    mesh->bind();
     mesh->draw();
 }
 

@@ -12,7 +12,7 @@
 
 namespace warp
 {
-    class Mesh : public GameObject
+    class Mesh
     {
     private:
         GLuint vao, vbo, ebo;
@@ -26,9 +26,8 @@ namespace warp
         ~Mesh();
         void setVertices(std::initializer_list<GLfloat> vertices);
         void setElementBuffer(std::initializer_list<GLuint> buffer);
-        void init();
+        void init(std::shared_ptr<Shader> shader);
         void bind();
-        void draw();
     };
 }
 

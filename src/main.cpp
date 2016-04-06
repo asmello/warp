@@ -7,6 +7,7 @@
 
 #include "SceneRenderer.hpp"
 #include "MeshRenderer.hpp"
+#include "MeshFilter.hpp"
 #include "GameObject.hpp"
 #include "Texture.hpp"
 #include "Material.hpp"
@@ -36,9 +37,6 @@ int main(int, char const**)
     glewInit();
     glGetError(); // Discard error 500
     
-    // List of active objects
-    std::vector<std::shared_ptr<warp::GameObject>> objects;
-    
     // Create a vertex/fragment shader program
     auto shader = std::make_shared<warp::Shader>();
     shader->loadFromFile(util::resourcePath() + "vertex.glsl", util::resourcePath() + "frag.glsl");
@@ -50,7 +48,11 @@ int main(int, char const**)
     // Create a material
     auto material = std::make_shared<warp::Material>(shader, texture);
     
-    std::vector<std::shared_ptr<warp::Renderer>> renderers;
+    // Create the scene object
+    auto scene = std::make_shared<warp::GameObject>();
+    
+    // Add a camera to the scene
+    scene->createComponent<warp::Camera>();
     
     // Create a pyramid
     auto pyramid = std::make_shared<warp::Mesh>();
@@ -67,9 +69,10 @@ int main(int, char const**)
         1, 2, 0
     });
     
-    renderers.push_back(std::make_shared<warp::MeshRenderer>(material, pyramid));
+    // Create a renderer for the pyramid, add it to the scene
+    scene->createComponent<warp::MeshRenderer>(material, std::make_shared<warp::MeshFilter>(pyramid));
     
-    // Add a square to the scene
+    // Create a square
     auto square = std::make_shared<warp::Mesh>();
     square->setVertices({
         -0.8f, 0.8f, 0.0f,  0.0f, 0.0f,
@@ -82,10 +85,14 @@ int main(int, char const**)
         2, 3, 1
     });
     
-    renderers.push_back(std::make_shared<warp::MeshRenderer>(material, square));
+    // Create a renderer for the square, add it to the scene
+    scene->createComponent<warp::MeshRenderer>(material, square);
     
     // Create and initialize the scene renderer
-    auto sceneRenderer = std::make_shared<warp::SceneRenderer>(renderers);
+    auto sceneRenderer = std::make_shared<warp::SceneRenderer>(scene);
+    sceneRenderer->init();
+    
+    // The scene renderer will listen to window events
     windowInput.addListener(sceneRenderer);
     
     shader->validate(); // Check if shader is ok
@@ -98,7 +105,7 @@ int main(int, char const**)
         sceneRenderer->processInput();
         
         // Draw the scene
-        sceneRenderer->draw();
+        sceneRenderer->render();
         
         // Swap buffers
         window->display();

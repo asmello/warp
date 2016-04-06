@@ -30,7 +30,7 @@ void Mesh::setElementBuffer(std::initializer_list<GLuint> buffer)
     eboEnabled = true;
 }
 
-void Mesh::init()
+void Mesh::init(std::shared_ptr<Shader> shader)
 {
     if (initialized) return;
     

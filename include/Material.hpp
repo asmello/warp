@@ -15,6 +15,7 @@ namespace warp
         std::shared_ptr<Texture> texture;
     public:
         Material(std::shared_ptr<Shader>, std::shared_ptr<Texture>);
+        std::shared_ptr<Shader> getShader();
         void bind();
     };
 }
