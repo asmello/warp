@@ -1,4 +1,5 @@
 #include "Transform.hpp"
+#include "ShaderManager.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/constants.hpp>
@@ -6,22 +7,16 @@
 
 using namespace warp;
 
-Transform::Transform() : position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), initialized(false), parent(nullptr)
+Transform::Transform() : position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr)
 {
     
 }
 
-void Transform::init(const std::shared_ptr<const warp::Shader> shader)
-{
-    if (initialized) return;
-    uniTrans = shader->getUniformLocation("u_Model");
-    initialized = true;
-}
-
 void Transform::bind()
 {
-    // Update the transformation matrix
-    glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(getTransformation()));
+    if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance().getActiveShader().lock()) {
+        glUniformMatrix4fv(activeShader->getUniformLocation("u_Model"), 1, GL_FALSE, glm::value_ptr(getTransformation()));
+    }
 }
 
 void Transform::scale(float xfactor, float yfactor, float zfactor)
@@ -84,7 +79,7 @@ void Transform::lookAt(glm::vec3 point)
     
 }
 
-void Transform::setOrientation(glm::vec3 up)
+void Transform::setUpward(glm::vec3 up)
 {
     
 }

@@ -1,4 +1,5 @@
 #include "Texture.hpp"
+#include "ShaderManager.hpp"
 
 #include <SOIL2.h>
 
@@ -9,11 +10,12 @@ Texture::Texture(GLenum tg) : target(tg), initialized(false), loaded(false)
     
 }
 
-void Texture::init(const std::shared_ptr<const warp::Shader> shader)
+void Texture::init()
 {
     if (initialized) return;
-    uniSampler = shader->getUniformLocation("u_sampler");
-    glUniform1i(uniSampler, 0);
+    if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActiveShader().lock()) {
+        glUniform1i(activeShader->getUniformLocation("u_sampler"), 0);
+    }
     initialized = true;
 }
 

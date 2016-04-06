@@ -1,8 +1,8 @@
 #ifndef Material_hpp
 #define Material_hpp
 
-#include "Texture.hpp"
-#include "Shader.hpp"
+#include "TextureManager.hpp"
+#include "ShaderManager.hpp"
 
 #include <memory>
 
@@ -11,11 +11,11 @@ namespace warp
     class Material
     {
     private:
-        std::shared_ptr<Shader> shader;
-        std::shared_ptr<Texture> texture;
+        TextureManager::ID texture;
+        ShaderManager::ID shader;
     public:
-        Material(std::shared_ptr<Shader>, std::shared_ptr<Texture>);
-        std::shared_ptr<Shader> getShader();
+        Material(ShaderManager::ID shader, TextureManager::ID texture);
+        ShaderManager::ID getShader();
         void bind();
     };
 }

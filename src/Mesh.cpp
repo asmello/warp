@@ -30,7 +30,7 @@ void Mesh::setElementBuffer(std::initializer_list<GLuint> buffer)
     eboEnabled = true;
 }
 
-void Mesh::init(std::shared_ptr<Shader> shader)
+void Mesh::init()
 {
     if (initialized) return;
     
@@ -56,12 +56,12 @@ void Mesh::init(std::shared_ptr<Shader> shader)
     }
     
     // Specify the layout of the vertex data
-    GLint posAttrib = shader->getAttribLocation("a_position");
+    GLint posAttrib = 0;
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
     
     // Specify the layout of the texture coordinate data
-    GLint texCoordAttrib = shader->getAttribLocation("a_texcoord");
+    GLint texCoordAttrib = 1;
     glEnableVertexAttribArray(texCoordAttrib);
     glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat),
                           reinterpret_cast<GLvoid*>(3*sizeof(GLfloat)));

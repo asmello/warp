@@ -9,14 +9,17 @@ namespace warp
 {
     class Shader
     {
+        friend class ShaderManager;
+        
     private:
         GLuint shaderProgram;
         GLint compile(GLenum type, char *source);
         void link(GLint vertexShader, GLint fragmentShader);
-        
-    public:
+        Shader();
         ~Shader();
         void loadFromFile(const std::string& vertexShaderFilename, const std::string& fragmentShaderFilename);
+        
+    public:
         void bind();
         void validate();
         GLuint getNativeHandle() const;

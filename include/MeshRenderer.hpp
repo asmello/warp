@@ -3,8 +3,8 @@
 
 #include "Renderer.hpp"
 #include "GameObject.hpp"
-#include "Material.hpp"
-#include "MeshFilter.hpp"
+#include "MeshManager.hpp"
+#include "MaterialManager.hpp"
 
 #include <memory>
 
@@ -17,10 +17,10 @@ namespace warp
         
     public:
         MeshRenderer(const std::shared_ptr<GameObject> object,
-                     const std::shared_ptr<Material> material,
-                     const std::shared_ptr<MeshFilter> mesh);
-        MeshRenderer(const std::shared_ptr<Material> material,
-                     const std::shared_ptr<MeshFilter> mesh);
+                     MaterialManager::ID material,
+                     MeshManager::ID mesh);
+        MeshRenderer(MaterialManager::ID material,
+                     MeshManager::ID mesh);
         void init();
         void render();
     };

@@ -1,8 +1,6 @@
 #ifndef Texture_hpp
 #define Texture_hpp
 
-#include "Shader.hpp"
-
 #include <Memory>
 #include <GL/glew.h>
 
@@ -12,17 +10,19 @@ namespace warp
 {
     class Texture
     {
+        friend class TextureManager;
+        
     private:
         GLenum target;
         GLuint txo;
         GLint uniSampler;
         bool initialized, loaded;
+        Texture(GLenum target);
+        void loadFromFile(const std::string& filename);
+        ~Texture();
         
     public:
-        Texture(GLenum target);
-        ~Texture();
-        void init(const std::shared_ptr<const warp::Shader> shader);
-        void loadFromFile(const std::string& filename);
+        void init();
         void bind();
     };
 }

@@ -3,13 +3,14 @@
 
 #include "Shader.hpp"
 #include "Transform.hpp"
-#include "Component.hpp"
 
 #include <vector>
 #include <memory>
 
 namespace warp
 {
+    class Component;
+    
     class GameObject
     {
     protected:
@@ -26,5 +27,7 @@ namespace warp
         std::shared_ptr<Transform> getTransform();
     };
 }
+
+#include "Component.hpp"
 
 #endif /* GameObject_hpp */

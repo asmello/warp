@@ -14,7 +14,6 @@ namespace warp
     class Camera : public Component
     {
     private:
-        GLint uniViewProj;
         glm::mat4 proj;
         float fieldOfView, aspectRatio, nearField, farField;
         void updateShader();
@@ -23,7 +22,7 @@ namespace warp
         
     public:
         Camera();
-        void init(std::shared_ptr<Shader> shader);
+        void init();
         void lookAt(glm::vec3 point);
         void reshape(int width, int height);
         void setPosition(glm::vec3 position);

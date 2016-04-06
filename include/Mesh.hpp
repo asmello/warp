@@ -26,8 +26,9 @@ namespace warp
         ~Mesh();
         void setVertices(std::initializer_list<GLfloat> vertices);
         void setElementBuffer(std::initializer_list<GLuint> buffer);
-        void init(std::shared_ptr<Shader> shader);
+        void init();
         void bind();
+        void draw();
     };
 }
 
