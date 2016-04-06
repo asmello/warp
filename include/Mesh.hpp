@@ -21,9 +21,11 @@ namespace warp
         std::vector<GLuint> elements;
         
     public:
+        // These constructors should not be used directly
         Mesh();
         Mesh(std::initializer_list<GLfloat> vertices);
         ~Mesh();
+        
         void setVertices(std::initializer_list<GLfloat> vertices);
         void setElementBuffer(std::initializer_list<GLuint> buffer);
         void init();

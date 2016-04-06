@@ -17,12 +17,14 @@ namespace warp
         GLuint txo;
         GLint uniSampler;
         bool initialized, loaded;
-        Texture(GLenum target);
+        
         void loadFromFile(const std::string& filename);
-        ~Texture();
         
     public:
-        void init();
+        // These constructors should not be used directly
+        Texture(GLenum target);
+         ~Texture();
+        
         void bind();
     };
 }

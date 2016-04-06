@@ -4,8 +4,9 @@
 #include "Singleton.hpp"
 #include "Shader.hpp"
 
-#include <string>
+#include <vector>
 #include <memory>
+#include <string>
 
 namespace warp
 {
@@ -14,10 +15,15 @@ namespace warp
     public:
         using ID = int;
         
-        std::weak_ptr<Shader> getActive();
-        std::weak_ptr<Shader> get(ID id);
+        void setActive(ID id);
+        std::shared_ptr<Shader> getActive();
+        std::shared_ptr<Shader> get(ID id);
         ID add(std::shared_ptr<Shader> shader);
         ID createFromFile(const std::string& vertexShaderFile, const std::string& fragmentShaderFile);
+        
+    private:
+        std::vector<std::shared_ptr<Shader>> shaders;
+        ID activeID;
     };
 }
 

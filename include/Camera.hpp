@@ -16,13 +16,12 @@ namespace warp
     private:
         glm::mat4 proj;
         float fieldOfView, aspectRatio, nearField, farField;
-        void updateShader();
-        void buildProjection();
-        bool viewChanged, projectionChanged, initialized;
+        bool viewChanged, projectionChanged;
         
     public:
+        // These constructors should not be used directly
         Camera();
-        void init();
+        
         void lookAt(glm::vec3 point);
         void reshape(int width, int height);
         void setPosition(glm::vec3 position);
@@ -31,7 +30,7 @@ namespace warp
         void setFar(float distance);
         void setFOV(float angle);
         void update();
-        void render();
+        void bind();
     };
 }
 

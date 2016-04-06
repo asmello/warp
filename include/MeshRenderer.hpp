@@ -12,17 +12,16 @@ namespace warp
 {
     class MeshRenderer : public Renderer
     {
-    private:
-        std::shared_ptr<Mesh> mesh;
-        
     public:
-        MeshRenderer(const std::shared_ptr<GameObject> object,
-                     MaterialManager::ID material,
-                     MeshManager::ID mesh);
-        MeshRenderer(MaterialManager::ID material,
-                     MeshManager::ID mesh);
-        void init();
-        void render();
+        MeshRenderer(GameObjectManager::ID object,
+                     MaterialManager::ID materialID,
+                     MeshManager::ID meshID);
+        MeshRenderer(MaterialManager::ID materialID,
+                     MeshManager::ID meshID);
+        void render(CameraManager::ID cameraID);
+        
+    private:
+        MeshManager::ID meshID;
     };
 }
 

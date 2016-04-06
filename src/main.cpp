@@ -3,17 +3,14 @@
 #include <SFML/Window.hpp>
 
 #include <memory>
-#include <cstdio>
 
-#include "ShaderManager.hpp"
-#include "TextureManager.hpp"
 #include "MaterialManager.hpp"
+#include "TextureManager.hpp"
+#include "ShaderManager.hpp"
 #include "SceneRenderer.hpp"
 #include "MeshRenderer.hpp"
 #include "MeshManager.hpp"
 #include "GameObject.hpp"
-#include "Texture.hpp"
-#include "Material.hpp"
 #include "GameLoop.hpp"
 #include "Input.hpp"
 #include "Mesh.hpp"
@@ -25,7 +22,7 @@ int main(int, char const**)
     settings.depthBits = 24;
     settings.stencilBits = 8;
     settings.majorVersion = 4;
-    settings.minorVersion = 2;
+    settings.minorVersion = 1;
     settings.antialiasingLevel = 4;
     settings.attributeFlags = sf::ContextSettings::Core;
     
@@ -45,26 +42,12 @@ int main(int, char const**)
     auto materialManager = warp::MaterialManager::getInstance();
     auto meshManager = warp::MeshManager::getInstance();
     
-    // Create a vertex/fragment shader program
-    auto shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex.glsl",
-                                                  util::resourcePath() + "frag.glsl");
-    
-    // Create a texture
+    // Create the assets
+    auto shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex.glsl", util::resourcePath() + "frag.glsl");
     auto textureID = textureManager->createFromFile(util::resourcePath() + "test.png");
-    
-    // Create a material
     auto materialID = materialManager->create(textureID, shaderID);
-    
-    // Create the scene object
-    auto scene = std::make_shared<warp::Scene>();
-    
-    // Add a camera to the scene
-    scene->createCamera();
-    
-    // Create a pyramid
     auto pyramidID = meshManager->create();
-    
-    if (std::shared_ptr<warp::Mesh> pyramidMesh = meshManager->get(pyramidID).lock())
+    if (std::shared_ptr<warp::Mesh> pyramidMesh = meshManager->get(pyramidID))
     {
         pyramidMesh->setVertices({
             -1.0f, -1.0f,  0.57730f,  0.0f, 0.0f,
@@ -78,15 +61,10 @@ int main(int, char const**)
             2, 3, 0,
             1, 2, 0
         });
+        pyramidMesh->init();
     }
-    
-    // Create a renderer for the pyramid, add it to the scene
-    scene->createRenderer<warp::MeshRenderer>(materialID, pyramidID);
-    
-    // Create a square
     auto squareID = meshManager->create();
-    
-    if (std::shared_ptr<warp::Mesh> squareMesh = meshManager->get(squareID).lock())
+    if (std::shared_ptr<warp::Mesh> squareMesh = meshManager->get(squareID))
     {
         squareMesh->setVertices({
             -0.8f, 0.8f, 0.0f,  0.0f, 0.0f,
@@ -98,10 +76,14 @@ int main(int, char const**)
             0, 2, 1,
             2, 3, 1
         });
+        squareMesh->init();
     }
     
-    // Create a renderer for the square, add it to the scene
-    scene->createRenderer<warp::MeshRenderer>(materialID, squareID);
+    // Create the scene object
+    auto scene = std::make_shared<warp::Scene>();
+    scene->createCamera(); // Defaults
+    scene->createRenderer<warp::MeshRenderer>(materialID, pyramidID); // Default pose
+    scene->createRenderer<warp::MeshRenderer>(materialID, squareID); // Default pose
     
     // Create and initialize the scene renderer
     auto sceneRenderer = std::make_shared<warp::SceneRenderer>(scene);
@@ -110,12 +92,15 @@ int main(int, char const**)
     // The scene renderer will listen to window events
     windowInput.addListener(sceneRenderer);
     
-    if (std::shared_ptr<warp::Shader> shader = shaderManager->get(shaderID).lock())
+    if (std::shared_ptr<warp::Shader> shader = shaderManager->get(shaderID))
     {
         shader->validate(); // Check if shader is ok
     }
     
-    auto loop = std::make_shared<warp::GameLoop>([&windowInput, sceneRenderer, window]() {
+    // This is the main loop
+    auto loop = std::make_shared<warp::GameLoop>(
+    [&windowInput, sceneRenderer, window]()
+    {
         // Process window events
         windowInput.flush();
         

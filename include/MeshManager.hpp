@@ -4,6 +4,7 @@
 #include "Singleton.hpp"
 #include "Mesh.hpp"
 
+#include <vector>
 #include <memory>
 
 namespace warp
@@ -14,8 +15,13 @@ namespace warp
         using ID = int;
         
         ID create();
+        void setActive(ID id);
         ID add(std::shared_ptr<Mesh> mesh);
-        std::weak_ptr<Mesh> get(ID id);
+        std::shared_ptr<Mesh> get(ID id);
+        
+    private:
+        std::vector<std::shared_ptr<Mesh>> meshes;
+        ID activeID;
     };
 }
 

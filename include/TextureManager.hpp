@@ -4,8 +4,9 @@
 #include "Singleton.hpp"
 #include "Texture.hpp"
 
-#include <string>
+#include <vector>
 #include <memory>
+#include <string>
 
 namespace warp
 {
@@ -14,9 +15,14 @@ namespace warp
     public:
         using ID = int;
         
-        std::weak_ptr<Texture> get(ID id);
-        ID add(std::shared_ptr<Texture> shader);
+        void setActive(ID id);
+        std::shared_ptr<Texture> get(ID id);
+        ID add(std::shared_ptr<Texture> texture);
         ID createFromFile(const std::string& textureFile);
+        
+    private:
+        std::vector<std::shared_ptr<Texture>> textures;
+        ID activeID;
     };
 }
 

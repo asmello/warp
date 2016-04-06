@@ -10,11 +10,16 @@ namespace warp
 {
     class Material
     {
+        friend class MaterialManager;
+        
     private:
-        TextureManager::ID texture;
-        ShaderManager::ID shader;
+        TextureManager::ID textureID;
+        ShaderManager::ID shaderID;
+        
     public:
-        Material(ShaderManager::ID shader, TextureManager::ID texture);
+        // These constructors should not be used directly
+        Material(TextureManager::ID texture, ShaderManager::ID shader);
+        
         ShaderManager::ID getShader();
         void bind();
     };

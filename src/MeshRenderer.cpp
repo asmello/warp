@@ -2,31 +2,31 @@
 
 using namespace warp;
 
-MeshRenderer::MeshRenderer(const std::shared_ptr<GameObject> gameObject,
+MeshRenderer::MeshRenderer(GameObjectManager::ID gameObject,
                            MaterialManager::ID material,
                            MeshManager::ID mesh) :
-Renderer(gameObject, material), mesh(MeshManager::getInstance()->get(mesh))
+Renderer(gameObject, material), meshID(mesh)
 {
     
 }
 
 MeshRenderer::MeshRenderer(MaterialManager::ID material,
                            MeshManager::ID mesh) :
-Renderer(material), mesh(MeshManager::getInstance()->get(mesh))
+Renderer(material), meshID(mesh)
 {
     
 }
 
-void MeshRenderer::init()
+void MeshRenderer::render(CameraManager::ID cameraID)
 {
-    mesh->init();
-}
-
-void MeshRenderer::render()
-{
-    gameObject->getTransform()->bind();
-    material->bind();
-    mesh->bind();
-    mesh->draw();
+    MaterialManager::getInstance()->setActive(materialID);
+    CameraManager::getInstance()->setActive(cameraID);
+    MeshManager::getInstance()->setActive(meshID);
+    GameObjectManager::getInstance()->setActive(gameObjectID);
+    
+    if (std::shared_ptr<Mesh> mesh = MeshManager::getInstance()->get(meshID))
+    {
+        mesh->draw();
+    }
 }
 

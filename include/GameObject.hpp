@@ -13,14 +13,17 @@ namespace warp
     
     class GameObject
     {
+        friend class GameObjectManager;
+        
     protected:
         std::shared_ptr<Transform> transform;
         std::vector<std::shared_ptr<Component>> components;
         
     public:
+        // These constructors should not be used directly
         GameObject();
         GameObject(std::unique_ptr<Transform> transform);
-        void init(std::shared_ptr<Shader> shader);
+        
         void addComponent(std::shared_ptr<Component> component);
         template <class T, typename... Args> void createComponent(Args&&... args);
         template <class T> std::vector<std::shared_ptr<T>> getComponents();

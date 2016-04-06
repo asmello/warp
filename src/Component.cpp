@@ -1,9 +1,8 @@
-//
-//  Component.cpp
-//  Warp
-//
-//  Created by André Sá de Mello on 4/5/16.
-//
-//
-
 #include "Component.hpp"
+
+using namespace warp;
+
+std::shared_ptr<GameObject> Component::getGameObject()
+{
+    return gameObject.lock();
+}

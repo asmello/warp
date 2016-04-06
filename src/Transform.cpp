@@ -14,7 +14,7 @@ Transform::Transform() : position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1,
 
 void Transform::bind()
 {
-    if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance().getActiveShader().lock()) {
+    if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
         glUniformMatrix4fv(activeShader->getUniformLocation("u_Model"), 1, GL_FALSE, glm::value_ptr(getTransformation()));
     }
 }

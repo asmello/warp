@@ -5,18 +5,9 @@
 
 using namespace warp;
 
-Texture::Texture(GLenum tg) : target(tg), initialized(false), loaded(false)
+Texture::Texture(GLenum tg) : target(tg), loaded(false)
 {
     
-}
-
-void Texture::init()
-{
-    if (initialized) return;
-    if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActiveShader().lock()) {
-        glUniform1i(activeShader->getUniformLocation("u_sampler"), 0);
-    }
-    initialized = true;
 }
 
 void Texture::loadFromFile(const std::string &path)
@@ -38,6 +29,9 @@ void Texture::loadFromFile(const std::string &path)
 
 void Texture::bind()
 {
+    if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
+        glUniform1i(activeShader->getUniformLocation("u_sampler"), 0);
+    }
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(target, txo);
 }

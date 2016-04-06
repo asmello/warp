@@ -10,32 +10,22 @@ Camera::Camera() :
 fieldOfView(45.0f), aspectRatio(1.0f), nearField(1.0f), farField(10.0f),
 viewChanged(true), projectionChanged(true)
 {
-    
-}
-
-void Camera::init()
-{
-    update();
+    proj = glm::perspective(fieldOfView, aspectRatio, nearField, farField);
 }
 
 void Camera::update()
 {
-    if (viewChanged || projectionChanged) {
-        if (viewChanged) viewChanged = false;
-        if (projectionChanged) buildProjection();
-        updateShader();
+    if (projectionChanged)
+    {
+        proj = glm::perspective(fieldOfView, aspectRatio, nearField, farField);
+        projectionChanged = false;
     }
 }
 
-void Camera::buildProjection()
+void Camera::bind()
 {
-    proj = glm::perspective(fieldOfView, aspectRatio, nearField, farField);
-    projectionChanged = false;
-}
-
-void Camera::updateShader()
-{
-    if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance().getActiveShader().lock()) {
+    update();
+    if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
         glm::mat4 viewProj = proj * getGameObject()->getTransform()->getTransformation();
         glUniformMatrix4fv(activeShader->getUniformLocation("u_ViewProj"), 1, GL_FALSE, glm::value_ptr(viewProj));
     }

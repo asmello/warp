@@ -14,12 +14,13 @@ namespace warp
     private:
         GLuint shaderProgram;
         GLint compile(GLenum type, char *source);
+        const char * typeString(GLenum type);
         void link(GLint vertexShader, GLint fragmentShader);
-        Shader();
-        ~Shader();
         void loadFromFile(const std::string& vertexShaderFilename, const std::string& fragmentShaderFilename);
         
     public:
+        ~Shader();
+        
         void bind();
         void validate();
         GLuint getNativeHandle() const;

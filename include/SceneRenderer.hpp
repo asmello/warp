@@ -18,8 +18,8 @@ namespace warp
     private:
         std::chrono::time_point<std::chrono::high_resolution_clock> t_last;
         std::shared_ptr<Scene> scene;
-        int activeObjectIndex;
-        int activeCameraIndex;
+        int activeGameObjectID;
+        int activeCameraID;
         double t_total;
         bool paused;
         
@@ -33,7 +33,7 @@ namespace warp
         void onMouseScrolled(float delta);
         void onResized(int width, int height);
         void processInput();
-        std::shared_ptr<GameObject> getActiveObject();
+        std::shared_ptr<GameObject> getActiveGameObject();
     };
 }
 

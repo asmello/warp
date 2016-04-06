@@ -44,7 +44,7 @@ GLint Shader::compile(GLenum type, char *source)
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &param);
         char *infoLog = new char[param];
         glGetShaderInfoLog(shader, param, NULL, infoLog);
-        fprintf(stderr, "SHADER_CC_ERROR:\n%s", infoLog);
+        fprintf(stderr, "SHADER_CC_ERROR: %s\n%s", typeString(type), infoLog);
         delete[] infoLog;
     }
     
@@ -118,4 +118,16 @@ GLint Shader::getUniformLocation(const std::string &uniformName) const
 Shader::~Shader()
 {
     glDeleteProgram(shaderProgram);
+}
+
+const char * Shader::typeString(GLenum type)
+{
+    switch (type) {
+        case GL_FRAGMENT_SHADER:
+            return "FRAGMENT SHADER";
+        case GL_VERTEX_SHADER:
+            return "VERTEX SHADER";
+        default:
+            return "UNKNOWN TYPE";
+    }
 }

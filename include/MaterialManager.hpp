@@ -4,6 +4,7 @@
 #include "Singleton.hpp"
 #include "Material.hpp"
 
+#include <vector>
 #include <memory>
 
 namespace warp
@@ -13,9 +14,14 @@ namespace warp
     public:
         using ID = int;
         
-        std::weak_ptr<Material> get(ID id);
+        void setActive(ID id);
+        std::shared_ptr<Material> get(ID id);
         ID add(std::shared_ptr<Material> material);
         ID create(TextureManager::ID texture, ShaderManager::ID shader);
+        
+    private:
+        std::vector<std::shared_ptr<Material>> materials;
+        ID activeID;
     };
 }
 
