@@ -9,7 +9,7 @@ namespace warp
     class Object
     {
     public:
-        typedef Identifier<Tag, size_t, -1> ID;
+        typedef Identifier<Tag, long, -1> ID;
         
         ID getID() const { return id; }
         

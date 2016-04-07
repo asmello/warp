@@ -2,6 +2,7 @@
 #define Scene_hpp
 
 #include "Camera.hpp"
+#include "CameraManager.hpp"
 #include "Renderer.hpp"
 
 #include <vector>

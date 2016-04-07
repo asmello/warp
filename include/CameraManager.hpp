@@ -18,7 +18,7 @@ namespace warp
         Camera::ID create();
 
 		template <typename... Args>
-		Camera::ID CameraManager::create(Args&&... args)
+		Camera::ID create(Args&&... args)
 		{
 			cameras.push_back(std::make_shared<Camera>(args...));
 			return Camera::ID(cameras.size() - 1);

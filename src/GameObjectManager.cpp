@@ -5,13 +5,13 @@ using namespace warp;
 void GameObjectManager::setActive(GameObject::ID id)
 {
     if (activeID == id) return;
-    gameObjects.at(static_cast<size_t>(id))->getTransform()->bind();
+    gameObjects.at(static_cast<long>(id))->getTransform()->bind();
     activeID = id;
 }
 
 std::shared_ptr<GameObject> GameObjectManager::get(GameObject::ID id)
 {
-    return gameObjects.at(static_cast<size_t>(id));
+    return gameObjects.at(static_cast<long>(id));
 }
 
 GameObject::ID GameObjectManager::add(std::shared_ptr<GameObject> gameObject)

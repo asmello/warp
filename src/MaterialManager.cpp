@@ -5,7 +5,7 @@ using namespace warp;
 void MaterialManager::setActive(Material::ID id)
 {
     if (activeID == id) return;
-    materials.at(static_cast<size_t>(id))->bind();
+    materials.at(static_cast<long>(id))->bind();
     activeID = id;
 }
 
@@ -23,5 +23,5 @@ Material::ID MaterialManager::create(Texture::ID textureID, Shader::ID shaderID)
 
 std::shared_ptr<Material> MaterialManager::get(Material::ID id)
 {
-    return materials.at(static_cast<size_t>(id));
+    return materials.at(static_cast<long>(id));
 }

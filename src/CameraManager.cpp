@@ -5,13 +5,13 @@ using namespace warp;
 void CameraManager::setActive(Camera::ID id)
 {
     if (activeID == id) return;
-    cameras.at(static_cast<size_t>(id))->bind();
+    cameras.at(static_cast<long>(id))->bind();
     activeID = id;
 }
 
 std::shared_ptr<Camera> CameraManager::get(Camera::ID id)
 {
-    return cameras.at(static_cast<size_t>(id));
+    return cameras.at(static_cast<long>(id));
 }
 
 Camera::ID CameraManager::add(std::shared_ptr<Camera> camera)
