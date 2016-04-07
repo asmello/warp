@@ -2,26 +2,26 @@
 
 using namespace warp;
 
-void GameObjectManager::setActive(GameObjectManager::ID id)
+void GameObjectManager::setActive(GameObjectID id)
 {
     if (activeID == id) return;
-    gameObjects.at(id)->getTransform()->bind();
+    gameObjects.at(static_cast<int>(id))->getTransform()->bind();
     activeID = id;
 }
 
-std::shared_ptr<GameObject> GameObjectManager::get(GameObjectManager::ID id)
+std::shared_ptr<GameObject> GameObjectManager::get(GameObjectID id)
 {
-    return gameObjects.at(id);
+    return gameObjects.at(static_cast<int>(id));
 }
 
-GameObjectManager::ID GameObjectManager::add(std::shared_ptr<GameObject> gameObject)
+GameObjectID GameObjectManager::add(std::shared_ptr<GameObject> gameObject)
 {
     gameObjects.push_back(gameObject);
-    return gameObjects.size()-1;
+    return GameObjectID(gameObjects.size()-1);
 }
 
-GameObjectManager::ID GameObjectManager::create()
+GameObjectID GameObjectManager::create()
 {
     gameObjects.push_back(std::make_shared<GameObject>());
-    return gameObjects.size()-1;
+    return GameObjectID(gameObjects.size()-1);
 }

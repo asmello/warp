@@ -64,7 +64,6 @@ set(WARP_SOURCES
 	src/GameObject.cpp
 	src/MeshManager.cpp
 	src/MeshRenderer.cpp
-	src/InputListener.cpp
 	src/SceneRenderer.cpp
 	src/ShaderManager.cpp
 	src/CameraManager.cpp
@@ -96,6 +95,7 @@ set(WARP_HEADERS
 	include/TextureManager.hpp
 	include/MaterialManager.hpp
 	include/GameObjectManager.hpp
+	include/Identifier.hpp
 	include/util.hpp
 )
 add_executable(Warp ${WARP_SOURCES} ${WARP_HEADERS})

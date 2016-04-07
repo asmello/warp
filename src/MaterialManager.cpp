@@ -2,26 +2,26 @@
 
 using namespace warp;
 
-void MaterialManager::setActive(MaterialManager::ID id)
+void MaterialManager::setActive(MaterialID id)
 {
     if (activeID == id) return;
-    materials.at(id)->bind();
+    materials.at(static_cast<int>(id))->bind();
     activeID = id;
 }
 
-MaterialManager::ID MaterialManager::add(std::shared_ptr<Material> material)
+MaterialID MaterialManager::add(std::shared_ptr<Material> material)
 {
     materials.push_back(material);
-    return materials.size()-1;
+    return MaterialID(materials.size()-1);
 }
 
-MaterialManager::ID MaterialManager::create(TextureManager::ID textureID, ShaderManager::ID shaderID)
+MaterialID MaterialManager::create(TextureID textureID, ShaderID shaderID)
 {
     materials.push_back(std::make_shared<Material>(textureID, shaderID));
-    return materials.size()-1;
+    return MaterialID(materials.size()-1);
 }
 
-std::shared_ptr<Material> MaterialManager::get(ID id)
+std::shared_ptr<Material> MaterialManager::get(MaterialID id)
 {
-    return materials.at(id);
+    return materials.at(static_cast<int>(id));
 }

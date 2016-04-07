@@ -2,7 +2,7 @@
 
 using namespace warp;
 
-Material::Material(TextureManager::ID texture, ShaderManager::ID shader)
+Material::Material(TextureID texture, ShaderID shader)
 : textureID(texture), shaderID(shader)
 {
     

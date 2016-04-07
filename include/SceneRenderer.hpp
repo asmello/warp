@@ -18,8 +18,8 @@ namespace warp
     private:
         std::chrono::time_point<std::chrono::high_resolution_clock> t_last;
         std::shared_ptr<Scene> scene;
-        int activeGameObjectID;
-        int activeCameraID;
+        GameObjectID activeGameObjectID;
+        CameraID activeCameraID;
         double t_total;
         bool paused;
         

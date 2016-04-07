@@ -2,22 +2,22 @@
 
 using namespace warp;
 
-MeshRenderer::MeshRenderer(GameObjectManager::ID gameObject,
-                           MaterialManager::ID material,
-                           MeshManager::ID mesh) :
+MeshRenderer::MeshRenderer(GameObjectID gameObject,
+                           MaterialID material,
+                           MeshID mesh) :
 Renderer(gameObject, material), meshID(mesh)
 {
     
 }
 
-MeshRenderer::MeshRenderer(MaterialManager::ID material,
-                           MeshManager::ID mesh) :
+MeshRenderer::MeshRenderer(MaterialID material,
+                           MeshID mesh) :
 Renderer(material), meshID(mesh)
 {
     
 }
 
-void MeshRenderer::render(CameraManager::ID cameraID)
+void MeshRenderer::render(CameraID cameraID)
 {
     MaterialManager::getInstance()->setActive(materialID);
     CameraManager::getInstance()->setActive(cameraID);

@@ -12,12 +12,12 @@ namespace warp
     class Scene
     {
     private:
-        std::vector<CameraManager::ID> cameras;
+        std::vector<CameraID> cameras;
         std::vector<std::shared_ptr<Renderer>> renderers;
     public:
-        std::vector<CameraManager::ID> getCameras();
+        std::vector<CameraID> getCameras();
         std::vector<std::shared_ptr<Renderer>> getRenderers();
-        void addCamera(CameraManager::ID camera);
+        void addCamera(CameraID camera);
         void createCamera();
         template <typename... Args>
         void createCamera(Args&&... args)

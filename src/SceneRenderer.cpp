@@ -50,7 +50,7 @@ void SceneRenderer::render()
     t_last = t_now; // Update last tick
     
     // For each camera in the scene
-    for (CameraManager::ID cameraID : scene->getCameras())
+    for (CameraID cameraID : scene->getCameras())
     {
         // Render visible objects
         for (std::shared_ptr<Renderer>& renderer : scene->getRenderers()) renderer->render(cameraID);

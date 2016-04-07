@@ -3,25 +3,27 @@
 
 #include "Singleton.hpp"
 #include "Material.hpp"
+#include "Identifier.hpp"
 
 #include <vector>
 #include <memory>
 
 namespace warp
 {
+    struct material_tag{}; // Magic strong typedefness
+    typedef Identifier<material_tag, int, -1> MaterialID;
+    
     class MaterialManager : public Singleton<MaterialManager>
     {
     public:
-        using ID = int;
-        
-        void setActive(ID id);
-        std::shared_ptr<Material> get(ID id);
-        ID add(std::shared_ptr<Material> material);
-        ID create(TextureManager::ID texture, ShaderManager::ID shader);
+        void setActive(MaterialID id);
+        std::shared_ptr<Material> get(MaterialID id);
+        MaterialID add(std::shared_ptr<Material> material);
+        MaterialID create(TextureID texture, ShaderID shader);
         
     private:
         std::vector<std::shared_ptr<Material>> materials;
-        ID activeID;
+        MaterialID activeID;
     };
 }
 

@@ -13,15 +13,15 @@ namespace warp
     class MeshRenderer : public Renderer
     {
     public:
-        MeshRenderer(GameObjectManager::ID object,
-                     MaterialManager::ID materialID,
-                     MeshManager::ID meshID);
-        MeshRenderer(MaterialManager::ID materialID,
-                     MeshManager::ID meshID);
-        void render(CameraManager::ID cameraID);
+        MeshRenderer(GameObjectID object,
+                     MaterialID materialID,
+                     MeshID meshID);
+        MeshRenderer(MaterialID materialID,
+                     MeshID meshID);
+        void render(CameraID cameraID);
         
     private:
-        MeshManager::ID meshID;
+        MeshID meshID;
     };
 }
 

@@ -12,14 +12,14 @@ namespace warp
     class Renderer : public Component
     {
     public:
-        Renderer(GameObjectManager::ID gameObject, MaterialManager::ID material);
-        Renderer(MaterialManager::ID material);
-        GameObjectManager::ID getGameObject();
-        virtual void render(CameraManager::ID cameraID) = 0;
+        Renderer(GameObjectID gameObject, MaterialID material);
+        Renderer(MaterialID material);
+        GameObjectID getGameObject();
+        virtual void render(CameraID cameraID) = 0;
         
     protected:
-        GameObjectManager::ID gameObjectID;
-        MaterialManager::ID materialID;
+        GameObjectID gameObjectID;
+        MaterialID materialID;
     };
 }
 

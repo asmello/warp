@@ -2,26 +2,26 @@
 
 using namespace warp;
 
-MeshManager::ID MeshManager::create()
+MeshID MeshManager::create()
 {
     meshes.push_back(std::make_shared<Mesh>());
-    return meshes.size()-1;
+    return MeshID(meshes.size()-1);
 }
 
-MeshManager::ID MeshManager::add(std::shared_ptr<Mesh> mesh)
+MeshID MeshManager::add(std::shared_ptr<Mesh> mesh)
 {
     meshes.push_back(mesh);
-    return meshes.size()-1;
+    return MeshID(meshes.size()-1);
 }
 
-std::shared_ptr<Mesh> MeshManager::get(ID id)
+std::shared_ptr<Mesh> MeshManager::get(MeshID id)
 {
-    return meshes.at(id);
+    return meshes.at(static_cast<int>(id));
 }
 
-void MeshManager::setActive(ID id)
+void MeshManager::setActive(MeshID id)
 {
     if (activeID == id) return;
-    meshes.at(id)->bind();
+    meshes.at(static_cast<int>(id))->bind();
     activeID = id;
 }

@@ -2,7 +2,7 @@
 
 using namespace warp;
 
-std::vector<CameraManager::ID> Scene::getCameras()
+std::vector<CameraID> Scene::getCameras()
 {
     return cameras;
 }
@@ -12,7 +12,7 @@ std::vector<std::shared_ptr<Renderer>> Scene::getRenderers()
     return renderers;
 }
 
-void Scene::addCamera(CameraManager::ID camera)
+void Scene::addCamera(CameraID camera)
 {
     cameras.push_back(camera);
 }
