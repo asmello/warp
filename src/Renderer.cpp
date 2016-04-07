@@ -2,19 +2,19 @@
 
 using namespace warp;
 
-Renderer::Renderer(GameObjectID gameObject, MaterialID material)
+Renderer::Renderer(GameObject::ID gameObject, Material::ID material)
 : Component(gameObject), materialID(material)
 {
     
 }
 
-Renderer::Renderer(MaterialID material)
+Renderer::Renderer(Material::ID material)
 : Component(), materialID(material)
 {
     
 }
 
-GameObjectID Renderer::getGameObject()
+GameObject::ID Renderer::getGameObjectID() const
 {
-    return gameObject;
+	return gameObjectID;
 }

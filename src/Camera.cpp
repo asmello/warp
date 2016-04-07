@@ -1,5 +1,7 @@
 #include "Camera.hpp"
+
 #include "ShaderManager.hpp"
+#include "GameObject.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>

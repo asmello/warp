@@ -1,4 +1,7 @@
 #include "SceneRenderer.hpp"
+
+#include "GameObjectManager.hpp"
+#include "CameraManager.hpp"
 #include "Mesh.hpp"
 #include "util.hpp"
 
@@ -50,7 +53,7 @@ void SceneRenderer::render()
     t_last = t_now; // Update last tick
     
     // For each camera in the scene
-    for (CameraID cameraID : scene->getCameras())
+    for (Camera::ID cameraID : scene->getCameras())
     {
         // Render visible objects
         for (std::shared_ptr<Renderer>& renderer : scene->getRenderers()) renderer->render(cameraID);

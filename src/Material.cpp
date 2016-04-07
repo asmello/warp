@@ -1,8 +1,11 @@
 #include "Material.hpp"
 
+#include "ShaderManager.hpp"
+#include "TextureManager.hpp"
+
 using namespace warp;
 
-Material::Material(TextureID texture, ShaderID shader)
+Material::Material(Texture::ID texture, Shader::ID shader)
 : textureID(texture), shaderID(shader)
 {
     

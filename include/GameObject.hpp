@@ -2,6 +2,7 @@
 #define GameObject_hpp
 
 #include "Object.hpp"
+#include "Transform.hpp"
 
 #include <vector>
 #include <memory>

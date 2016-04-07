@@ -1,23 +1,28 @@
 #include "MeshRenderer.hpp"
 
+#include "GameObjectManager.hpp"
+#include "MaterialManager.hpp"
+#include "CameraManager.hpp"
+#include "MeshManager.hpp"
+
 using namespace warp;
 
-MeshRenderer::MeshRenderer(GameObjectID gameObject,
-                           MaterialID material,
-                           MeshID mesh) :
+MeshRenderer::MeshRenderer(GameObject::ID gameObject,
+                           Material::ID material,
+                           Mesh::ID mesh) :
 Renderer(gameObject, material), meshID(mesh)
 {
     
 }
 
-MeshRenderer::MeshRenderer(MaterialID material,
-                           MeshID mesh) :
+MeshRenderer::MeshRenderer(Material::ID material,
+                           Mesh::ID mesh) :
 Renderer(material), meshID(mesh)
 {
     
 }
 
-void MeshRenderer::render(CameraID cameraID)
+void MeshRenderer::render(Camera::ID cameraID)
 {
     MaterialManager::getInstance()->setActive(materialID);
     CameraManager::getInstance()->setActive(cameraID);

@@ -2,28 +2,28 @@
 
 using namespace warp;
 
-void TextureManager::setActive(TextureID id)
+void TextureManager::setActive(Texture::ID id)
 {
     if (activeID == id) return;
-    textures.at(static_cast<int>(id))->bind();
+    textures.at(static_cast<size_t>(id))->bind();
     activeID = id;
 }
 
-std::shared_ptr<Texture> TextureManager::get(TextureID id)
+std::shared_ptr<Texture> TextureManager::get(Texture::ID id)
 {
-    return textures.at(static_cast<int>(id));
+    return textures.at(static_cast<size_t>(id));
 }
 
-TextureID TextureManager::add(std::shared_ptr<Texture> shader)
+Texture::ID TextureManager::add(std::shared_ptr<Texture> shader)
 {
     textures.push_back(shader);
-    return TextureID(textures.size()-1);
+    return Texture::ID(textures.size()-1);
 }
 
-TextureID TextureManager::createFromFile(const std::string& textureFile)
+Texture::ID TextureManager::createFromFile(const std::string& textureFile)
 {
     auto texture = std::make_shared<Texture>(GL_TEXTURE_2D);
     texture->loadFromFile(textureFile);
     textures.push_back(texture);
-    return TextureID(textures.size()-1);
+    return Texture::ID(textures.size()-1);
 }

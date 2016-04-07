@@ -13,7 +13,7 @@ namespace warp
     {
     public:
         Mesh::ID create();
-        void setActive(MeshID id);
+        void setActive(Mesh::ID id);
         Mesh::ID add(std::shared_ptr<Mesh> mesh);
         std::shared_ptr<Mesh> get(Mesh::ID id);
         

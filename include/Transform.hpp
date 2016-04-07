@@ -1,16 +1,17 @@
 #ifndef Transform_hpp
 #define Transform_hpp
 
-#include "Shader.hpp"
+#include "Component.hpp"
+
 #include <vector>
-#include <Memory>
+#include <memory>
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
 namespace warp
 {
-    class Transform
+    class Transform : public Component
     {
     private:
         glm::vec3 position, scaleFactors;

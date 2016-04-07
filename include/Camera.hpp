@@ -1,7 +1,7 @@
 #ifndef Camera_hpp
 #define Camera_hpp
 
-#include "Object.hpp"
+#include "Component.hpp"
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>

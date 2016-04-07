@@ -82,8 +82,8 @@ void Mesh::draw()
 {
     // Draw a mesh from the vertices
     if (eboEnabled) {
-        glDrawElements(GL_TRIANGLES, elements.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(elements.size()), GL_UNSIGNED_INT, 0);
     } else {
-        glDrawArrays(GL_TRIANGLES, 0, vertices.size()/3);
+        glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertices.size())/3);
     }
 }

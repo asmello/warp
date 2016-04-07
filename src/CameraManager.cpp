@@ -2,32 +2,26 @@
 
 using namespace warp;
 
-void CameraManager::setActive(CameraID id)
+void CameraManager::setActive(Camera::ID id)
 {
     if (activeID == id) return;
-    cameras.at(static_cast<int>(id))->bind();
+    cameras.at(static_cast<size_t>(id))->bind();
     activeID = id;
 }
 
-std::shared_ptr<Camera> CameraManager::get(CameraID id)
+std::shared_ptr<Camera> CameraManager::get(Camera::ID id)
 {
-    return cameras.at(static_cast<int>(id));
+    return cameras.at(static_cast<size_t>(id));
 }
 
-CameraID CameraManager::add(std::shared_ptr<Camera> camera)
+Camera::ID CameraManager::add(std::shared_ptr<Camera> camera)
 {
     cameras.push_back(camera);
-    return CameraID(cameras.size()-1);
+    return Camera::ID(cameras.size()-1);
 }
 
-CameraID CameraManager::create()
+Camera::ID CameraManager::create()
 {
     cameras.push_back(std::make_shared<Camera>());
-    return CameraID(cameras.size()-1);
-}
-
-template <typename... Args> CameraID CameraManager::create(Args&&... args)
-{
-    cameras.push_back(std::make_shared<Camera>(args...));
-    return CameraID(cameras.size()-1);
+    return Camera::ID(cameras.size()-1);
 }

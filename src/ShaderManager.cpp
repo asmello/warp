@@ -2,33 +2,33 @@
 
 using namespace warp;
 
-void ShaderManager::setActive(ShaderID id)
+void ShaderManager::setActive(Shader::ID id)
 {
     if (activeID == id) return;
-    shaders.at(static_cast<int>(id))->bind();
+    shaders.at(static_cast<size_t>(id))->bind();
     activeID = id;
 }
 
 std::shared_ptr<Shader> ShaderManager::getActive()
 {
-    return shaders.at(static_cast<int>(activeID));
+    return shaders.at(static_cast<size_t>(activeID));
 }
 
-std::shared_ptr<Shader> ShaderManager::get(ShaderID id)
+std::shared_ptr<Shader> ShaderManager::get(Shader::ID id)
 {
-    return shaders.at(static_cast<int>(id));
+    return shaders.at(static_cast<size_t>(id));
 }
 
-ShaderID ShaderManager::add(std::shared_ptr<Shader> shader)
+Shader::ID ShaderManager::add(std::shared_ptr<Shader> shader)
 {
     shaders.push_back(shader);
-    return ShaderID(shaders.size()-1);
+    return Shader::ID(shaders.size()-1);
 }
 
-ShaderID ShaderManager::createFromFile(const std::string& vertexShaderFile, const std::string& fragmentShaderFile)
+Shader::ID ShaderManager::createFromFile(const std::string& vertexShaderFile, const std::string& fragmentShaderFile)
 {
     auto shader = std::make_shared<Shader>();
     shader->loadFromFile(vertexShaderFile, fragmentShaderFile);
     shaders.push_back(shader);
-    return ShaderID(shaders.size()-1);
+    return Shader::ID(shaders.size()-1);
 }
