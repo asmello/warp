@@ -1,8 +1,7 @@
 #ifndef GameObject_hpp
 #define GameObject_hpp
 
-#include "Shader.hpp"
-#include "Transform.hpp"
+#include "Object.hpp"
 
 #include <vector>
 #include <memory>
@@ -10,8 +9,9 @@
 namespace warp
 {
     class Component;
+    class Transform;
     
-    class GameObject
+    class GameObject : public Object<GameObject>
     {
         friend class GameObjectManager;
         
@@ -30,7 +30,5 @@ namespace warp
         std::shared_ptr<Transform> getTransform();
     };
 }
-
-#include "Component.hpp"
 
 #endif /* GameObject_hpp */

@@ -33,6 +33,4 @@ namespace warp
     };
 }
 
-#include "InputListener.hpp"
-
 #endif /* InputHandler_hpp */

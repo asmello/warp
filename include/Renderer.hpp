@@ -1,9 +1,10 @@
 #ifndef Renderer_hpp
 #define Renderer_hpp
 
-#include "GameObjectManager.hpp"
-#include "MaterialManager.hpp"
-#include "CameraManager.hpp"
+#include "Component.hpp"
+#include "GameObject.hpp"
+#include "Material.hpp"
+#include "Camera.hpp"
 
 #include <memory>
 
@@ -12,14 +13,13 @@ namespace warp
     class Renderer : public Component
     {
     public:
-        Renderer(GameObjectID gameObject, MaterialID material);
-        Renderer(MaterialID material);
-        GameObjectID getGameObject();
-        virtual void render(CameraID cameraID) = 0;
+        Renderer(GameObject::ID gameObject, Material::ID material);
+        Renderer(Material::ID material);
+        GameObject::ID getGameObject();
+        virtual void render(Camera::ID cameraID) = 0;
         
     protected:
-        GameObjectID gameObjectID;
-        MaterialID materialID;
+        Material::ID materialID;
     };
 }
 

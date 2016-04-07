@@ -1,7 +1,6 @@
 #ifndef MeshManager_hpp
 #define MeshManager_hpp
 
-#include "Identifier.hpp"
 #include "Singleton.hpp"
 #include "Mesh.hpp"
 
@@ -10,20 +9,17 @@
 
 namespace warp
 {
-    struct mesh_tag{}; // Magic strong typedefness
-    typedef Identifier<mesh_tag, int, -1> MeshID;
-    
     class MeshManager : public Singleton<MeshManager>
     {
     public:
-        MeshID create();
+        Mesh::ID create();
         void setActive(MeshID id);
-        MeshID add(std::shared_ptr<Mesh> mesh);
-        std::shared_ptr<Mesh> get(MeshID id);
+        Mesh::ID add(std::shared_ptr<Mesh> mesh);
+        std::shared_ptr<Mesh> get(Mesh::ID id);
         
     private:
         std::vector<std::shared_ptr<Mesh>> meshes;
-        MeshID activeID;
+        Mesh::ID activeID;
     };
 }
 

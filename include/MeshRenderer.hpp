@@ -3,8 +3,8 @@
 
 #include "Renderer.hpp"
 #include "GameObject.hpp"
-#include "MeshManager.hpp"
-#include "MaterialManager.hpp"
+#include "Material.hpp"
+#include "Mesh.hpp"
 
 #include <memory>
 
@@ -13,15 +13,15 @@ namespace warp
     class MeshRenderer : public Renderer
     {
     public:
-        MeshRenderer(GameObjectID object,
-                     MaterialID materialID,
-                     MeshID meshID);
-        MeshRenderer(MaterialID materialID,
-                     MeshID meshID);
-        void render(CameraID cameraID);
+        MeshRenderer(GameObject::ID object,
+                     Material::ID materialID,
+                     Mesh::ID meshID);
+        MeshRenderer(Material::ID materialID,
+                     Mesh::ID meshID);
+        void render(Camera::ID cameraID);
         
     private:
-        MeshID meshID;
+        Mesh::ID meshID;
     };
 }
 

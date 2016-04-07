@@ -1,8 +1,7 @@
 #ifndef Mesh_h
 #define Mesh_h
 
-#include "GameObject.hpp"
-#include "Transform.hpp"
+#include "Object.hpp"
 
 #include <GL/glew.h>
 
@@ -12,13 +11,9 @@
 
 namespace warp
 {
-    class Mesh
+    class Mesh : public Object<Mesh>
     {
-    private:
-        GLuint vao, vbo, ebo;
-        bool eboEnabled, initialized;
-        std::vector<GLfloat> vertices, normals;
-        std::vector<GLuint> elements;
+        friend class MeshManager;
         
     public:
         // These constructors should not be used directly
@@ -31,6 +26,12 @@ namespace warp
         void init();
         void bind();
         void draw();
+        
+    private:
+        GLuint vao, vbo, ebo;
+        bool eboEnabled, initialized;
+        std::vector<GLfloat> vertices, normals;
+        std::vector<GLuint> elements;
     };
 }
 

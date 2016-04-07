@@ -1,26 +1,27 @@
 #ifndef Material_hpp
 #define Material_hpp
 
-#include "TextureManager.hpp"
-#include "ShaderManager.hpp"
+#include "Object.hpp"
+#include "Texture.hpp"
+#include "Shader.hpp"
 
 #include <memory>
 
 namespace warp
 {
-    class Material
+    class Material : public Object<Material>
     {
         friend class MaterialManager;
         
     private:
-        TextureID textureID;
-        ShaderID shaderID;
+        Texture::ID textureID;
+        Shader::ID shaderID;
         
     public:
         // These constructors should not be used directly
-        Material(TextureID texture, ShaderID shader);
+        Material(Texture::ID texture, Shader::ID shader);
         
-        ShaderID getShader();
+        Shader::ID getShader();
         void bind();
     };
 }

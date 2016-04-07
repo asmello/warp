@@ -1,14 +1,16 @@
 #ifndef Texture_hpp
 #define Texture_hpp
 
-#include <Memory>
+#include "Object.hpp"
+
 #include <GL/glew.h>
 
 #include <string>
+#include <memory>
 
 namespace warp
 {
-    class Texture
+    class Texture : public Object<Texture>
     {
         friend class TextureManager;
         

@@ -3,18 +3,18 @@
 using namespace warp;
 
 Renderer::Renderer(GameObjectID gameObject, MaterialID material)
-: gameObjectID(gameObject), materialID(material)
+: Component(gameObject), materialID(material)
 {
     
 }
 
 Renderer::Renderer(MaterialID material)
-: gameObjectID(GameObjectManager::getInstance()->create()), materialID(material)
+: Component(), materialID(material)
 {
     
 }
 
 GameObjectID Renderer::getGameObject()
 {
-    return gameObjectID;
+    return gameObject;
 }

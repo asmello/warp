@@ -49,6 +49,7 @@ add_definitions(
 
 # MAIN
 set(WARP_SOURCES
+	src/util.cpp
 	src/main.cpp
 	src/Mesh.cpp
 	src/Input.cpp
@@ -70,12 +71,13 @@ set(WARP_SOURCES
 	src/TextureManager.cpp
 	src/MaterialManager.cpp
 	src/GameObjectManager.cpp
-	src/util.cpp
 )
 set(WARP_HEADERS
+	include/util.hpp
 	include/Mesh.hpp
 	include/Input.hpp
 	include/Scene.hpp
+	include/Object.hpp
 	include/Shader.hpp
 	include/Camera.hpp
 	include/Texture.hpp
@@ -86,6 +88,7 @@ set(WARP_HEADERS
 	include/Component.hpp
 	include/Singleton.hpp
 	include/GameObject.hpp
+	include/Identifier.hpp
 	include/MeshManager.hpp
 	include/MeshRenderer.hpp
 	include/InputListener.hpp
@@ -95,8 +98,6 @@ set(WARP_HEADERS
 	include/TextureManager.hpp
 	include/MaterialManager.hpp
 	include/GameObjectManager.hpp
-	include/Identifier.hpp
-	include/util.hpp
 )
 add_executable(Warp ${WARP_SOURCES} ${WARP_HEADERS})
 target_link_libraries(Warp ${ALL_LIBS})

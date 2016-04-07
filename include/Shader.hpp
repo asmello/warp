@@ -1,13 +1,15 @@
 #ifndef Shader_hpp
 #define Shader_hpp
 
+#include "Object.hpp"
+
 #include <GL/glew.h>
 
 #include <string>
 
 namespace warp
 {
-    class Shader
+    class Shader : public Object<Shader>
     {
         friend class ShaderManager;
         

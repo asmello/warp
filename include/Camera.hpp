@@ -1,8 +1,7 @@
 #ifndef Camera_hpp
 #define Camera_hpp
 
-#include "Shader.hpp"
-#include "GameObject.hpp"
+#include "Object.hpp"
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -13,10 +12,7 @@ namespace warp
 {
     class Camera : public Component
     {
-    private:
-        glm::mat4 proj;
-        float fieldOfView, aspectRatio, nearField, farField;
-        bool viewChanged, projectionChanged;
+        friend class CameraManager;
         
     public:
         // These constructors should not be used directly
@@ -31,6 +27,11 @@ namespace warp
         void setFOV(float angle);
         void update();
         void bind();
+        
+    private:
+        glm::mat4 proj;
+        float fieldOfView, aspectRatio, nearField, farField;
+        bool viewChanged, projectionChanged;
     };
 }
 

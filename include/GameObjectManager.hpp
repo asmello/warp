@@ -3,27 +3,25 @@
 
 #include "Singleton.hpp"
 #include "GameObject.hpp"
-#include "Identifier.hpp"
 
 #include <vector>
 #include <memory>
 
 namespace warp
 {
-    struct gameobject_tag{}; // Magic strong typedefness
-    typedef Identifier<gameobject_tag, int, -1> GameObjectID;
+    class GameObject;
     
     class GameObjectManager : public Singleton<GameObjectManager>
     {
     public:
-        void setActive(GameObjectID id);
-        std::shared_ptr<GameObject> get(GameObjectID id);
-        GameObjectID add(std::shared_ptr<GameObject> gameObject);
-        GameObjectID create();
+        void setActive(GameObject::ID id);
+        std::shared_ptr<GameObject> get(GameObject::ID id);
+        GameObject::ID add(std::shared_ptr<GameObject> gameObject);
+        GameObject::ID create();
         
     private:
         std::vector<std::shared_ptr<GameObject>> gameObjects;
-        GameObjectID activeID;
+        GameObject::ID activeID;
     };
 }
 
