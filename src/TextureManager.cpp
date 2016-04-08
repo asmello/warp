@@ -15,5 +15,5 @@ Texture::ID TextureManager::createFromFile(const std::string& textureFile)
     auto texture = std::make_shared<Texture>(GL_TEXTURE_2D);
     texture->loadFromFile(textureFile);
     resources.push_back(texture);
-    return (texture->id = Texture::ID(resources.size()-1));
+    return texture->setID(resources.size()-1);
 }

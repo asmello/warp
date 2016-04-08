@@ -20,5 +20,5 @@ Shader::ID ShaderManager::createFromFile(const std::string& vertexShaderFile, co
     auto shader = std::make_shared<Shader>();
     shader->loadFromFile(vertexShaderFile, fragmentShaderFile);
     resources.push_back(shader);
-    return (shader->id = Shader::ID(resources.size()-1));
+    return shader->setID(resources.size()-1);
 }

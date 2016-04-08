@@ -20,6 +20,11 @@ namespace warp
         
     protected:
         ID id;
+        
+        ID setID(std::size_t newid)
+        {
+            return (id = ID(static_cast<std::size_t>(newid)));
+        }
     };
 }
 

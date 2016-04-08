@@ -20,7 +20,7 @@ namespace warp
         typename Object<RType>::ID add(std::shared_ptr<RType> resource)
         {
             resources.push_back(resource);
-            return (resource->id = Object<RType>::ID(resources.size()-1));
+            return resource->setID(resources.size()-1);
         }
         
         template <typename... Args>
@@ -28,7 +28,7 @@ namespace warp
         {
             auto resource = std::make_shared<RType>(args...);
             resources.push_back(resource);
-            return (resource->id = Object<RType>::ID(resources.size() - 1));
+            return resource->setID(resources.size() - 1);
         }
         
     protected:

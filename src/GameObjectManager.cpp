@@ -15,6 +15,6 @@ std::shared_ptr<GameObject> GameObjectManager::getNew()
 {
     auto gameObject = std::make_shared<GameObject>();
     resources.push_back(gameObject);
-    gameObject->id = GameObject::ID(resources.size()-1);
+    gameObject->setID(resources.size()-1);
     return gameObject;
 }
