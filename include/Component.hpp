@@ -11,14 +11,14 @@ namespace warp
 
     class Component : public Object<Component>
     {
-    private:
-        std::weak_ptr<GameObject> gameObject;
-        
     public:
         Component();
         Component(Object<GameObject>::ID gameObject);
-        Component(std::shared_ptr<GameObject> gameObject);
-        std::shared_ptr<GameObject> getGameObject();
+        Object<GameObject>::ID getGameObjectID() const;
+        std::shared_ptr<GameObject> getGameObject() const;
+        
+    protected:
+        Object<GameObject>::ID gameObjectID;
     };
 }
 

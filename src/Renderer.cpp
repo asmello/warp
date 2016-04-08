@@ -1,5 +1,7 @@
 #include "Renderer.hpp"
 
+#include "GameObjectManager.hpp"
+
 using namespace warp;
 
 Renderer::Renderer(GameObject::ID gameObject, Material::ID material)
@@ -9,7 +11,7 @@ Renderer::Renderer(GameObject::ID gameObject, Material::ID material)
 }
 
 Renderer::Renderer(Material::ID material)
-: Component(), materialID(material)
+: Component(GameObjectManager::getInstance()->create()), materialID(material)
 {
     
 }

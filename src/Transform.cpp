@@ -1,5 +1,6 @@
 #include "Transform.hpp"
 #include "ShaderManager.hpp"
+#include "GameObjectManager.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/constants.hpp>
@@ -7,7 +8,14 @@
 
 using namespace warp;
 
-Transform::Transform() : position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr)
+Transform::Transform() : Component(GameObjectManager::getInstance()->create()),
+position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr)
+{
+    
+}
+
+Transform::Transform(Object<GameObject>::ID gameObject) : Component(gameObject),
+position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr)
 {
     
 }

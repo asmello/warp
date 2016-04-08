@@ -2,13 +2,15 @@
 
 #include "ShaderManager.hpp"
 #include "GameObject.hpp"
+#include "GameObjectManager.hpp"
+#include "Transform.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 using namespace warp;
 
-Camera::Camera() :
+Camera::Camera() : Component(GameObjectManager::getInstance()->create()),
 fieldOfView(45.0f), aspectRatio(1.0f), nearField(1.0f), farField(10.0f),
 viewChanged(true), projectionChanged(true)
 {

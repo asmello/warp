@@ -15,8 +15,7 @@ namespace warp
         void setActive(Camera::ID id);
         std::shared_ptr<Camera> get(Camera::ID id);
         Camera::ID add(std::shared_ptr<Camera> camera);
-        Camera::ID create();
-
+        
 		template <typename... Args>
 		Camera::ID create(Args&&... args)
 		{

@@ -2,6 +2,7 @@
 
 #include "GameObjectManager.hpp"
 #include "CameraManager.hpp"
+#include "Transform.hpp"
 #include "Mesh.hpp"
 #include "util.hpp"
 

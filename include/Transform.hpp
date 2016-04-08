@@ -21,6 +21,8 @@ namespace warp
         
     public:
         Transform();
+        Transform(Object<GameObject>::ID gameObject);
+        
         void bind();
         void scale(float xfactor, float yfactor, float zfactor);
         void scale(glm::vec3 factors);

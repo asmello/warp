@@ -19,9 +19,3 @@ Camera::ID CameraManager::add(std::shared_ptr<Camera> camera)
     cameras.push_back(camera);
     return Camera::ID(cameras.size()-1);
 }
-
-Camera::ID CameraManager::create()
-{
-    cameras.push_back(std::make_shared<Camera>());
-    return Camera::ID(cameras.size()-1);
-}

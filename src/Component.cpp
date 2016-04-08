@@ -6,24 +6,20 @@ using namespace warp;
 
 Component::Component()
 {
-	auto gameObjectManager = GameObjectManager::getInstance();
-	auto gameObjectID = gameObjectManager->create();
-	gameObject = gameObjectManager->get(gameObjectID);
+    
 }
 
-Component::Component(GameObject::ID gameObjectID)
-: gameObject(GameObjectManager::getInstance()->get(gameObjectID))
+Component::Component(GameObject::ID gameObject) : gameObjectID(gameObject)
 {
-
+    
 }
 
-Component::Component(std::shared_ptr<GameObject> gameObject)
-	: gameObject(gameObject)
+GameObject::ID Component::getGameObjectID() const
 {
-
+    return gameObjectID;
 }
 
-std::shared_ptr<GameObject> Component::getGameObject()
+std::shared_ptr<GameObject> Component::getGameObject() const
 {
-    return gameObject.lock();
+    return GameObjectManager::getInstance()->get(gameObjectID);
 }

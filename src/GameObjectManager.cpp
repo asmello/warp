@@ -1,5 +1,7 @@
 #include "GameObjectManager.hpp"
 
+#include "Transform.hpp"
+
 using namespace warp;
 
 void GameObjectManager::setActive(GameObject::ID id)
@@ -12,6 +14,13 @@ void GameObjectManager::setActive(GameObject::ID id)
 std::shared_ptr<GameObject> GameObjectManager::get(GameObject::ID id)
 {
     return gameObjects.at(static_cast<size_t>(id));
+}
+
+std::shared_ptr<GameObject> GameObjectManager::getNew()
+{
+    auto gameObject = std::make_shared<GameObject>();
+    gameObjects.push_back(gameObject);
+    return gameObject;
 }
 
 GameObject::ID GameObjectManager::add(std::shared_ptr<GameObject> gameObject)

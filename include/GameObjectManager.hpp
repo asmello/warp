@@ -15,6 +15,7 @@ namespace warp
     {
     public:
         void setActive(GameObject::ID id);
+        std::shared_ptr<GameObject> getNew();
         std::shared_ptr<GameObject> get(GameObject::ID id);
         GameObject::ID add(std::shared_ptr<GameObject> gameObject);
         GameObject::ID create();
