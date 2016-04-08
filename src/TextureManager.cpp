@@ -5,13 +5,13 @@ using namespace warp;
 void TextureManager::setActive(Texture::ID id)
 {
     if (activeID == id) return;
-    textures.at(static_cast<long>(id))->bind();
+    textures.at(static_cast<size_t>(id))->bind();
     activeID = id;
 }
 
 std::shared_ptr<Texture> TextureManager::get(Texture::ID id)
 {
-    return textures.at(static_cast<long>(id));
+    return textures.at(static_cast<size_t>(id));
 }
 
 Texture::ID TextureManager::add(std::shared_ptr<Texture> shader)

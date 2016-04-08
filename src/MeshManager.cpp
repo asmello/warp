@@ -16,12 +16,12 @@ Mesh::ID MeshManager::add(std::shared_ptr<Mesh> mesh)
 
 std::shared_ptr<Mesh> MeshManager::get(Mesh::ID id)
 {
-    return meshes.at(static_cast<long>(id));
+    return meshes.at(static_cast<size_t>(id));
 }
 
 void MeshManager::setActive(Mesh::ID id)
 {
     if (activeID == id) return;
-    meshes.at(static_cast<long>(id))->bind();
+    meshes.at(static_cast<size_t>(id))->bind();
     activeID = id;
 }
