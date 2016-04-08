@@ -20,7 +20,6 @@ namespace warp
         
     protected:
         Material::ID materialID;
-		GameObject::ID gameObjectID;
     };
 }
 

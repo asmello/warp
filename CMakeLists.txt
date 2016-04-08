@@ -97,6 +97,7 @@ set(WARP_HEADERS
 	include/CameraManager.hpp
 	include/TextureManager.hpp
 	include/MaterialManager.hpp
+	include/ResourceManager.hpp
 	include/GameObjectManager.hpp
 )
 add_executable(Warp ${WARP_SOURCES} ${WARP_HEADERS})
