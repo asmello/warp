@@ -1,5 +1,8 @@
 #include "Transform.hpp"
+
+#include "Shader.hpp"
 #include "ShaderManager.hpp"
+#include "GameObject.hpp"
 #include "GameObjectManager.hpp"
 
 #include <glm/gtc/type_ptr.hpp>

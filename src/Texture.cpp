@@ -1,5 +1,7 @@
 #include "Texture.hpp"
+
 #include "ShaderManager.hpp"
+#include "Shader.hpp"
 
 #include <SOIL2.h>
 

@@ -2,7 +2,6 @@
 #define ResourceManager_hpp
 
 #include "Object.hpp"
-#include "Singleton.hpp"
 
 #include <vector>
 #include <memory>
@@ -10,7 +9,7 @@
 namespace warp
 {
     template <class RType>
-    class ResourceManager : Singleton<ResourceManager<RType>>
+    class ResourceManager
     {
     public:
         std::shared_ptr<RType> get(typename Object<RType>::ID id)

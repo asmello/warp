@@ -3,7 +3,7 @@
 
 using namespace warp;
 
-void CameraManager::setActive(Camera::ID id)
+void CameraManager::setActive(Object<Camera>::ID id)
 {
     if (activeID == id) return;
     resources.at(static_cast<size_t>(id))->bind();

@@ -1,6 +1,7 @@
 #ifndef Renderer_hpp
 #define Renderer_hpp
 
+#include "Object.hpp"
 #include "Component.hpp"
 #include "GameObject.hpp"
 #include "Material.hpp"
@@ -10,7 +11,7 @@
 
 namespace warp
 {
-    class Renderer : public Component
+    class Renderer : public Component, public Object<Renderer>
     {
     public:
         Renderer(GameObject::ID gameObject, Material::ID material);

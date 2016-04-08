@@ -1,6 +1,7 @@
 #include "Component.hpp"
 
 #include "GameObjectManager.hpp"
+#include "GameObject.hpp"
 
 using namespace warp;
 

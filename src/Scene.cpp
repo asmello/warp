@@ -1,6 +1,8 @@
 #include "Scene.hpp"
 
+#include "Camera.hpp"
 #include "CameraManager.hpp"
+#include "GameObject.hpp"
 #include "GameObjectManager.hpp"
 
 using namespace warp;

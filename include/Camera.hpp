@@ -1,6 +1,7 @@
 #ifndef Camera_hpp
 #define Camera_hpp
 
+#include "Object.hpp"
 #include "Component.hpp"
 
 #include <GL/glew.h>
@@ -10,7 +11,7 @@
 
 namespace warp
 {
-    class Camera : public Component
+    class Camera : public Component, public Object<Camera>
     {
         friend class CameraManager;
         

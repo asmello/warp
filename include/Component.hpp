@@ -9,7 +9,7 @@ namespace warp
 {
 	class GameObject;
 
-    class Component : public Object<Component>
+    class Component
     {
     public:
         Component();

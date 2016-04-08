@@ -1,5 +1,6 @@
 #include "Camera.hpp"
 
+#include "Shader.hpp"
 #include "ShaderManager.hpp"
 #include "GameObject.hpp"
 #include "GameObjectManager.hpp"

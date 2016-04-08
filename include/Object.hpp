@@ -7,10 +7,13 @@
 
 namespace warp
 {
+	template <class RType> class ResourceManager;
+
     template <class Tag>
     class Object
     {
     public:
+		friend class ResourceManager<Tag>;
         typedef Identifier<Tag, std::size_t, std::numeric_limits<size_t>::max()> ID;
         
         ID getID() const { return id; }
