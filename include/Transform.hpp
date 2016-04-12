@@ -8,6 +8,7 @@
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 namespace warp
 {
@@ -15,7 +16,7 @@ namespace warp
     {
     private:
         glm::vec3 position, scaleFactors;
-        glm::mat4 rotation;
+        glm::quat rotation;
         std::vector<std::shared_ptr<Transform>> children;
         std::shared_ptr<Transform> parent;
         
@@ -34,9 +35,9 @@ namespace warp
         void rotateZ(float radians);
         void translate(float x, float y, float z);
         void translate(glm::vec3 delta);
-        void lookAt(glm::vec3 point);
-        void setUpward(glm::vec3 up);
+        void lookAt(glm::vec3 point, glm::vec3 up);
         void setPosition(glm::vec3 position);
+        void setRotation(glm::quat q);
         glm::mat4 getTransformation();
     };
 }

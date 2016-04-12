@@ -4,6 +4,7 @@
 
 #include <memory>
 
+#include "GameObjectManager.hpp"
 #include "MaterialManager.hpp"
 #include "TextureManager.hpp"
 #include "ShaderManager.hpp"
@@ -41,6 +42,8 @@ int main(int, char const**)
     auto textureManager = warp::TextureManager::getInstance();
     auto materialManager = warp::MaterialManager::getInstance();
     auto meshManager = warp::MeshManager::getInstance();
+    auto cameraManager = warp::CameraManager::getInstance();
+    auto gameObjectManager = warp::GameObjectManager::getInstance();
     
     // Create the assets
     auto shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex.glsl", util::resourcePath() + "frag.glsl");
@@ -81,9 +84,22 @@ int main(int, char const**)
     
     // Create the scene object
     auto scene = std::make_shared<warp::Scene>();
-    scene->createCamera(); // Defaults
-    scene->createRenderer<warp::MeshRenderer>(materialID, pyramidID); // Default pose
-    scene->createRenderer<warp::MeshRenderer>(materialID, squareID); // Default pose
+
+    auto cameraID = cameraManager->create();
+    if (std::shared_ptr<warp::Camera> camera = cameraManager->get(cameraID))
+    {
+        camera->setPosition(glm::vec3(0, 0, -5));
+        camera->lookAt(glm::vec3(0,0,0), glm::vec3(0,1,0));
+    }
+    scene->addCamera(cameraID);
+    
+    auto pyramidRenderer = std::make_shared<warp::MeshRenderer>(materialID, pyramidID);
+    scene->addRenderer(pyramidRenderer);
+    auto squareRenderer = std::make_shared<warp::MeshRenderer>(materialID, squareID);
+    scene->addRenderer(squareRenderer);
+    
+//    scene->createRenderer<warp::MeshRenderer>(materialID, pyramidID); // Default pose
+//    scene->createRenderer<warp::MeshRenderer>(materialID, squareID); // Default pose
     
     // Create and initialize the scene renderer
     auto sceneRenderer = std::make_shared<warp::SceneRenderer>(scene);

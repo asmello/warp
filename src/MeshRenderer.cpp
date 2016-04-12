@@ -17,7 +17,7 @@ Renderer(gameObject, material), meshID(mesh)
 
 MeshRenderer::MeshRenderer(Material::ID material,
                            Mesh::ID mesh) :
-Renderer(material), meshID(mesh)
+Renderer(GameObjectManager::getInstance()->create(), material), meshID(mesh)
 {
     
 }

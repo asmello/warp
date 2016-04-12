@@ -8,6 +8,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
+
+#include "util.hpp"
 
 using namespace warp;
 
@@ -82,24 +85,24 @@ void Transform::translate(glm::vec3 delta)
 
 void Transform::setPosition(glm::vec3 position_)
 {
-    position = position;
+    position = position_;
 }
 
-void Transform::lookAt(glm::vec3 point)
+void Transform::setRotation(glm::quat q)
 {
-    
+    rotation = q;
 }
 
-void Transform::setUpward(glm::vec3 up)
+void Transform::lookAt(glm::vec3 point, glm::vec3 up)
 {
-    
+    rotation = glm::toQuat(glm::lookAt(position, point, up));
 }
 
 glm::mat4 Transform::getTransformation()
 {
     glm::mat4 trans;
     trans = glm::translate(trans, position);
-    trans *= rotation;
+    trans *= glm::toMat4(rotation);
     trans = glm::scale(trans, scaleFactors);
     if (parent != nullptr) {
         trans = parent->getTransformation() * trans;
