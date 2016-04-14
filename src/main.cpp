@@ -43,7 +43,6 @@ int main(int, char const**)
     auto materialManager = warp::MaterialManager::getInstance();
     auto meshManager = warp::MeshManager::getInstance();
     auto cameraManager = warp::CameraManager::getInstance();
-    auto gameObjectManager = warp::GameObjectManager::getInstance();
     
     // Create the assets
     auto shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex.glsl", util::resourcePath() + "frag.glsl");
@@ -88,7 +87,7 @@ int main(int, char const**)
     auto cameraID = cameraManager->create();
     if (std::shared_ptr<warp::Camera> camera = cameraManager->get(cameraID))
     {
-        camera->setPosition(glm::vec3(0, 0, -5));
+        camera->setPosition(glm::vec3(0, 0, 5));
         camera->lookAt(glm::vec3(0,0,0), glm::vec3(0,1,0));
     }
     scene->addCamera(cameraID);

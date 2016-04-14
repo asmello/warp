@@ -10,10 +10,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+#include "util.hpp"
+
 using namespace warp;
 
 Camera::Camera() : Component(GameObjectManager::getInstance()->create()),
-fieldOfView(45.0f), aspectRatio(1.0f), nearField(1.0f), farField(10.0f),
+fieldOfView(45.0f), aspectRatio(1.0f), nearField(0.1f), farField(100.0f),
 viewChanged(true), projectionChanged(false)
 {
     proj = glm::perspective(fieldOfView, aspectRatio, nearField, farField);
@@ -32,8 +34,7 @@ void Camera::bind()
 {
     update();
     if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
-        glm::mat4 trans = getGameObject()->getTransform()->getTransformation();
-        glm::mat4 viewProj = proj * trans;
+        glm::mat4 viewProj = proj * glm::inverse(getGameObject()->getTransform()->getTransformation());
         glUniformMatrix4fv(activeShader->getUniformLocation("u_ViewProj"), 1, GL_FALSE, glm::value_ptr(viewProj));
     }
 }

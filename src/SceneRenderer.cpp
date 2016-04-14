@@ -144,5 +144,13 @@ void SceneRenderer::processInput()
     {
         getActiveGameObject()->getTransform()->rotateY(0.025f);
     }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+    {
+        getActiveGameObject()->getTransform()->translate(.0f, .0f, -.01f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+    {
+        getActiveGameObject()->getTransform()->translate(.0f, .0f, .01f);
+    }
 }
 
