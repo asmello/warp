@@ -114,19 +114,19 @@ void SceneRenderer::processInput()
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        getActiveGameObject()->getTransform()->translate(-.01f, .0f, .0f);
+        getActiveGameObject()->getTransform()->translate(-.025f, .0f, .0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        getActiveGameObject()->getTransform()->translate(.0f, -.01f, .0f);
+        getActiveGameObject()->getTransform()->translate(.0f, -.025f, .0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        getActiveGameObject()->getTransform()->translate(.01f, .0f, .0f);
+        getActiveGameObject()->getTransform()->translate(.025f, .0f, .0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-        getActiveGameObject()->getTransform()->translate(.0f, .01f, .0f);
+        getActiveGameObject()->getTransform()->translate(.0f, .025f, .0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {

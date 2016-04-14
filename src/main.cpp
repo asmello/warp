@@ -52,10 +52,10 @@ int main(int, char const**)
     if (std::shared_ptr<warp::Mesh> pyramidMesh = meshManager->get(pyramidID))
     {
         pyramidMesh->setVertices({
-            -1.0f, -1.0f,  0.57730f,  0.0f, 0.0f,
-            0.0f, -1.0f, -1.15475f,  0.5f, 0.0f,
-            1.0f, -1.0f,  0.57730f,  1.0f, 0.0f,
-            0.0f,  1.0f,  0.00000f,  0.5f, 1.0f
+            -1.0f, -1.0f,  0.57730f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+             0.0f, -1.0f, -1.15475f,   0.0f, 0.0f, 1.0f,  0.5f, 0.0f,
+             1.0f, -1.0f,  0.57730f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
+             0.0f,  1.0f,  0.00000f,   0.0f, 0.0f, 1.0f,  0.5f, 1.0f
         });
         pyramidMesh->setElementBuffer({
             0, 3, 1,
@@ -69,10 +69,10 @@ int main(int, char const**)
     if (std::shared_ptr<warp::Mesh> squareMesh = meshManager->get(squareID))
     {
         squareMesh->setVertices({
-            -0.8f, 0.8f, 0.0f,  0.0f, 0.0f,
-            -0.4f, 0.8f, 0.0f,  1.0f, 0.0f,
-            -0.8f, 0.4f, 0.0f,  0.0f, 1.0f,
-            -0.4f, 0.4f, 0.0f,  1.0f, 1.0f
+            -0.8f, 0.8f, 0.0f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+            -0.4f, 0.8f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
+            -0.8f, 0.4f, 0.0f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
+            -0.4f, 0.4f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 1.0f
         });
         squareMesh->setElementBuffer({
             0, 2, 1,

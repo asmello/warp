@@ -55,16 +55,22 @@ void Mesh::init()
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
     
-    // Specify the layout of the vertex data
+    // Specify the layout of the position data
     GLint posAttrib = 0;
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), 0);
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), 0);
+    
+    // Specify the layout of the normal data
+    GLint normAttrib = 1;
+    glEnableVertexAttribArray(normAttrib);
+    glVertexAttribPointer(normAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat),
+                          reinterpret_cast<GLvoid*>(3*sizeof(GLfloat)));
     
     // Specify the layout of the texture coordinate data
-    GLint texCoordAttrib = 1;
+    GLint texCoordAttrib = 2;
     glEnableVertexAttribArray(texCoordAttrib);
-    glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat),
-                          reinterpret_cast<GLvoid*>(3*sizeof(GLfloat)));
+    glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat),
+                          reinterpret_cast<GLvoid*>(6*sizeof(GLfloat)));
     
     // Unbind the buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0);
