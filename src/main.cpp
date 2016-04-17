@@ -51,34 +51,38 @@ int main(int, char const**)
     auto pyramidID = meshManager->create();
     if (std::shared_ptr<warp::Mesh> pyramidMesh = meshManager->get(pyramidID))
     {
-        pyramidMesh->setVertices({
+        auto entry = std::make_shared<warp::Mesh::MeshEntry>();
+        entry->vertices = {
             -1.0f, -1.0f,  0.57730f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
              0.0f, -1.0f, -1.15475f,   0.0f, 0.0f, 1.0f,  0.5f, 0.0f,
              1.0f, -1.0f,  0.57730f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
              0.0f,  1.0f,  0.00000f,   0.0f, 0.0f, 1.0f,  0.5f, 1.0f
-        });
-        pyramidMesh->setElementBuffer({
+        };
+        entry->elements = {
             0, 3, 1,
             1, 3, 2,
             2, 3, 0,
             1, 2, 0
-        });
-        pyramidMesh->init();
+        };
+        entry->load();
+        pyramidMesh->addEntry(entry);
     }
     auto squareID = meshManager->create();
     if (std::shared_ptr<warp::Mesh> squareMesh = meshManager->get(squareID))
     {
-        squareMesh->setVertices({
+        auto entry = std::make_shared<warp::Mesh::MeshEntry>();
+        entry->vertices = {
             -0.8f, 0.8f, 0.0f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
             -0.4f, 0.8f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
             -0.8f, 0.4f, 0.0f,   0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
             -0.4f, 0.4f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 1.0f
-        });
-        squareMesh->setElementBuffer({
+        };
+        entry->elements = {
             0, 2, 1,
             2, 3, 1
-        });
-        squareMesh->init();
+        };
+        entry->load();
+        squareMesh->addEntry(entry);
     }
     
     // Create the scene object

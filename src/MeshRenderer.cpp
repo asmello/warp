@@ -31,7 +31,13 @@ void MeshRenderer::render(Camera::ID cameraID)
     
     if (std::shared_ptr<Mesh> mesh = MeshManager::getInstance()->get(meshID))
     {
-        mesh->draw();
+        for (size_t i = 0; i < mesh->meshes.size(); ++i)
+        {
+            std::shared_ptr<Mesh::MeshEntry> me = mesh->meshes[i];
+            glBindVertexArray(me->vao);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, me->ebo);
+            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(me->elements.size()), GL_UNSIGNED_INT, 0);
+        }
     }
 }
 

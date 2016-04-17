@@ -11,27 +11,30 @@
 
 namespace warp
 {
+    class Material;
+    
     class Mesh : public Object<Mesh>
     {
         friend class MeshManager;
+        friend class MeshRenderer;
         
     public:
-        // These constructors should not be used directly
-        Mesh();
-        Mesh(std::initializer_list<GLfloat> vertices);
-        ~Mesh();
+        struct MeshEntry {
+            ~MeshEntry();
+            
+            void load();
+            void unload();
+            
+            GLuint vao, vbo, ebo;
+            std::vector<GLfloat> vertices, normals;
+            std::vector<GLuint> elements;
+            Object<Material>::ID materialID;
+        };
         
-        void setVertices(std::initializer_list<GLfloat> vertices);
-        void setElementBuffer(std::initializer_list<GLuint> buffer);
-        void init();
-        void bind();
-        void draw();
+        void addEntry(std::shared_ptr<MeshEntry> entry);
         
     private:
-        GLuint vao, vbo, ebo;
-        bool eboEnabled, initialized;
-        std::vector<GLfloat> vertices, normals;
-        std::vector<GLuint> elements;
+        std::vector<std::shared_ptr<MeshEntry>> meshes;
     };
 }
 

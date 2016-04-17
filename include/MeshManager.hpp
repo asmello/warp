@@ -4,6 +4,8 @@
 #include "Singleton.hpp"
 #include "ResourceManager.hpp"
 
+#include <assimp/scene.h>
+
 namespace warp
 {
     class Mesh;
@@ -12,9 +14,11 @@ namespace warp
     {
     public:
         void setActive(Object<Mesh>::ID id);
+        Object<Mesh>::ID loadFromFile(const std::string& filename);
 
     private:
         Object<Mesh>::ID activeID;
+        void initFromScene(const aiScene *scene, std::shared_ptr<Mesh> mesh);
     };
 }
 
