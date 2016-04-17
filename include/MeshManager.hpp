@@ -18,7 +18,8 @@ namespace warp
 
     private:
         Object<Mesh>::ID activeID;
-        void initFromScene(const aiScene *scene, std::shared_ptr<Mesh> mesh);
+        void initMeshFromScene(const aiScene *aiScene, std::shared_ptr<Mesh> mesh);
+        void initMeshTexturesFromScene(const aiScene *aiScene, std::shared_ptr<Mesh> mesh);
     };
 }
 

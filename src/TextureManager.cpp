@@ -10,6 +10,7 @@ void TextureManager::setActive(Texture::ID id)
     activeID = id;
 }
 
+// TODO: handle case when file does not exist
 Texture::ID TextureManager::createFromFile(const std::string& textureFile)
 {
     auto texture = std::make_shared<Texture>(GL_TEXTURE_2D);

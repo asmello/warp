@@ -11,7 +11,7 @@
 
 namespace warp
 {
-    class Material;
+    class Texture;
     
     class Mesh : public Object<Mesh>
     {
@@ -28,13 +28,14 @@ namespace warp
             GLuint vao, vbo, ebo;
             std::vector<GLfloat> vertices, normals;
             std::vector<GLuint> elements;
-            Object<Material>::ID materialID;
+            Object<Texture>::ID textureID;
         };
         
         void addEntry(std::shared_ptr<MeshEntry> entry);
         
     private:
         std::vector<std::shared_ptr<MeshEntry>> meshes;
+        std::vector<Object<Texture>::ID> textures;
     };
 }
 
