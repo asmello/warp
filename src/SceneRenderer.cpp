@@ -41,12 +41,14 @@ void SceneRenderer::init()
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
     glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
 }
 
 void SceneRenderer::render()
 {
     // Clear the screen to black
     glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
     
     auto t_now = std::chrono::high_resolution_clock::now();
     

@@ -50,6 +50,11 @@ void SceneManager::loadNodeMeshes(const aiNode * pNode,
                 mesh->vertices.push_back(pNormal.y);
                 mesh->vertices.push_back(pNormal.z);
                 
+                const aiVector3D& pTangent = paiMesh->HasTangentsAndBitangents() ? paiMesh->mTangents[j] : Zero3D;
+                mesh->vertices.push_back(pTangent.x);
+                mesh->vertices.push_back(pTangent.y);
+                mesh->vertices.push_back(pTangent.z);
+                
                 const aiVector3D& pTexCoord = paiMesh->HasTextureCoords(0) ? paiMesh->mTextureCoords[0][j] : Zero3D;
                 mesh->vertices.push_back(pTexCoord.x);
                 mesh->vertices.push_back(pTexCoord.y);
@@ -93,7 +98,7 @@ void SceneManager::loadHierarchy(const aiNode *pNode,
     }
 }
 
-Scene::ID SceneManager::createFromFile(const std::string &filename)
+Scene::ID SceneManager::createFromFile(const std::string &filename, Material::ID material)
 {
     Assimp::Importer importer;
     
@@ -101,13 +106,8 @@ Scene::ID SceneManager::createFromFile(const std::string &filename)
                                               aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
     
     if (pScene) {
-        auto shaderID = ShaderManager::getInstance()->createFromFile(util::resourcePath() + "vertex.glsl",
-                                                                     util::resourcePath() + "frag.glsl");
-        auto steveTextureID = TextureManager::getInstance()->createFromFile(util::resourcePath() + "Steeve_CLM.png");
-        auto steveMaterialID = MaterialManager::getInstance()->create(steveTextureID, shaderID);
-        
         auto scene = std::make_shared<Scene>();
-        loadHierarchy(pScene->mRootNode, pScene, scene, nullptr, steveMaterialID);
+        loadHierarchy(pScene->mRootNode, pScene, scene, nullptr, material);
         resources.push_back(scene);
         return Scene::ID(resources.size()-1);
     }

@@ -42,27 +42,12 @@ int main(int, char const**)
     glGetError(); // Discard error 500
     
     auto gameObjectManager = warp::GameObjectManager::getInstance();
-//    auto shaderManager = warp::ShaderManager::getInstance();
-//    auto textureManager = warp::TextureManager::getInstance();
-//    auto materialManager = warp::MaterialManager::getInstance();
+    auto shaderManager = warp::ShaderManager::getInstance();
+    auto textureManager = warp::TextureManager::getInstance();
+    auto materialManager = warp::MaterialManager::getInstance();
 //    auto meshManager = warp::MeshManager::getInstance();
     auto cameraManager = warp::CameraManager::getInstance();
     auto sceneManager = warp::SceneManager::getInstance();
-    
-//    auto shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex.glsl", util::resourcePath() + "frag.glsl");
-//    auto textureID = textureManager->createFromFile(util::resourcePath() + "test.png");
-//    auto materialID = materialManager->create(textureID, shaderID);
-    
-    // Create the scene object
-    warp::Scene::ID sceneID = sceneManager->createFromFile(util::resourcePath() + "Steeve.fbx");
-    
-    // Adjust Steeve
-    if (std::shared_ptr<warp::GameObject> rootObject = gameObjectManager->get(warp::GameObject::ID(0)))
-    {
-        rootObject->getTransform()->scale(0.015);
-        rootObject->getTransform()->rotate(-90, 0, 1, 0);
-        rootObject->getTransform()->translate(0, -1.25, 0);
-    }
     
     auto cameraID = cameraManager->create();
     if (std::shared_ptr<warp::Camera> camera = cameraManager->get(cameraID))
@@ -70,9 +55,46 @@ int main(int, char const**)
         camera->setPosition(glm::vec3(0, 0, 5));
         camera->lookAt(glm::vec3(0,0,0), glm::vec3(0,1,0));
     }
-    if (std::shared_ptr<warp::Scene> scene = sceneManager->get(sceneID))
+    
+//    auto steveShaderID = shaderManager->createFromFile(util::resourcePath() + "vertex.glsl", util::resourcePath() + "frag.glsl");
+//    auto steveTextureID = textureManager->createFromFile(util::resourcePath() + "Steeve_CLM.png");
+//    auto steveMaterialID = materialManager->create(steveTextureID, steveShaderID);
+//    
+//    // Create the Steeve scene object
+//    warp::Scene::ID steveSceneID = sceneManager->createFromFile(util::resourcePath() + "Steeve.fbx", steveMaterialID);
+//    
+//    // Adjust Steeve
+//    if (std::shared_ptr<warp::GameObject> rootObject = gameObjectManager->get(warp::GameObject::ID(1)))
+//    {
+//        rootObject->getTransform()->scale(0.015);
+//        rootObject->getTransform()->rotate(-90, 0, 1, 0);
+//        rootObject->getTransform()->translate(0, -1.25, 0);
+//    }
+//    
+//    if (std::shared_ptr<warp::Scene> scene = sceneManager->get(steveSceneID))
+//    {
+//        scene->addCamera(cameraID);
+//    }
+    
+    auto geckoShaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl", util::resourcePath() + "frag2.glsl");
+    auto geckoColorTextureID = textureManager->createFromFile(util::resourcePath() + "Gecko_CLM.bmp");
+//    auto geckoNormalTextureID = textureManager->createFromFile(util::resourcePath() + "Steeve_NRM.png");
+    auto geckoMaterialID = materialManager->create(geckoColorTextureID, geckoShaderID);
+    
+    // Create the Gecko scene object
+    warp::Scene::ID geckoSceneID = sceneManager->createFromFile(util::resourcePath() + "Gecko.fbx", geckoMaterialID);
+    
+    if (std::shared_ptr<warp::Scene> scene = sceneManager->get(geckoSceneID))
     {
         scene->addCamera(cameraID);
+    }
+    
+    // Adjust Gecko
+    if (std::shared_ptr<warp::GameObject> rootObject = gameObjectManager->get(warp::GameObject::ID(1)))
+    {
+        rootObject->getTransform()->scale(0.015);
+        rootObject->getTransform()->rotate(-90, 0, 1, 0);
+        rootObject->getTransform()->translate(0, -1.25, 0);
     }
     
 //    auto squareID = meshManager->create();
@@ -121,7 +143,7 @@ int main(int, char const**)
 //    }
     
     // Create and initialize the scene renderer
-    auto sceneRenderer = std::make_shared<warp::SceneRenderer>(sceneID);
+    auto sceneRenderer = std::make_shared<warp::SceneRenderer>(geckoSceneID);
     sceneRenderer->init();
     
     // The scene renderer will listen to window events

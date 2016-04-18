@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <chrono>
+#include <initializer_list>
 
 namespace warp
 {
@@ -26,6 +27,7 @@ namespace warp
         
     public:
         SceneRenderer(Object<Scene>::ID scene);
+        SceneRenderer(std::initializer_list<Object<Scene>::ID> scenes);
         void init();
         void render();
         void pause();

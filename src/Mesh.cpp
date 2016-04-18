@@ -42,19 +42,25 @@ void Mesh::load()
     // Specify the layout of the position data
     GLint posAttrib = 0;
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), 0);
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 11*sizeof(GLfloat), 0);
     
     // Specify the layout of the normal data
     GLint normAttrib = 1;
     glEnableVertexAttribArray(normAttrib);
-    glVertexAttribPointer(normAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat),
+    glVertexAttribPointer(normAttrib, 3, GL_FLOAT, GL_FALSE, 11*sizeof(GLfloat),
                           reinterpret_cast<GLvoid*>(3*sizeof(GLfloat)));
     
-    // Specify the layout of the texture coordinate data
-    GLint texCoordAttrib = 2;
-    glEnableVertexAttribArray(texCoordAttrib);
-    glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat),
+    // Specify the layout of the tangent data
+    GLint tangAttrib = 2;
+    glEnableVertexAttribArray(tangAttrib);
+    glVertexAttribPointer(tangAttrib, 3, GL_FLOAT, GL_FALSE, 11*sizeof(GLfloat),
                           reinterpret_cast<GLvoid*>(6*sizeof(GLfloat)));
+    
+    // Specify the layout of the texture coordinate data
+    GLint texCoordAttrib = 3;
+    glEnableVertexAttribArray(texCoordAttrib);
+    glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 11*sizeof(GLfloat),
+                          reinterpret_cast<GLvoid*>(9*sizeof(GLfloat)));
     
     // Unbind the buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0);
