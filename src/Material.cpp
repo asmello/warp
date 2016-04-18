@@ -6,7 +6,19 @@
 using namespace warp;
 
 Material::Material(Texture::ID texture, Shader::ID shader)
-: textureID(texture), shaderID(shader)
+: shaderID(shader)
+{
+    textureIDs.push_back(texture);
+}
+
+Material::Material(std::vector<Texture::ID> textures, Shader::ID shader)
+: shaderID(shader), textureIDs(textures)
+{
+    
+}
+
+Material::Material(std::initializer_list<Texture::ID> textures, Shader::ID shader)
+: shaderID(shader), textureIDs(textures)
 {
     
 }
@@ -14,5 +26,8 @@ Material::Material(Texture::ID texture, Shader::ID shader)
 void Material::bind()
 {
     ShaderManager::getInstance()->setActive(shaderID);
-    TextureManager::getInstance()->setActive(textureID);
+    for (size_t i = 0; i < textureIDs.size(); ++i)
+    {
+        TextureManager::getInstance()->setActive(textureIDs[i], i);
+    }
 }

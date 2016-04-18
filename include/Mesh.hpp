@@ -14,22 +14,20 @@ namespace warp
     class Mesh : public Object<Mesh>
     {
         friend class MeshManager;
+        friend class MeshRenderer;
+        friend class SceneManager;
         
     public:
-        // These constructors should not be used directly
-        Mesh();
-        Mesh(std::initializer_list<GLfloat> vertices);
         ~Mesh();
-        
         void setVertices(std::initializer_list<GLfloat> vertices);
-        void setElementBuffer(std::initializer_list<GLuint> buffer);
-        void init();
-        void bind();
-        void draw();
+        void setElements(std::initializer_list<GLuint> elements);
+        void load();
+        void unload();
         
     private:
+        std::vector<std::shared_ptr<Mesh>> meshes;
+        
         GLuint vao, vbo, ebo;
-        bool eboEnabled, initialized;
         std::vector<GLfloat> vertices, normals;
         std::vector<GLuint> elements;
     };

@@ -29,15 +29,6 @@ void Texture::loadFromFile(const std::string &path)
     loaded = true;
 }
 
-void Texture::bind()
-{
-    if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
-        glUniform1i(activeShader->getUniformLocation("u_sampler"), 0);
-    }
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(target, txo);
-}
-
 Texture::~Texture()
 {
     if (loaded) glDeleteTextures(1, &txo);

@@ -21,6 +21,7 @@ namespace warp
         
     protected:
         Material::ID materialID;
+        bool active;
     };
 }
 

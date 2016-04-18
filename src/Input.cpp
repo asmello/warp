@@ -23,22 +23,7 @@ void Input::flush()
                 notifyClosed();
                 break;
             case sf::Event::KeyPressed:
-                switch (windowEvent.key.code) {
-                    case sf::Keyboard::Escape:
-                        notifyKeyDown(Key::Escape);
-                        break;
-                    case sf::Keyboard::RBracket:
-                        notifyKeyDown(Key::RBracket);
-                        break;
-                    case sf::Keyboard::LBracket:
-                        notifyKeyDown(Key::LBracket);
-                        break;
-                    case sf::Keyboard::Space:
-                        notifyKeyDown(Key::Space);
-                        break;
-                    default:
-                        break;
-                }
+                notifyKeyDown(windowEvent.key.code);
                 break;
             case sf::Event::MouseWheelScrolled:
                 notifyMouseScrolled(windowEvent.mouseWheelScroll.delta);

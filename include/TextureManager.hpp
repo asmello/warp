@@ -13,7 +13,7 @@ namespace warp
     class TextureManager : public ResourceManager<Texture>, public Singleton<TextureManager>
     {
     public:
-        void setActive(Object<Texture>::ID id);
+        void setActive(Object<Texture>::ID id, int slot);
         Object<Texture>::ID createFromFile(const std::string& textureFile);
 
     private:

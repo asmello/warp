@@ -5,13 +5,13 @@
 using namespace warp;
 
 Renderer::Renderer(GameObject::ID gameObject, Material::ID material)
-: Component(gameObject), materialID(material)
+: Component(gameObject), materialID(material), active(true)
 {
     
 }
 
 Renderer::Renderer(Material::ID material)
-: Component(GameObjectManager::getInstance()->create()), materialID(material)
+: Component(GameObjectManager::getInstance()->create()), materialID(material), active(true)
 {
     
 }

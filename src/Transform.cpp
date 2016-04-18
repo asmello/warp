@@ -14,7 +14,7 @@
 
 using namespace warp;
 
-Transform::Transform() : Component(GameObjectManager::getInstance()->create()),
+Transform::Transform() :
 position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr)
 {
     
@@ -24,6 +24,16 @@ Transform::Transform(Object<GameObject>::ID gameObject) : Component(gameObject),
 position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr)
 {
     
+}
+
+Transform::Transform(const aiMatrix4x4& aiTransform) : parent(nullptr)
+{
+    aiVector3D scaling_, position_;
+    aiQuaternion rotation_;
+    Decompose<float>(aiTransform, scaling_, rotation_, position_);
+    position = glm::vec3(position_.x, position_.y, position_.z);
+    scaleFactors = glm::vec3(scaling_.x, scaling_.y, scaling_.z);
+    rotation = glm::quat(rotation_.w, rotation_.x, rotation_.y, rotation_.z);
 }
 
 void Transform::bind()
@@ -96,6 +106,11 @@ void Transform::setRotation(glm::quat q)
 void Transform::lookAt(glm::vec3 point, glm::vec3 up)
 {
     rotation = glm::toQuat(glm::lookAt(position, point, up));
+}
+
+void Transform::setParent(std::shared_ptr<Transform> parent_)
+{
+    parent = parent_;
 }
 
 glm::mat4 Transform::getTransformation()
