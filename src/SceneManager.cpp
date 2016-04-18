@@ -50,7 +50,7 @@ void SceneManager::loadNodeMeshes(const aiNode * pNode,
                 mesh->vertices.push_back(pNormal.y);
                 mesh->vertices.push_back(pNormal.z);
                 
-                const aiVector3D& pTexCoord = paiMesh->HasTextureCoords(0) ? paiMesh->mTextureCoords[0][i] : Zero3D;
+                const aiVector3D& pTexCoord = paiMesh->HasTextureCoords(0) ? paiMesh->mTextureCoords[0][j] : Zero3D;
                 mesh->vertices.push_back(pTexCoord.x);
                 mesh->vertices.push_back(pTexCoord.y);
             }
