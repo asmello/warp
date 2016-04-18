@@ -60,6 +60,7 @@ set(WARP_SOURCES
 	src/Renderer.cpp
 	src/GameLoop.cpp
 	src/Material.cpp
+	src/Behaviour.cpp
 	src/Transform.cpp
 	src/Component.cpp
 	src/GameObject.cpp
@@ -85,6 +86,7 @@ set(WARP_HEADERS
 	include/Material.hpp
 	include/Renderer.hpp
 	include/GameLoop.hpp
+	include/Behaviour.hpp
 	include/Transform.hpp
 	include/Component.hpp
 	include/Singleton.hpp
