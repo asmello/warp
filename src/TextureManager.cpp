@@ -1,12 +1,24 @@
 #include "TextureManager.hpp"
 #include "Texture.hpp"
 
+#include "Shader.hpp"
+#include "ShaderManager.hpp"
+
 using namespace warp;
 
-void TextureManager::setActive(Texture::ID id)
+void TextureManager::setActive(Texture::ID id, int slot)
 {
 //    if (activeID == id) return;
-    resources.at(static_cast<size_t>(id))->bind();
+    
+    std::shared_ptr<Texture> texture = resources.at(static_cast<size_t>(id));
+    
+    if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
+        glUniform1i(activeShader->getUniformLocation("u_sampler" + std::to_string(slot)), slot);
+    }
+    
+    glActiveTexture(GL_TEXTURE0 + slot);
+    glBindTexture(texture->target, texture->txo);
+    
     activeID = id;
 }
 

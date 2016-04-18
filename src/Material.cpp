@@ -14,5 +14,5 @@ Material::Material(Texture::ID texture, Shader::ID shader)
 void Material::bind()
 {
     ShaderManager::getInstance()->setActive(shaderID);
-    TextureManager::getInstance()->setActive(textureID);
+    TextureManager::getInstance()->setActive(textureID, 0);
 }
