@@ -1,5 +1,8 @@
 #include "SceneRenderer.hpp"
 
+#include "Scene.hpp"
+#include "SceneManager.hpp"
+
 #include "GameObjectManager.hpp"
 #include "CameraManager.hpp"
 #include "Transform.hpp"
@@ -10,8 +13,8 @@
 
 using namespace warp;
 
-SceneRenderer::SceneRenderer(std::shared_ptr<Scene> scene_)
-: scene(scene_), activeGameObjectID(0), activeCameraID(0), t_total(0.0), paused(false)
+SceneRenderer::SceneRenderer(Scene::ID scene_)
+: scene(SceneManager::getInstance()->get(scene_)), activeGameObjectID(0), activeCameraID(0), t_total(0.0), paused(false)
 {
     
 }
@@ -72,6 +75,36 @@ void SceneRenderer::onKeyDown(Input::Key type)
             break;
         case Input::Key::Space:
             pause();
+            break;
+        case Input::Key::Num0:
+            activeGameObjectID = GameObject::ID(0);
+            break;
+        case Input::Key::Num1:
+            activeGameObjectID = GameObject::ID(1);
+            break;
+        case Input::Key::Num2:
+            activeGameObjectID = GameObject::ID(2);
+            break;
+        case Input::Key::Num3:
+            activeGameObjectID = GameObject::ID(3);
+            break;
+        case Input::Key::Num4:
+            activeGameObjectID = GameObject::ID(4);
+            break;
+        case Input::Key::Num5:
+            activeGameObjectID = GameObject::ID(5);
+            break;
+        case Input::Key::Num6:
+            activeGameObjectID = GameObject::ID(6);
+            break;
+        case Input::Key::Num7:
+            activeGameObjectID = GameObject::ID(7);
+            break;
+        case Input::Key::Num8:
+            activeGameObjectID = GameObject::ID(8);
+            break;
+        case Input::Key::Num9:
+            activeGameObjectID = GameObject::ID(9);
             break;
         default:
             break;

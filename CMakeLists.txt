@@ -65,6 +65,7 @@ set(WARP_SOURCES
 	src/GameObject.cpp
 	src/MeshManager.cpp
 	src/MeshRenderer.cpp
+	src/SceneManager.cpp
 	src/SceneRenderer.cpp
 	src/ShaderManager.cpp
 	src/CameraManager.cpp
@@ -91,6 +92,7 @@ set(WARP_HEADERS
 	include/Identifier.hpp
 	include/MeshManager.hpp
 	include/MeshRenderer.hpp
+	include/SceneManager.hpp
 	include/InputListener.hpp
 	include/SceneRenderer.hpp
 	include/ShaderManager.hpp

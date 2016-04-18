@@ -31,6 +31,14 @@ namespace warp
             return resource->setID(resources.size() - 1);
         }
         
+        template <typename... Args>
+        typename std::shared_ptr<RType> getNew(Args&&... args)
+        {
+            auto resource = std::make_shared<RType>(args...);
+            resources.push_back(resource);
+            return resource;
+        }
+        
     protected:
         std::vector<std::shared_ptr<RType>> resources;
     };

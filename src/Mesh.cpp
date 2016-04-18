@@ -5,19 +5,19 @@ using namespace warp;
 
 //static constexpr float TAU = static_cast<float>(2.0 * glm::pi<double>());
 
-Mesh::MeshEntry::~MeshEntry()
+Mesh::~Mesh()
 {
     unload();
 }
 
-void Mesh::MeshEntry::unload()
+void Mesh::unload()
 {
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &ebo);
     glDeleteVertexArrays(1, &vao);
 }
 
-void Mesh::MeshEntry::load()
+void Mesh::load()
 {
     // Create Vertex Array Object
     glGenVertexArrays(1, &vao);
@@ -60,7 +60,12 @@ void Mesh::MeshEntry::load()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Mesh::addEntry(std::shared_ptr<MeshEntry> entry)
+void Mesh::setVertices(std::initializer_list<GLfloat> vertices_)
 {
-    meshes.push_back(entry);
+    vertices = vertices_;
+}
+
+void Mesh::setElements(std::initializer_list<GLuint> elements_)
+{
+    elements = elements_;
 }

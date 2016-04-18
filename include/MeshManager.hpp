@@ -14,12 +14,10 @@ namespace warp
     {
     public:
         void setActive(Object<Mesh>::ID id);
-        Object<Mesh>::ID loadFromFile(const std::string& filename);
+        void loadSceneNode(const aiNode *pNode, const aiScene* pScene);
 
     private:
         Object<Mesh>::ID activeID;
-        void initMeshFromScene(const aiScene *aiScene, std::shared_ptr<Mesh> mesh);
-        void initMeshTexturesFromScene(const aiScene *aiScene, std::shared_ptr<Mesh> mesh);
     };
 }
 

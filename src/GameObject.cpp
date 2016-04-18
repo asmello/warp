@@ -4,8 +4,12 @@
 
 using namespace warp;
 
-GameObject::GameObject() :
-transform(std::make_shared<Transform>(id))
+GameObject::GameObject() : transform(std::make_shared<Transform>(id))
+{
+    
+}
+
+GameObject::GameObject(std::shared_ptr<Transform> transform_) : transform(transform_)
 {
     
 }

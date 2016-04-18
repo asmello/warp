@@ -18,6 +18,7 @@ namespace warp
     public:
         // These constructors should not be used directly
         GameObject();
+        GameObject(std::shared_ptr<Transform> transform);
         
         void addComponent(std::shared_ptr<Component> component);
         template <class T, typename... Args> void createComponent(Args&&... args);

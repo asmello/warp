@@ -12,12 +12,7 @@ namespace warp
     class Input {
     public:
         
-        enum struct Key {
-            RBracket,
-            LBracket,
-            Space,
-            Escape
-        };
+        using Key = sf::Keyboard::Key;
         
         Input(std::shared_ptr<sf::Window> window);
         void addListener(std::shared_ptr<InputListener> listener);

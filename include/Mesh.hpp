@@ -11,31 +11,25 @@
 
 namespace warp
 {
-    class Texture;
-    
     class Mesh : public Object<Mesh>
     {
         friend class MeshManager;
         friend class MeshRenderer;
+        friend class SceneManager;
         
     public:
-        struct MeshEntry {
-            ~MeshEntry();
-            
-            void load();
-            void unload();
-            
-            GLuint vao, vbo, ebo;
-            std::vector<GLfloat> vertices, normals;
-            std::vector<GLuint> elements;
-            Object<Texture>::ID textureID;
-        };
-        
-        void addEntry(std::shared_ptr<MeshEntry> entry);
+        ~Mesh();
+        void setVertices(std::initializer_list<GLfloat> vertices);
+        void setElements(std::initializer_list<GLuint> elements);
+        void load();
+        void unload();
         
     private:
-        std::vector<std::shared_ptr<MeshEntry>> meshes;
-        std::vector<Object<Texture>::ID> textures;
+        std::vector<std::shared_ptr<Mesh>> meshes;
+        
+        GLuint vao, vbo, ebo;
+        std::vector<GLfloat> vertices, normals;
+        std::vector<GLuint> elements;
     };
 }
 

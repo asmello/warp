@@ -1,9 +1,12 @@
 #include "Scene.hpp"
 
+#include "Mesh.hpp"
+#include "MeshManager.hpp"
 #include "Camera.hpp"
 #include "CameraManager.hpp"
 #include "GameObject.hpp"
 #include "GameObjectManager.hpp"
+#include "Transform.hpp"
 
 using namespace warp;
 

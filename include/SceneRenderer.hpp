@@ -3,7 +3,6 @@
 
 #include "Camera.hpp"
 #include "Renderer.hpp"
-#include "Scene.hpp"
 #include "InputListener.hpp"
 
 #include <GL/glew.h>
@@ -13,6 +12,8 @@
 
 namespace warp
 {
+    class Scene;
+    
     class SceneRenderer : public InputListener
     {
     private:
@@ -24,7 +25,7 @@ namespace warp
         bool paused;
         
     public:
-        SceneRenderer(std::shared_ptr<Scene> scene);
+        SceneRenderer(Object<Scene>::ID scene);
         void init();
         void render();
         void pause();
