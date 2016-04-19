@@ -52,8 +52,8 @@ int main(int, char const**)
     auto cameraID = cameraManager->create();
     if (std::shared_ptr<warp::Camera> camera = cameraManager->get(cameraID))
     {
-        camera->setPosition(glm::vec3(0, 0, 5));
-        camera->lookAt(glm::vec3(0,0,0), glm::vec3(0,1,0));
+        camera->setPosition(glm::vec3(0, 5, 0));
+        camera->lookAt(glm::vec3(0,0,0), glm::vec3(0,0,1));
     }
     
 //    auto steveShaderID = shaderManager->createFromFile(util::resourcePath() + "vertex.glsl", util::resourcePath() + "frag.glsl");
@@ -77,12 +77,12 @@ int main(int, char const**)
 //    }
     
     auto geckoShaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl", util::resourcePath() + "frag2.glsl");
-    auto geckoColorTextureID = textureManager->createFromFile(util::resourcePath() + "Gecko_CLM.bmp");
-//    auto geckoNormalTextureID = textureManager->createFromFile(util::resourcePath() + "Steeve_NRM.png");
-    auto geckoMaterialID = materialManager->create(geckoColorTextureID, geckoShaderID);
+    auto geckoColorTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_CLM.bmp");
+    auto geckoNormalTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_NRM.png");
+	auto geckoMaterialID = materialManager->create(std::vector<warp::Texture::ID>({ geckoColorTextureID, geckoNormalTextureID }), geckoShaderID);
     
     // Create the Gecko scene object
-    warp::Scene::ID geckoSceneID = sceneManager->createFromFile(util::resourcePath() + "Gecko.fbx", geckoMaterialID);
+    warp::Scene::ID geckoSceneID = sceneManager->createFromFile(util::resourcePath() + "LogoLP_MDL.fbx", geckoMaterialID);
     
     if (std::shared_ptr<warp::Scene> scene = sceneManager->get(geckoSceneID))
     {

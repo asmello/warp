@@ -103,7 +103,7 @@ Scene::ID SceneManager::createFromFile(const std::string &filename, Material::ID
     Assimp::Importer importer;
     
     const aiScene* pScene = importer.ReadFile(filename.c_str(),
-                                              aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
+                                              aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
     
     if (pScene) {
         auto scene = std::make_shared<Scene>();

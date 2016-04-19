@@ -32,7 +32,7 @@ bool SceneRenderer::isPaused() const
 void SceneRenderer::init()
 {
     // Set the background color
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor (0.1f, 0.06f, 0.15f, 1.0f);
     
     // Start counting time
     t_last = std::chrono::high_resolution_clock::now();
