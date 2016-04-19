@@ -1,4 +1,5 @@
 #include "Texture.hpp"
+#include "TextureManager.hpp"
 
 #include "ShaderManager.hpp"
 #include "Shader.hpp"
@@ -6,6 +7,8 @@
 #include <SOIL2.h>
 
 using namespace warp;
+
+template<> ResourceManager<Texture> * Object<Texture>::manager = TextureManager::getInstance();
 
 Texture::Texture(GLenum tg) : target(tg), loaded(false)
 {

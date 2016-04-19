@@ -1,4 +1,5 @@
 #include "Scene.hpp"
+#include "SceneManager.hpp"
 
 #include "Mesh.hpp"
 #include "MeshManager.hpp"
@@ -9,6 +10,8 @@
 #include "Transform.hpp"
 
 using namespace warp;
+
+template<> ResourceManager<Scene> * Object<Scene>::manager = SceneManager::getInstance();
 
 std::vector<Camera::ID> Scene::getCameras()
 {

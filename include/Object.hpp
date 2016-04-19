@@ -17,6 +17,7 @@ namespace warp
         typedef Identifier<Tag, std::size_t, std::numeric_limits<size_t>::max()> ID;
         
         ID getID() const { return id; }
+        static ResourceManager<Tag>* getResourceManager() { return manager; }
         
     protected:
         ID id;
@@ -25,6 +26,8 @@ namespace warp
         {
             return (id = ID(static_cast<std::size_t>(newid)));
         }
+        
+        static ResourceManager<Tag>* manager;
     };
 }
 

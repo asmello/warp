@@ -1,4 +1,6 @@
 #include "Shader.hpp"
+#include "ShaderManager.hpp"
+
 #include "util.hpp"
 
 #include <GL/glew.h>
@@ -6,6 +8,8 @@
 #include <cstdio>
 
 using namespace warp;
+
+template<> ResourceManager<Shader> * Object<Shader>::manager = ShaderManager::getInstance();
 
 void Shader::loadFromFile(const std::string& vertexShaderFilename, const std::string &fragmentShaderFilename)
 {

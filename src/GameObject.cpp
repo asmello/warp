@@ -1,8 +1,11 @@
 #include "GameObject.hpp"
+#include "GameObjectManager.hpp"
 
 #include "Transform.hpp"
 
 using namespace warp;
+
+template<> ResourceManager<GameObject> * Object<GameObject>::manager = GameObjectManager::getInstance();
 
 GameObject::GameObject() : transform(std::make_shared<Transform>(id))
 {

@@ -1,7 +1,11 @@
 #include "Mesh.hpp"
+#include "MeshManager.hpp"
+
 #include "Transform.hpp"
 
 using namespace warp;
+
+template<> ResourceManager<Mesh> * Object<Mesh>::manager = MeshManager::getInstance();
 
 //static constexpr float TAU = static_cast<float>(2.0 * glm::pi<double>());
 

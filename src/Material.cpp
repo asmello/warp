@@ -1,9 +1,12 @@
 #include "Material.hpp"
+#include "MaterialManager.hpp"
 
 #include "ShaderManager.hpp"
 #include "TextureManager.hpp"
 
 using namespace warp;
+
+template<> ResourceManager<Material> * Object<Material>::manager = MaterialManager::getInstance();
 
 Material::Material(Texture::ID texture, Shader::ID shader)
 : shaderID(shader)

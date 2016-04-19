@@ -1,4 +1,5 @@
 #include "Camera.hpp"
+#include "CameraManager.hpp"
 
 #include "Shader.hpp"
 #include "ShaderManager.hpp"
@@ -13,6 +14,8 @@
 #include "util.hpp"
 
 using namespace warp;
+
+template<> ResourceManager<Camera> * Object<Camera>::manager = CameraManager::getInstance();
 
 Camera::Camera() : Component(GameObjectManager::getInstance()->create()),
 fieldOfView(45.0f), aspectRatio(1.0f), nearField(0.1f), farField(100.0f),
