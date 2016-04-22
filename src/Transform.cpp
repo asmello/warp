@@ -15,13 +15,13 @@
 using namespace warp;
 
 Transform::Transform() :
-position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr)
+position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr), valid(false)
 {
     
 }
 
 Transform::Transform(Object<GameObject>::ID gameObject) : Component(gameObject),
-position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr)
+position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr), valid(false)
 {
     
 }
@@ -46,81 +46,120 @@ void Transform::bind()
 void Transform::scale(float xfactor, float yfactor, float zfactor)
 {
     scaleFactors *= glm::vec3(xfactor, yfactor, zfactor);
+    invalidate();
 }
 
 void Transform::scale(float factor)
 {
     scaleFactors *= glm::vec3(factor, factor, factor);
+    invalidate();
 }
 
 void Transform::scale(glm::vec3 factors)
 {
     scaleFactors *= factors;
+    invalidate();
 }
 
 void Transform::rotate(float angle, glm::vec3 axis)
 {
     rotation = glm::rotate(rotation, angle, axis);
+    invalidate();
 }
 
 void Transform::rotate(float angle, float x, float y, float z)
 {
     rotation = glm::rotate(rotation, angle, glm::vec3(x, y, z));
+    invalidate();
 }
 
 void Transform::rotateX(float angle)
 {
     rotation = glm::rotate(rotation, angle, glm::vec3(1, 0, 0));
+    invalidate();
 }
 
 void Transform::rotateY(float angle)
 {
     rotation = glm::rotate(rotation, angle, glm::vec3(0, 1, 0));
+    invalidate();
 }
 
 void Transform::rotateZ(float angle)
 {
     rotation = glm::rotate(rotation, angle, glm::vec3(0, 0, 1));
+    invalidate();
 }
 
 void Transform::translate(float x, float y, float z)
 {
     position += glm::vec3(x, y, z);
+    invalidate();
 }
 
 void Transform::translate(glm::vec3 delta)
 {
     position += delta;
+    invalidate();
 }
 
 void Transform::setPosition(glm::vec3 position_)
 {
     position = position_;
+    invalidate();
 }
 
 void Transform::setRotation(glm::quat q)
 {
     rotation = q;
+    invalidate();
 }
 
 void Transform::lookAt(glm::vec3 point, glm::vec3 up)
 {
     rotation = glm::toQuat(glm::lookAt(position, point, up));
+    invalidate();
 }
 
 void Transform::setParent(std::shared_ptr<Transform> parent_)
 {
     parent = parent_;
+    parent->children.push_back(shared_from_this());
+    if (!parent->valid)
+    {
+        invalidate();
+    }
 }
 
-glm::mat4 Transform::getTransformation()
+void Transform::invalidate()
+{
+    valid = false;
+    for (std::weak_ptr<Transform>& childRef : children)
+    {
+        std::shared_ptr<Transform> child = childRef.lock();
+        child->invalidate();
+    }
+}
+
+void Transform::revalidate()
 {
     glm::mat4 trans;
     trans = glm::translate(trans, position);
     trans *= glm::toMat4(rotation);
     trans = glm::scale(trans, scaleFactors);
-    if (parent != nullptr) {
+    if (parent != nullptr)
+    {
         trans = parent->getTransformation() * trans;
     }
-    return trans;
+    cachedTransformation = trans;
+    valid = true;
+}
+
+glm::mat4 Transform::getTransformation()
+{
+    if (!valid)
+    {
+        revalidate();
+    }
+    return cachedTransformation;
 }

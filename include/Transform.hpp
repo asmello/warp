@@ -14,13 +14,19 @@
 
 namespace warp
 {
-    class Transform : public Component
+    class Transform : public Component, public std::enable_shared_from_this<Transform>
     {
     private:
         glm::vec3 position, scaleFactors;
         glm::quat rotation;
-        std::vector<std::shared_ptr<Transform>> children;
+        std::vector<std::weak_ptr<Transform>> children;
         std::shared_ptr<Transform> parent;
+        
+        bool valid;
+        glm::mat4 cachedTransformation;
+        
+        void revalidate();
+        void invalidate();
         
         template <typename TReal>
         static inline void Decompose (const aiMatrix4x4t<TReal>& mat,
