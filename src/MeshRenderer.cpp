@@ -1,8 +1,14 @@
 #include "MeshRenderer.hpp"
 
+#include "GameObject.hpp"
 #include "GameObjectManager.hpp"
+#include "Material.hpp"
 #include "MaterialManager.hpp"
+#include "Camera.hpp"
 #include "CameraManager.hpp"
+#include "Light.hpp"
+#include "LightManager.hpp"
+#include "Mesh.hpp"
 #include "MeshManager.hpp"
 
 using namespace warp;
@@ -22,12 +28,18 @@ Renderer(GameObjectManager::getInstance()->create(), material), meshID(mesh)
     
 }
 
-void MeshRenderer::render(Camera::ID cameraID)
+void MeshRenderer::render(Camera::ID cameraID, std::vector<Light::ID> lights)
 {
     MaterialManager::getInstance()->setActive(materialID);
     CameraManager::getInstance()->setActive(cameraID);
     MeshManager::getInstance()->setActive(meshID);
     GameObjectManager::getInstance()->setActive(gameObjectID);
+    
+    LightManager * lightManager = LightManager::getInstance();
+    for (Light::ID lightID : lights)
+    {
+        lightManager->setActive(lightID);
+    }
     
     if (std::shared_ptr<Mesh> mesh = MeshManager::getInstance()->get(meshID))
     {

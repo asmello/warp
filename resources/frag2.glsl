@@ -1,5 +1,11 @@
 #version 410
 
+struct DirectionalLight {
+	vec3 color;
+	float intensity;
+	vec3 direction;
+};
+
 layout(location = 1) in vec3 v_normal;
 layout(location = 3) in vec3 v_tangent;
 layout(location = 0) in vec2 v_texcoord;
@@ -10,13 +16,7 @@ layout(location = 0) out vec4 outColor;
 uniform sampler2D u_sampler0;
 uniform sampler2D u_sampler1;
 uniform vec3 u_camPosition;
-
-
-struct DirectionalLight {
-	vec3 color;
-	float intensity;
-	vec3 direction;
-};
+uniform DirectionalLight u_sun;
 
 vec3 CalcBumpedNormal (){
     vec3 Normal = normalize(v_normal);
@@ -32,19 +32,11 @@ vec3 CalcBumpedNormal (){
     return NewNormal;
 }
 
-
 void main()
 {
-
-	DirectionalLight sun = DirectionalLight (
-		vec3 (1.0, 1.0, 0.93),
-		1.0,
-		vec3 (-0.15, -0.1, -0.9)
-	);
-
 	//Lights
 	vec4 ambientLight = vec4 (0.1, 0.06, 0.15, 1.0) * 1;
-	vec3 sunNormalized = normalize (sun.direction);
+	vec3 sunNormalized = normalize (u_sun.direction);
 	vec4 specularColor = vec4 (1.0, 1.0, 1.0, 1.0);
 
 	//UsefullVectors

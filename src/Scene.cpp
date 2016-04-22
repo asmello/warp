@@ -3,6 +3,8 @@
 
 #include "Mesh.hpp"
 #include "MeshManager.hpp"
+#include "Light.hpp"
+#include "LightManager.hpp"
 #include "Camera.hpp"
 #include "CameraManager.hpp"
 #include "GameObject.hpp"
@@ -23,9 +25,19 @@ std::vector<std::shared_ptr<Renderer>> Scene::getRenderers()
     return renderers;
 }
 
+std::vector<Light::ID> Scene::getLights()
+{
+    return lights;
+}
+
 void Scene::addCamera(Camera::ID camera)
 {
     cameras.push_back(camera);
+}
+
+void Scene::addLight(Light::ID light)
+{
+    lights.push_back(light);
 }
 
 void Scene::createCamera()

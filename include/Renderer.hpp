@@ -3,24 +3,27 @@
 
 #include "Object.hpp"
 #include "Component.hpp"
-#include "GameObject.hpp"
-#include "Material.hpp"
-#include "Camera.hpp"
 
+#include <vector>
 #include <memory>
 
 namespace warp
 {
+    class Light;
+    class Camera;
+    class Material;
+    class GameObject;
+    
     class Renderer : public Component, public Object<Renderer>
     {
     public:
-        Renderer(GameObject::ID gameObject, Material::ID material);
-        Renderer(Material::ID material);
-		GameObject::ID getGameObjectID() const;
-        virtual void render(Camera::ID cameraID) = 0;
+        Renderer(Object<GameObject>::ID gameObject, Object<Material>::ID material);
+        Renderer(Object<Material>::ID material);
+		Object<GameObject>::ID getGameObjectID() const;
+        virtual void render(Object<Camera>::ID cameraID, std::vector<Object<Light>::ID> lights) = 0;
         
     protected:
-        Material::ID materialID;
+        Object<Material>::ID materialID;
         bool active;
     };
 }

@@ -1,8 +1,6 @@
 #ifndef Scene_hpp
 #define Scene_hpp
 
-#include "Mesh.hpp"
-#include "Camera.hpp"
 #include "CameraManager.hpp"
 #include "Renderer.hpp"
 
@@ -11,16 +9,23 @@
 
 namespace warp
 {
+    class Light;
+    class Camera;
+    
     class Scene : public Object<Scene>
     {
         friend class SceneManager;
     private:
-        std::vector<Camera::ID> cameras;
+        std::vector<Object<Camera>::ID> cameras;
         std::vector<std::shared_ptr<Renderer>> renderers;
+        std::vector<Object<Light>::ID> lights;
+        
     public:
-        std::vector<Camera::ID> getCameras();
+        std::vector<Object<Camera>::ID> getCameras();
+        std::vector<Object<Light>::ID> getLights();
         std::vector<std::shared_ptr<Renderer>> getRenderers();
-        void addCamera(Camera::ID camera);
+        void addCamera(Object<Camera>::ID camera);
+        void addLight(Object<Light>::ID light);
         void createCamera();
         template <typename... Args>
         void createCamera(Args&&... args)

@@ -3,18 +3,17 @@
 
 #include "Singleton.hpp"
 #include "ResourceManager.hpp"
+#include "Material.hpp"
 
 namespace warp
 {
-    class Material;
-
     class MaterialManager : public ResourceManager<Material>, public Singleton<MaterialManager>
     {
     public:
-        void setActive(Object<Material>::ID id);
+        void setActive(Material::ID id);
 
     private:
-        Object<Material>::ID activeID;
+        Material::ID activeID;
     };
 }
 

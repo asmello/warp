@@ -5,16 +5,20 @@
 #include <memory>
 
 #include "GameObjectManager.hpp"
+#include "DirectionalLight.hpp"
 #include "MaterialManager.hpp"
 #include "TextureManager.hpp"
 #include "ShaderManager.hpp"
 #include "SceneRenderer.hpp"
+#include "LightManager.hpp"
 #include "SceneManager.hpp"
 #include "MeshRenderer.hpp"
 #include "MeshManager.hpp"
 #include "GameObject.hpp"
 #include "Transform.hpp"
 #include "GameLoop.hpp"
+#include "Texture.hpp"
+#include "Camera.hpp"
 #include "Input.hpp"
 #include "Scene.hpp"
 #include "Mesh.hpp"
@@ -48,12 +52,21 @@ int main(int, char const**)
 //    auto meshManager = warp::MeshManager::getInstance();
     auto cameraManager = warp::CameraManager::getInstance();
     auto sceneManager = warp::SceneManager::getInstance();
+    auto lightManager = warp::LightManager::getInstance();
     
     auto cameraID = cameraManager->create();
     if (std::shared_ptr<warp::Camera> camera = cameraManager->get(cameraID))
     {
         camera->setPosition(glm::vec3(0, 5, 0));
         camera->lookAt(glm::vec3(0,0,0), glm::vec3(0,0,1));
+    }
+    
+    auto sunID = lightManager->create<warp::DirectionalLight>();
+    if (std::shared_ptr<warp::DirectionalLight> sun = std::dynamic_pointer_cast<warp::DirectionalLight>(lightManager->get(sunID)))
+    {
+        sun->setIntensity(1.0f);
+        sun->setDirection(glm::vec3(-0.15f, -0.1f, -0.9f));
+        sun->setColor(glm::vec3(1.0f, 1.0f, 0.93f));
     }
     
 //    auto steveShaderID = shaderManager->createFromFile(util::resourcePath() + "vertex.glsl", util::resourcePath() + "frag.glsl");
@@ -76,20 +89,21 @@ int main(int, char const**)
 //        scene->addCamera(cameraID);
 //    }
     
-    auto geckoShaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl", util::resourcePath() + "frag2.glsl");
-    auto geckoColorTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_CLM.bmp");
-    auto geckoNormalTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_NRM.png");
-	auto geckoMaterialID = materialManager->create(std::vector<warp::Texture::ID>({ geckoColorTextureID, geckoNormalTextureID }), geckoShaderID);
+    auto coinShaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl", util::resourcePath() + "frag2.glsl");
+    auto coinColorTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_CLM.bmp");
+    auto coinNormalTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_NRM.png");
+	auto coinMaterialID = materialManager->create(std::vector<warp::Texture::ID>({ coinColorTextureID, coinNormalTextureID }), coinShaderID);
     
-    // Create the Gecko scene object
-    warp::Scene::ID geckoSceneID = sceneManager->createFromFile(util::resourcePath() + "LogoLP_MDL.fbx", geckoMaterialID);
+    // Create the Coin scene object
+    warp::Scene::ID coinSceneID = sceneManager->createFromFile(util::resourcePath() + "LogoLP_MDL.fbx", coinMaterialID);
     
-    if (std::shared_ptr<warp::Scene> scene = sceneManager->get(geckoSceneID))
+    if (std::shared_ptr<warp::Scene> scene = sceneManager->get(coinSceneID))
     {
         scene->addCamera(cameraID);
+        scene->addLight(sunID);
     }
     
-    // Adjust Gecko
+    // Adjust Coin
     if (std::shared_ptr<warp::GameObject> rootObject = gameObjectManager->get(warp::GameObject::ID(1)))
     {
         rootObject->getTransform()->scale(0.015);
@@ -143,7 +157,7 @@ int main(int, char const**)
 //    }
     
     // Create and initialize the scene renderer
-    auto sceneRenderer = std::make_shared<warp::SceneRenderer>(geckoSceneID);
+    auto sceneRenderer = std::make_shared<warp::SceneRenderer>(coinSceneID);
     sceneRenderer->init();
     
     // The scene renderer will listen to window events

@@ -54,6 +54,7 @@ set(WARP_SOURCES
 	src/Mesh.cpp
 	src/Input.cpp
 	src/Scene.cpp
+	src/Light.cpp
 	src/Shader.cpp
 	src/Camera.cpp
 	src/Texture.cpp
@@ -67,11 +68,13 @@ set(WARP_SOURCES
 	src/MeshManager.cpp
 	src/MeshRenderer.cpp
 	src/SceneManager.cpp
+	src/LightManager.cpp
 	src/SceneRenderer.cpp
 	src/ShaderManager.cpp
 	src/CameraManager.cpp
 	src/TextureManager.cpp
 	src/MaterialManager.cpp
+	src/DirectionalLight.cpp
 	src/GameObjectManager.cpp
 )
 set(WARP_HEADERS
@@ -79,6 +82,7 @@ set(WARP_HEADERS
 	include/Mesh.hpp
 	include/Input.hpp
 	include/Scene.hpp
+	include/Light.hpp
 	include/Object.hpp
 	include/Shader.hpp
 	include/Camera.hpp
@@ -95,6 +99,7 @@ set(WARP_HEADERS
 	include/MeshManager.hpp
 	include/MeshRenderer.hpp
 	include/SceneManager.hpp
+	include/LightManager.hpp
 	include/InputListener.hpp
 	include/SceneRenderer.hpp
 	include/ShaderManager.hpp
@@ -102,6 +107,7 @@ set(WARP_HEADERS
 	include/TextureManager.hpp
 	include/MaterialManager.hpp
 	include/ResourceManager.hpp
+	include/DirectionalLight.hpp
 	include/GameObjectManager.hpp
 )
 add_executable(Warp ${WARP_SOURCES} ${WARP_HEADERS})

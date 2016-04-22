@@ -1,6 +1,8 @@
 #include "Renderer.hpp"
 
+#include "GameObject.hpp"
 #include "GameObjectManager.hpp"
+#include "Material.hpp"
 
 using namespace warp;
 

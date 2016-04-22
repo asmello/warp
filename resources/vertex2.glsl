@@ -13,6 +13,7 @@ layout(location = 0) out vec2 v_texcoord;
 uniform mat4 u_ViewProj;
 uniform mat4 u_Model;
 uniform vec3 u_camPosition;
+uniform DirectionalLight u_sun;
 
 void main()
 {

@@ -1,7 +1,6 @@
 #ifndef SceneRenderer_hpp
 #define SceneRenderer_hpp
 
-#include "Camera.hpp"
 #include "Renderer.hpp"
 #include "InputListener.hpp"
 
@@ -14,14 +13,15 @@
 namespace warp
 {
     class Scene;
+    class Camera;
     
     class SceneRenderer : public InputListener
     {
     private:
         std::chrono::time_point<std::chrono::high_resolution_clock> t_last;
         std::shared_ptr<Scene> scene;
-        GameObject::ID activeGameObjectID;
-        Camera::ID activeCameraID;
+        Object<GameObject>::ID activeGameObjectID;
+        Object<Camera>::ID activeCameraID;
         double t_total;
         bool paused;
         

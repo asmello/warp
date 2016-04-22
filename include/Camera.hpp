@@ -4,7 +4,6 @@
 #include "Object.hpp"
 #include "Component.hpp"
 
-#include <GL/glew.h>
 #include <glm/glm.hpp>
 
 #include <memory>

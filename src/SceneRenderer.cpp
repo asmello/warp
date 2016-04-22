@@ -3,8 +3,12 @@
 #include "Scene.hpp"
 #include "SceneManager.hpp"
 
+#include "GameObject.hpp"
 #include "GameObjectManager.hpp"
+#include "Camera.hpp"
 #include "CameraManager.hpp"
+#include "Light.hpp"
+#include "LightManager.hpp"
 #include "Transform.hpp"
 #include "Mesh.hpp"
 #include "util.hpp"
@@ -62,7 +66,7 @@ void SceneRenderer::render()
     for (Camera::ID cameraID : scene->getCameras())
     {
         // Render visible objects
-        for (std::shared_ptr<Renderer>& renderer : scene->getRenderers()) renderer->render(cameraID);
+        for (std::shared_ptr<Renderer>& renderer : scene->getRenderers()) renderer->render(cameraID, scene->getLights());
     }
 }
 

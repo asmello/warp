@@ -2,26 +2,30 @@
 #define MeshRenderer_hpp
 
 #include "Renderer.hpp"
-#include "GameObject.hpp"
-#include "Material.hpp"
-#include "Mesh.hpp"
 
+#include <vector>
 #include <memory>
 
 namespace warp
 {
+    class GameObject;
+    class Material;
+    class Camera;
+    class Light;
+    class Mesh;
+    
     class MeshRenderer : public Renderer
     {
     public:
-        MeshRenderer(GameObject::ID object,
-                     Material::ID materialID,
-                     Mesh::ID meshID);
-        MeshRenderer(Material::ID materialID,
-                     Mesh::ID meshID);
-        void render(Camera::ID cameraID);
+        MeshRenderer(Object<GameObject>::ID object,
+                     Object<Material>::ID materialID,
+                     Object<Mesh>::ID meshID);
+        MeshRenderer(Object<Material>::ID materialID,
+                     Object<Mesh>::ID meshID);
+        void render(Object<Camera>::ID cameraID, std::vector<Object<Light>::ID> lights);
         
     private:
-        Mesh::ID meshID;
+        Object<Mesh>::ID meshID;
     };
 }
 
