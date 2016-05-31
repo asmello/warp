@@ -15,10 +15,9 @@ namespace warp
     class Scene;
     class Camera;
     
-    class SceneRenderer : public InputListener
+    class SceneRenderer : public InputListener, public Renderer
     {
     private:
-        std::chrono::time_point<std::chrono::high_resolution_clock> t_last;
         std::shared_ptr<Scene> scene;
         Object<GameObject>::ID activeGameObjectID;
         Object<Camera>::ID activeCameraID;
@@ -26,8 +25,7 @@ namespace warp
         bool paused;
         
     public:
-        SceneRenderer(Object<Scene>::ID scene);
-        SceneRenderer(std::initializer_list<Object<Scene>::ID> scenes);
+        SceneRenderer();
         void init();
         void render();
         void pause();

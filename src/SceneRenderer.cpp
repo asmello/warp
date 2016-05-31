@@ -4,11 +4,8 @@
 #include "SceneManager.hpp"
 
 #include "GameObject.hpp"
-#include "GameObjectManager.hpp"
 #include "Camera.hpp"
-#include "CameraManager.hpp"
 #include "Light.hpp"
-#include "LightManager.hpp"
 #include "Transform.hpp"
 #include "Mesh.hpp"
 #include "util.hpp"
@@ -17,8 +14,7 @@
 
 using namespace warp;
 
-SceneRenderer::SceneRenderer(Scene::ID scene_)
-: scene(SceneManager::getInstance()->get(scene_)), activeGameObjectID(0), activeCameraID(0), t_total(0.0), paused(false)
+SceneRenderer::SceneRenderer() : Renderer(), activeGameObjectID(0), activeCameraID(0), paused(false)
 {
     
 }
@@ -37,9 +33,6 @@ void SceneRenderer::init()
 {
     // Set the background color
     glClearColor (0.1f, 0.06f, 0.15f, 1.0f);
-    
-    // Start counting time
-    t_last = std::chrono::high_resolution_clock::now();
     
     // Set geometry shader settings
     glFrontFace(GL_CCW);

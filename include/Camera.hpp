@@ -10,10 +10,8 @@
 
 namespace warp
 {
-    class Camera : public Component, public Object<Camera>
+    class Camera : public Component
     {
-        friend class CameraManager;
-        
     public:
         // These constructors should not be used directly
         Camera();

@@ -7,11 +7,13 @@
 
 namespace warp
 {
-    class Light : public Component, public Object<Light>
+    class Light : public Component
     {
-        friend class LightManager;
+    
     public:
-        virtual void bind() = 0;
+        
+    private:
+        glm::vec4 color, vector, decay;
     };
 }
 

@@ -14,7 +14,7 @@ namespace warp
     class Material;
     class GameObject;
     
-    class Renderer : public Component, public Object<Renderer>
+    class Renderer : public Component
     {
     public:
         Renderer(Object<GameObject>::ID gameObject, Object<Material>::ID material);

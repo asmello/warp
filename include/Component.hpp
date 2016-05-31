@@ -9,16 +9,18 @@ namespace warp
 {
 	class GameObject;
 
-    class Component
+    class Component : public Object<Component>
     {
+        friend class GameObject;
     public:
         Component();
-        Component(Object<GameObject>::ID gameObject);
-        Object<GameObject>::ID getGameObjectID() const;
         std::shared_ptr<GameObject> getGameObject() const;
         
     protected:
-        Object<GameObject>::ID gameObjectID;
+        std::weak_ptr<GameObject> gameObject;
+        
+    private:
+        std::size_t type_code;
     };
 }
 

@@ -3,7 +3,6 @@
 #include "Shader.hpp"
 #include "ShaderManager.hpp"
 #include "GameObject.hpp"
-#include "GameObjectManager.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/constants.hpp>
@@ -15,12 +14,6 @@
 using namespace warp;
 
 Transform::Transform() :
-position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr), valid(false)
-{
-    
-}
-
-Transform::Transform(Object<GameObject>::ID gameObject) : Component(gameObject),
 position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr), valid(false)
 {
     
@@ -162,4 +155,20 @@ glm::mat4 Transform::getTransformation()
         revalidate();
     }
     return cachedTransformation;
+}
+
+std::shared_ptr<Transform> Transform::getParent()
+{
+    return parent;
+}
+
+std::shared_ptr<Transform> Transform::getRoot()
+{
+    if (!parent) return std::make_shared<Transform>(this);
+    std::shared_ptr<Transform> root = parent;
+    while (root->parent)
+    {
+        root = root->parent;
+    }
+    return root;
 }

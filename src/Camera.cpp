@@ -1,10 +1,8 @@
 #include "Camera.hpp"
-#include "CameraManager.hpp"
 
 #include "Shader.hpp"
 #include "ShaderManager.hpp"
 #include "GameObject.hpp"
-#include "GameObjectManager.hpp"
 #include "Transform.hpp"
 
 #include <GL/glew.h>
@@ -12,13 +10,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-#include "util.hpp"
-
 using namespace warp;
 
-template<> ResourceManager<Camera> * Object<Camera>::manager = CameraManager::getInstance();
-
-Camera::Camera() : Component(GameObjectManager::getInstance()->create()),
+Camera::Camera() :
 fieldOfView(45.0f), aspectRatio(1.0f), nearField(0.1f), farField(100.0f),
 viewChanged(true), projectionChanged(false)
 {

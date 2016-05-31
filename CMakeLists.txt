@@ -68,14 +68,10 @@ set(WARP_SOURCES
 	src/MeshManager.cpp
 	src/MeshRenderer.cpp
 	src/SceneManager.cpp
-	src/LightManager.cpp
 	src/SceneRenderer.cpp
 	src/ShaderManager.cpp
-	src/CameraManager.cpp
 	src/TextureManager.cpp
 	src/MaterialManager.cpp
-	src/DirectionalLight.cpp
-	src/GameObjectManager.cpp
 )
 set(WARP_HEADERS
 	include/util.hpp
@@ -99,16 +95,12 @@ set(WARP_HEADERS
 	include/MeshManager.hpp
 	include/MeshRenderer.hpp
 	include/SceneManager.hpp
-	include/LightManager.hpp
 	include/InputListener.hpp
 	include/SceneRenderer.hpp
 	include/ShaderManager.hpp
-	include/CameraManager.hpp
 	include/TextureManager.hpp
 	include/MaterialManager.hpp
 	include/ResourceManager.hpp
-	include/DirectionalLight.hpp
-	include/GameObjectManager.hpp
 )
 add_executable(Warp ${WARP_SOURCES} ${WARP_HEADERS})
 target_link_libraries(Warp ${ALL_LIBS})

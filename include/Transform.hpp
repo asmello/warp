@@ -85,8 +85,7 @@ namespace warp
         
     public:
         Transform();
-        Transform(Object<GameObject>::ID gameObject);
-        Transform(const aiMatrix4x4& gameObject);
+        Transform(const aiMatrix4x4& aiTransform);
         
         void bind();
         void scale(float xfactor, float yfactor, float zfactor);
@@ -103,6 +102,8 @@ namespace warp
         void setPosition(glm::vec3 position);
         void setRotation(glm::quat q);
         void setParent(std::shared_ptr<Transform> parent);
+        std::shared_ptr<Transform> getParent();
+        std::shared_ptr<Transform> getRoot();
         glm::mat4 getTransformation();
     };
 }
