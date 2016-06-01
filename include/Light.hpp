@@ -19,14 +19,14 @@ namespace warp
         Light(Type type);
         
         static const GLuint MAX_LIGHTS = 8;
-        GLubyte *getData() const;
+        GLfloat *getData() const;
         void setColor(glm::vec3 rgb);
         void setType(Type type);
         void setVector(glm::vec3 vector);
         void setAttenuation(glm::vec4 factors);
         
     private:
-        glm::vec4 color, vector, attenuation;
+        glm::mat4 data;
     };
 }
 
