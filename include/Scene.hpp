@@ -22,7 +22,8 @@ namespace warp
         std::shared_ptr<Scene> getScene();
         
     public:
-        
+        Scene();
+        std::shared_ptr<GameObject> newGameObject();
         
     };
 }
