@@ -15,7 +15,7 @@ namespace warp
     private:
         template <class T> void addComponent(std::shared_ptr<T> component)
         {
-            components.push_back(component);
+            components.insert(component->type_code, component);
         }
         
     protected:

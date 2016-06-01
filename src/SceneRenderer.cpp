@@ -3,18 +3,23 @@
 #include "Scene.hpp"
 #include "SceneManager.hpp"
 
+#include "Shader.hpp"
+#include "ShaderManager.hpp"
 #include "GameObject.hpp"
+#include "Transform.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
-#include "Transform.hpp"
 #include "Mesh.hpp"
 #include "util.hpp"
 
 #include <SFML/Window.hpp>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 using namespace warp;
 
-SceneRenderer::SceneRenderer() : Renderer(), activeGameObjectID(0), activeCameraID(0), paused(false)
+SceneRenderer::SceneRenderer() : activeGameObjectID(0), activeCameraID(0), t_total(0.0), paused(false)
 {
     
 }
@@ -29,16 +34,66 @@ bool SceneRenderer::isPaused() const
     return paused;
 }
 
+// requires shaders ready
 void SceneRenderer::init()
 {
     // Set the background color
     glClearColor (0.1f, 0.06f, 0.15f, 1.0f);
+    
+    // Start counting time
+    t_last = std::chrono::high_resolution_clock::now();
     
     // Set geometry shader settings
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
+    
+    // Create Light Uniform Buffer (LUB)
+    glGenBuffers(1, &uboLights);
+    glBindBuffer(GL_UNIFORM_BUFFER, uboLights);
+    glBufferData(GL_UNIFORM_BUFFER, Light::MAX_LIGHTS * 3 * 4*sizeof(GLfloat), NULL, GL_STATIC_DRAW);
+    
+    // Get all light sources
+    std::vector<std::shared_ptr<Light>> lights = scene->getComponents<Light>();
+    
+    // Upload light data to LUB
+    for (GLint i = 0; i < Light::MAX_LIGHTS && i < lights.size(); ++i)
+    {
+        glBufferSubData(GL_UNIFORM_BUFFER,
+                        i*3*sizeof(glm::vec4),
+                        3*sizeof(glm::vec4),
+                        lights[i]->getData());
+    }
+    
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    
+    // Two-way bind the LUB to shader binding point
+    glBindBufferBase(GL_UNIFORM_BUFFER, 0, uboLights);
+    ShaderManager::getInstance()->setUniformBlockBinding("lightsBlock", 0);
+    
+    
+    // Create Matrix Uniform Buffer (MUB)
+    glGenBuffers(1, &uboMatrices);
+    glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
+    glBufferData(GL_UNIFORM_BUFFER, NUM_UNIFORM_MATRICES*sizeof(glm::mat4), NULL, GL_STATIC_DRAW);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    
+    // Two-way bind the MUB to shader binding point
+    glBindBufferBase(GL_UNIFORM_BUFFER, 1, uboMatrices);
+    ShaderManager::getInstance()->setUniformBlockBinding("matricesBlock", 1);
+}
+
+void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
+{
+    if (camera->update())
+    {
+        glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
+        glBufferSubData(GL_UNIFORM_BUFFER,
+                        0, NUM_UNIFORM_MATRICES*sizeof(glm::mat4),
+                        glm::value_ptr(camera->getViewProjection()));
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);  
+    }
 }
 
 void SceneRenderer::render()
@@ -56,10 +111,16 @@ void SceneRenderer::render()
     t_last = t_now; // Update last tick
     
     // For each camera in the scene
-    for (Camera::ID cameraID : scene->getCameras())
+    for (const std::shared_ptr<Camera>& camera : scene->getComponents<Camera>())
     {
+        updateCamera(camera);
+        
         // Render visible objects
-        for (std::shared_ptr<Renderer>& renderer : scene->getRenderers()) renderer->render(cameraID, scene->getLights());
+        for (std::shared_ptr<Renderer>& renderer : scene->getComponents<Renderer>())
+        {
+            renderer->activate();
+            renderer->render();
+        }
     }
 }
 
@@ -123,15 +184,12 @@ void SceneRenderer::onMouseScrolled(float delta)
 
 void SceneRenderer::onResized(int width, int height)
 {
-    if (std::shared_ptr<Camera> camera = CameraManager::getInstance()->get(activeCameraID))
-    {
-        camera->reshape(width, height);
-    }
+    scene->getComponent<Camera>()->reshape(width, height);
 }
 
 std::shared_ptr<GameObject> SceneRenderer::getActiveGameObject()
 {
-    return GameObjectManager::getInstance()->get(activeGameObjectID);
+    return scene;
 }
 
 void SceneRenderer::processInput()

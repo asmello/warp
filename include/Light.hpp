@@ -5,15 +5,18 @@
 
 #include <glm/glm.hpp>
 
+#include <GL/glew.h>
+
 namespace warp
 {
     class Light : public Component
     {
-    
     public:
+        static const GLuint MAX_LIGHTS = 8;
+        GLubyte *getData() const;
         
     private:
-        glm::vec4 color, vector, decay;
+        glm::vec4 color, vector, attenuation;
     };
 }
 

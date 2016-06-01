@@ -15,6 +15,7 @@ namespace warp
     public:
         Component();
         std::shared_ptr<GameObject> getGameObject() const;
+        Object<GameObject>::ID getGameObjectID() const;
         
     protected:
         std::weak_ptr<GameObject> gameObject;

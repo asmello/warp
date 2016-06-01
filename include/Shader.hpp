@@ -28,6 +28,7 @@ namespace warp
         GLuint getNativeHandle() const;
         GLint getAttribLocation(const std::string& attributeName) const;
         GLint getUniformLocation(const std::string& uniformName) const;
+        void setUniformBlockBinding(const std::string& uniformBlockName, GLint location);
     };
 }
 

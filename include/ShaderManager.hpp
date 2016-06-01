@@ -4,6 +4,8 @@
 #include "Singleton.hpp"
 #include "ResourceManager.hpp"
 
+#include <GL/glew.h>
+
 #include <string>
 
 namespace warp
@@ -17,6 +19,7 @@ namespace warp
         std::shared_ptr<Shader> getActive();
         Object<Shader>::ID createFromFile(const std::string& vertexShaderFile,
                                           const std::string& fragmentShaderFile);
+        void setUniformBlockBinding(const std::string& uniformBlockName, GLint location);
         
     private:
         Object<Shader>::ID activeID;

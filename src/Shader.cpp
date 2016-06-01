@@ -104,7 +104,8 @@ GLuint Shader::getNativeHandle() const
 GLint Shader::getAttribLocation(const std::string &attributeName) const
 {
     GLint loc = glGetAttribLocation(shaderProgram, attributeName.c_str());
-    if (loc < 0) {
+    if (loc < 0)
+    {
         throw std::runtime_error("invalid shader attribute");
     }
     return loc;
@@ -113,10 +114,25 @@ GLint Shader::getAttribLocation(const std::string &attributeName) const
 GLint Shader::getUniformLocation(const std::string &uniformName) const
 {
     GLint loc = glGetUniformLocation(shaderProgram, uniformName.c_str());
-    if (loc < 0) {
+    if (loc < 0)
+    {
         throw std::runtime_error("invalid shader uniform");
     }
     return loc;
+}
+
+void Shader::setUniformBlockBinding(const std::string& uniformBlockName, GLint loc)
+{
+    if (loc < 0)
+    {
+        throw std::runtime_error("invalid location");
+    }
+    GLint idx = __glewGetUniformBlockIndex(shaderProgram, uniformBlockName.c_str());
+    if (idx < 0)
+    {
+        throw std::runtime_error("invalid shader uniform block");
+    }
+    glShaderStorageBlockBinding(shaderProgram, idx, loc);
 }
 
 Shader::~Shader()
@@ -126,7 +142,8 @@ Shader::~Shader()
 
 const char * Shader::typeString(GLenum type)
 {
-    switch (type) {
+    switch (type)
+    {
         case GL_FRAGMENT_SHADER:
             return "FRAGMENT SHADER";
         case GL_VERTEX_SHADER:

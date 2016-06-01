@@ -48,6 +48,16 @@ namespace warp
             return filtered_components;
         }
         
+        template <class T> void forEach(std::function<void(T)> mapper)
+        {
+            std::size_t type_code = typeid(T).hash_code();
+            auto range = components.equal_range(type_code);
+            for (auto it = range.first; it != range.second; ++it)
+            {
+                mapper(it->second);
+            }
+        }
+        
         std::shared_ptr<Transform> getTransform();
         
     protected:

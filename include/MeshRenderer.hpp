@@ -17,14 +17,13 @@ namespace warp
     class MeshRenderer : public Renderer
     {
     public:
-        MeshRenderer(Object<GameObject>::ID object,
-                     Object<Material>::ID materialID,
-                     Object<Mesh>::ID meshID);
         MeshRenderer(Object<Material>::ID materialID,
                      Object<Mesh>::ID meshID);
-        void render(Object<Camera>::ID cameraID, std::vector<Object<Light>::ID> lights);
+        void render();
+        void activate();
         
     private:
+        Object<Material>::ID materialID;
         Object<Mesh>::ID meshID;
     };
 }

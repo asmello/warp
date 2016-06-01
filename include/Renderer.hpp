@@ -9,21 +9,14 @@
 
 namespace warp
 {
-    class Light;
-    class Camera;
-    class Material;
-    class GameObject;
-    
     class Renderer : public Component
     {
     public:
-        Renderer(Object<GameObject>::ID gameObject, Object<Material>::ID material);
-        Renderer(Object<Material>::ID material);
-		Object<GameObject>::ID getGameObjectID() const;
-        virtual void render(Object<Camera>::ID cameraID, std::vector<Object<Light>::ID> lights) = 0;
+        Renderer();
+        void activate();
+        virtual void render() = 0;
         
     protected:
-        Object<Material>::ID materialID;
         bool active;
     };
 }

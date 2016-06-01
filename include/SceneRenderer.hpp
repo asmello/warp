@@ -14,15 +14,20 @@ namespace warp
 {
     class Scene;
     class Camera;
+    class Light;
     
     class SceneRenderer : public InputListener, public Renderer
     {
     private:
+        std::chrono::time_point<std::chrono::high_resolution_clock> t_last;
         std::shared_ptr<Scene> scene;
         Object<GameObject>::ID activeGameObjectID;
         Object<Camera>::ID activeCameraID;
         double t_total;
         bool paused;
+        GLuint uboLights, uboMatrices;
+        
+        void updateCamera(const std::shared_ptr<Camera> camera);
         
     public:
         SceneRenderer();
@@ -35,6 +40,8 @@ namespace warp
         void onResized(int width, int height);
         void processInput();
         std::shared_ptr<GameObject> getActiveGameObject();
+        
+        static const GLuint NUM_UNIFORM_MATRICES = 1;
     };
 }
 
