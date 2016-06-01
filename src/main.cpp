@@ -10,7 +10,6 @@
 #include "SceneRenderer.hpp"
 #include "MeshRenderer.hpp"
 #include "MeshManager.hpp"
-#include "GameObject.hpp"
 #include "Transform.hpp"
 #include "GameLoop.hpp"
 #include "Texture.hpp"
@@ -62,10 +61,10 @@ int main(int, char const**)
     if (std::shared_ptr<warp::Mesh> squareMesh = meshManager->get(squareID))
     {
         squareMesh->setVertices({
-            -0.8f, 0.8f, 0.0f,  0.0f, 0.0f,
-            -0.4f, 0.8f, 0.0f,  1.0f, 0.0f,
-            -0.8f, 0.4f, 0.0f,  0.0f, 1.0f,
-            -0.4f, 0.4f, 0.0f,  1.0f, 1.0f
+            -0.8f, 0.8f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+            -0.4f, 0.8f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+            -0.8f, 0.4f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+            -0.4f, 0.4f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,  1.0f, 1.0f
         });
         squareMesh->setElements({
             0, 2, 1,
@@ -79,20 +78,19 @@ int main(int, char const**)
     std::shared_ptr<warp::SceneRenderer> sRenderer = scene->newComponent<warp::SceneRenderer>();
     
     // Create a camera object
-    std::shared_ptr<warp::GameObject> cameraObj = scene->newGameObject();
-    std::shared_ptr<warp::Camera> camera = cameraObj->newComponent<warp::Camera>();
+    std::shared_ptr<warp::Camera> camera = scene->newGameObject()->newComponent<warp::Camera>();
     camera->setPosition(glm::vec3(0, 0, 5));
     camera->lookAt(glm::vec3(0,0,0), glm::vec3(0,1,0));
+    camera.reset();
     
     // Create a directional light object
-    std::shared_ptr<warp::GameObject> lightObj = scene->newGameObject();
-    std::shared_ptr<warp::Light> light = lightObj->newComponent<warp::Light>(warp::Light::Type::Directional);
+    std::shared_ptr<warp::Light> light = scene->newGameObject()->newComponent<warp::Light>(warp::Light::Type::Directional);
     light->setVector(glm::vec3(-0.15f, -0.1f, -0.9f));
     light->setColor(glm::vec3(1.0f, 1.0f, 0.93f));
+    light.reset();
     
     // Create a mesh object
-    std::shared_ptr<warp::GameObject> meshObj = scene->newGameObject();
-    std::shared_ptr<warp::MeshRenderer> mRenderer = meshObj->newComponent<warp::MeshRenderer>(materialID, squareID);
+    scene->newGameObject()->newComponent<warp::MeshRenderer>(materialID, squareID);
     
     // Initialize rendering context
     sRenderer->init();

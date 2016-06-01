@@ -85,7 +85,6 @@ namespace warp
         
     public:
         Transform();
-        Transform(const aiMatrix4x4& aiTransform);
         
         void bind();
         void scale(float xfactor, float yfactor, float zfactor);
@@ -102,8 +101,11 @@ namespace warp
         void setPosition(glm::vec3 position);
         void setRotation(glm::quat q);
         void setParent(std::shared_ptr<Transform> parent);
+        void setTransformation(const aiMatrix4x4& aiTransform);
+        bool isRoot() const;
         std::shared_ptr<Transform> getParent();
         std::shared_ptr<Transform> getRoot();
+        std::shared_ptr<Transform> newChild();
         glm::mat4 getTransformation();
     };
 }

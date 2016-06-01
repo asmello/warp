@@ -3,7 +3,7 @@
 
 #include "Object.hpp"
 #include "Component.hpp"
-#include "GameObject.hpp"
+#include "Scene.hpp"
 
 #include <vector>
 #include <memory>

@@ -1,5 +1,5 @@
 #include "Component.hpp"
-#include "GameObject.hpp"
+#include "Scene.hpp"
 
 using namespace warp;
 

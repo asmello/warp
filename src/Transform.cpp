@@ -2,7 +2,7 @@
 
 #include "Shader.hpp"
 #include "ShaderManager.hpp"
-#include "GameObject.hpp"
+#include "Scene.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/constants.hpp>
@@ -19,7 +19,7 @@ position(glm::vec3(0, 0, 0)), scaleFactors(glm::vec3(1, 1, 1)), parent(nullptr),
     
 }
 
-Transform::Transform(const aiMatrix4x4& aiTransform) : parent(nullptr)
+void Transform::setTransformation(const aiMatrix4x4& aiTransform)
 {
     aiVector3D scaling_, position_;
     aiQuaternion rotation_;
@@ -164,7 +164,7 @@ std::shared_ptr<Transform> Transform::getParent()
 
 std::shared_ptr<Transform> Transform::getRoot()
 {
-    if (!parent) return std::make_shared<Transform>(this);
+    if (isRoot()) return shared_from_this();
     std::shared_ptr<Transform> root = parent;
     while (root->parent)
     {
@@ -172,3 +172,16 @@ std::shared_ptr<Transform> Transform::getRoot()
     }
     return root;
 }
+
+bool Transform::isRoot() const
+{
+    return !parent;
+}
+
+std::shared_ptr<Transform> Transform::newChild()
+{
+    auto child = std::make_shared<Transform>();
+    child->setParent(shared_from_this());
+    return child;
+}
+

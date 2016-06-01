@@ -17,18 +17,17 @@ namespace warp
     class SceneManager : public ResourceManager<Scene>, public Singleton<SceneManager>
     {
     public:
-        Object<Scene>::ID createFromFile(const std::string &filename, Object<Material>::ID material);
+        Object<GameObject>::ID createFromFile(const std::string &filename, Object<Material>::ID material);
         
     private:
         void loadNodeMeshes(const aiNode * pNode,
                             const aiScene * pScene,
-                            std::shared_ptr<Scene> scene,
-                            Object<GameObject>::ID gameObjectID,
+                            std::shared_ptr<GameObject> node,
                             Object<Material>::ID materialID);
         void loadHierarchy(const aiNode *pNode,
                            const aiScene *pScene,
+                           std::shared_ptr<GameObject> node,
                            std::shared_ptr<Scene> scene,
-                           std::shared_ptr<Transform> parentTransform,
                            Object<Material>::ID materialID);
     };
 }

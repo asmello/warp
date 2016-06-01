@@ -5,7 +5,6 @@
 
 #include "Shader.hpp"
 #include "ShaderManager.hpp"
-#include "GameObject.hpp"
 #include "Transform.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"

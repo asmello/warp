@@ -64,7 +64,6 @@ set(WARP_SOURCES
 	src/Behaviour.cpp
 	src/Transform.cpp
 	src/Component.cpp
-	src/GameObject.cpp
 	src/MeshManager.cpp
 	src/MeshRenderer.cpp
 	src/SceneManager.cpp
@@ -90,7 +89,6 @@ set(WARP_HEADERS
 	include/Transform.hpp
 	include/Component.hpp
 	include/Singleton.hpp
-	include/GameObject.hpp
 	include/Identifier.hpp
 	include/MeshManager.hpp
 	include/MeshRenderer.hpp

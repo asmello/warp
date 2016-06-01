@@ -2,7 +2,7 @@
 
 #include "Shader.hpp"
 #include "ShaderManager.hpp"
-#include "GameObject.hpp"
+#include "Scene.hpp"
 #include "Transform.hpp"
 
 #include <GL/glew.h>

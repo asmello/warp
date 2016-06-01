@@ -1,13 +1,35 @@
 #include "Scene.hpp"
 
+#include "Transform.hpp"
+
 using namespace warp;
 
-Scene::Scene()
+GameObject::GameObject()
 {
     
 }
 
-std::shared_ptr<Scene> Scene::getScene()
+GameObject::GameObject(std::shared_ptr<Transform> transform_) : transform(transform_)
 {
-    return std::make_shared<Scene>(this);
+    
+}
+
+bool GameObject::isRoot() const
+{
+    return transform->isRoot();
+}
+
+std::shared_ptr<Transform> GameObject::getTransform()
+{
+    return transform;
+}
+
+std::shared_ptr<Scene> GameObject::getScene()
+{
+    return std::static_pointer_cast<Scene>(transform->getRoot()->getGameObject());
+}
+
+std::shared_ptr<GameObject> Scene::newGameObject()
+{
+    return std::make_shared<GameObject>(getTransform()->newChild());
 }

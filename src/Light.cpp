@@ -6,6 +6,11 @@
 
 using namespace warp;
 
+Light::Light(Light::Type type)
+{
+    setType(type);
+}
+
 GLfloat *Light::getData() const
 {
     static GLfloat data_buffer[12];

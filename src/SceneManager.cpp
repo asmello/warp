@@ -9,8 +9,7 @@
 #include "MaterialManager.hpp"
 #include "Shader.hpp"
 #include "ShaderManager.hpp"
-#include "GameObject.hpp"
-#include "GameObjectManager.hpp"
+#include "Scene.hpp"
 #include "Transform.hpp"
 #include "MeshRenderer.hpp"
 
@@ -23,8 +22,7 @@ using namespace warp;
 
 void SceneManager::loadNodeMeshes(const aiNode * pNode,
                                   const aiScene * pScene,
-                                  std::shared_ptr<Scene> scene,
-                                  GameObject::ID gameObjectID,
+                                  std::shared_ptr<GameObject> node,
                                   Material::ID materialID)
 {
     MeshManager * meshManager = MeshManager::getInstance();
@@ -72,29 +70,25 @@ void SceneManager::loadNodeMeshes(const aiNode * pNode,
             mesh->load();
         }
         
-        scene->renderers.push_back(std::make_shared<MeshRenderer>(gameObjectID, materialID, meshID));
+        node->newComponent<MeshRenderer>(materialID, meshID);
     }
 }
 
 void SceneManager::loadHierarchy(const aiNode *pNode,
                                  const aiScene *pScene,
+                                 std::shared_ptr<GameObject> node,
                                  std::shared_ptr<Scene> scene,
-                                 std::shared_ptr<Transform> parentTransform,
                                  Material::ID materialID)
 {
-    auto transform = std::make_shared<Transform>(pNode->mTransformation);
-
-    if (parentTransform != nullptr) {
-        transform->setParent(parentTransform);
-    }
+    auto newNode = scene->newGameObject();
+    newNode->getTransform()->setTransformation(pNode->mTransformation);
+    newNode->getTransform()->setParent(node->getTransform());
     
-    GameObject::ID gameObjectID = GameObjectManager::getInstance()->create(transform);
-    
-    loadNodeMeshes(pNode, pScene, scene, gameObjectID, materialID);
+    loadNodeMeshes(pNode, pScene, newNode, materialID);
     
     for (size_t i = 0; i < pNode->mNumChildren; ++i)
     {
-        loadHierarchy(pNode->mChildren[i], pScene, scene, transform, materialID);
+        loadHierarchy(pNode->mChildren[i], pScene, newNode, scene, materialID);
     }
 }
 
@@ -107,7 +101,7 @@ Scene::ID SceneManager::createFromFile(const std::string &filename, Material::ID
     
     if (pScene) {
         auto scene = std::make_shared<Scene>();
-        loadHierarchy(pScene->mRootNode, pScene, scene, nullptr, material);
+        loadHierarchy(pScene->mRootNode, pScene, scene, scene, material);
         resources.push_back(scene);
         return Scene::ID(resources.size()-1);
     }
