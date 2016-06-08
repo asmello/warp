@@ -8,6 +8,7 @@
 #include <typeinfo>
 #include <algorithm>
 #include <unordered_map>
+#include <functional>
 
 namespace warp
 {
