@@ -85,6 +85,7 @@ namespace warp
         std::size_t type_code = typeid(T).hash_code();
         std::vector<std::shared_ptr<T>> filtered_components;
         auto range = components.equal_range(type_code);
+        filtered_components.reserve(std::distance(range.first, range.second));
         std::transform(range.first, range.second, filtered_components.begin(),
                        [](std::pair<std::size_t, std::shared_ptr<Component>> element) {
                            return std::static_pointer_cast<T>(element.second);

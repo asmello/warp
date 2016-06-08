@@ -36,6 +36,8 @@ bool SceneRenderer::isPaused() const
 // requires shaders ready
 void SceneRenderer::init()
 {
+    std::shared_ptr<Scene> scene = std::static_pointer_cast<Scene>(gameObject.lock());
+    
     // Set the background color
     glClearColor (0.1f, 0.06f, 0.15f, 1.0f);
     
@@ -97,6 +99,8 @@ void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
 
 void SceneRenderer::render()
 {
+    std::shared_ptr<Scene> scene = std::static_pointer_cast<Scene>(gameObject.lock());
+    
     // Clear the screen to black
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
@@ -183,11 +187,13 @@ void SceneRenderer::onMouseScrolled(float delta)
 
 void SceneRenderer::onResized(int width, int height)
 {
+    std::shared_ptr<Scene> scene = std::static_pointer_cast<Scene>(gameObject.lock());
     scene->getComponent<Camera>()->reshape(width, height);
 }
 
 std::shared_ptr<GameObject> SceneRenderer::getActiveGameObject()
 {
+    std::shared_ptr<Scene> scene = std::static_pointer_cast<Scene>(gameObject.lock());
     return scene;
 }
 

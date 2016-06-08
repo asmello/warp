@@ -78,19 +78,22 @@ int main(int, char const**)
     std::shared_ptr<warp::SceneRenderer> sRenderer = scene->newComponent<warp::SceneRenderer>();
     
     // Create a camera object
-    std::shared_ptr<warp::Camera> camera = scene->newGameObject()->newComponent<warp::Camera>();
+    std::shared_ptr<warp::GameObject> go1 = scene->newGameObject();
+    std::shared_ptr<warp::Camera> camera = go1->newComponent<warp::Camera>();
     camera->setPosition(glm::vec3(0, 0, 5));
     camera->lookAt(glm::vec3(0,0,0), glm::vec3(0,1,0));
     camera.reset();
     
     // Create a directional light object
-    std::shared_ptr<warp::Light> light = scene->newGameObject()->newComponent<warp::Light>(warp::Light::Type::Directional);
+    auto go2 = scene->newGameObject();
+    std::shared_ptr<warp::Light> light = go2->newComponent<warp::Light>(warp::Light::Type::Directional);
     light->setVector(glm::vec3(-0.15f, -0.1f, -0.9f));
     light->setColor(glm::vec3(1.0f, 1.0f, 0.93f));
     light.reset();
     
     // Create a mesh object
-    scene->newGameObject()->newComponent<warp::MeshRenderer>(materialID, squareID);
+    auto go3 = scene->newGameObject();
+    go3->newComponent<warp::MeshRenderer>(materialID, squareID);
     
     // Initialize rendering context
     sRenderer->init();
