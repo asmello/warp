@@ -48,8 +48,8 @@ int main(int, char const**)
     auto meshManager = warp::MeshManager::getInstance();
     
     // Load a shader from file
-    auto shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex.glsl",
-                                                  util::resourcePath() + "frag.glsl");
+    auto shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
+                                                  util::resourcePath() + "frag2.glsl");
     // Load a texture from file
     auto textureID = textureManager->createFromFile(util::resourcePath() + "test.png");
     

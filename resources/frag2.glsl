@@ -1,10 +1,21 @@
 #version 410
 
-struct DirectionalLight {
-	vec3 color;
-	float intensity;
-	vec3 direction;
+struct Light
+{
+    vec4 color;
+    vec4 vector;
+    vec4 attenuation;
 };
+
+layout (std140) uniform lightsBlock
+{
+    Light lights[8];
+};
+
+layout (std140) uniform matricesBlock
+{
+    mat4 viewProj;
+}le_viewProj;
 
 layout(location = 1) in vec3 v_normal;
 layout(location = 3) in vec3 v_tangent;
@@ -16,7 +27,7 @@ layout(location = 0) out vec4 outColor;
 uniform sampler2D u_sampler0;
 uniform sampler2D u_sampler1;
 uniform vec3 u_camPosition;
-uniform DirectionalLight u_sun;
+//uniform DirectionalLight u_sun;
 
 vec3 CalcBumpedNormal (){
     vec3 Normal = normalize(v_normal);
@@ -36,7 +47,7 @@ void main()
 {
 	//Lights
 	vec4 ambientLight = vec4 (0.1, 0.06, 0.15, 1.0) * 1;
-	vec3 sunNormalized = normalize (u_sun.direction);
+	vec3 sunNormalized = vec3 (0.0, 1.0, 0.0);
 	vec4 specularColor = vec4 (1.0, 1.0, 1.0, 1.0);
 
 	//UsefullVectors
