@@ -15,8 +15,9 @@ namespace warp
     class Component;
     class Scene;
     
-    class GameObject : public Object<GameObject>
+    class GameObject : public Object<GameObject>, public std::enable_shared_from_this<GameObject>
     {
+        friend class Scene;
         
     public:
         // These constructors should not be used directly
@@ -38,7 +39,7 @@ namespace warp
         std::shared_ptr<Scene> getScene();
     };
     
-    class Scene : public GameObject, public std::enable_shared_from_this<Scene>
+    class Scene : public GameObject
     {
         friend class GameObject;
         
@@ -50,6 +51,8 @@ namespace warp
         
     public:
         std::shared_ptr<GameObject> newGameObject();
+        
+        static std::shared_ptr<Scene> newScene();
         
     };
     

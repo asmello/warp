@@ -6,12 +6,12 @@ using namespace warp;
 
 GameObject::GameObject() : transform(std::make_shared<Transform>())
 {
-    
+
 }
 
 GameObject::GameObject(std::shared_ptr<Transform> transform_) : transform(transform_)
 {
-    
+
 }
 
 bool GameObject::isRoot() const
@@ -31,5 +31,14 @@ std::shared_ptr<Scene> GameObject::getScene()
 
 std::shared_ptr<GameObject> Scene::newGameObject()
 {
-    return std::make_shared<GameObject>(getTransform()->newChild());
+    auto gameObject = std::make_shared<GameObject>(getTransform()->newChild());
+    gameObject->transform->gameObject = gameObject;
+    return gameObject;
+}
+
+std::shared_ptr<Scene> Scene::newScene()
+{
+    auto scene = std::make_shared<Scene>();
+    scene->transform->gameObject = scene;
+    return scene;
 }

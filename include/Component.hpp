@@ -12,6 +12,7 @@ namespace warp
     class Component : public Object<Component>
     {
         friend class GameObject;
+        friend class Scene;
     public:
         Component();
         std::shared_ptr<GameObject> getGameObject() const;

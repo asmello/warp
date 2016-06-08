@@ -74,7 +74,7 @@ int main(int, char const**)
     }
     
     // Create the scene object
-    std::shared_ptr<warp::Scene> scene = std::make_shared<warp::Scene>();
+    std::shared_ptr<warp::Scene> scene = warp::Scene::newScene();
     std::shared_ptr<warp::SceneRenderer> sRenderer = scene->newComponent<warp::SceneRenderer>();
     
     // Create a camera object
