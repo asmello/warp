@@ -60,6 +60,7 @@ namespace warp
     std::shared_ptr<T> GameObject::newComponent(Args&&... args)
     {
         std::shared_ptr<T> component = std::make_shared<T>(args...);
+        component->gameObject = shared_from_this();
         std::size_t type_code = typeid(T).hash_code();
         component->type_code = type_code;
         components.insert(std::pair<std::size_t, std::shared_ptr<Component>>(type_code, component));
