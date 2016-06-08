@@ -51,7 +51,7 @@ void SceneRenderer::init()
     // Create Light Uniform Buffer (LUB)
     glGenBuffers(1, &uboLights);
     glBindBuffer(GL_UNIFORM_BUFFER, uboLights);
-    glBufferData(GL_UNIFORM_BUFFER, Light::MAX_LIGHTS * 3 * 4*sizeof(GLfloat), NULL, GL_STATIC_DRAW);
+    glBufferData(GL_UNIFORM_BUFFER, Light::MAX_LIGHTS * 3 * sizeof(glm::vec4), NULL, GL_STATIC_DRAW);
     
     // Get all light sources
     std::vector<std::shared_ptr<Light>> lights = scene->getComponents<Light>();

@@ -4,7 +4,7 @@
 
 using namespace warp;
 
-GameObject::GameObject()
+GameObject::GameObject() : transform(std::make_shared<Transform>())
 {
     
 }

@@ -45,7 +45,7 @@ namespace warp
     private:
         template <class T> void addComponent(std::shared_ptr<T> component)
         {
-            components.insert(component->type_code, component);
+            components.insert(std::pair<std::size_t, std::shared_ptr<Component>>(component->type_code, component));
         }
         
     public:
@@ -59,11 +59,11 @@ namespace warp
         std::shared_ptr<T> component = std::make_shared<T>(args...);
         std::size_t type_code = typeid(T).hash_code();
         component->type_code = type_code;
-        components.insert({type_code, component});
+        components.insert(std::pair<std::size_t, std::shared_ptr<Component>>(type_code, component));
         if (typeid(this) != typeid(Scene))
         {
             std::shared_ptr<Scene> scene = getScene();
-            scene->components.insert({type_code, component});
+            scene->components.insert(std::pair<std::size_t, std::shared_ptr<Component>>(type_code, component));
         }
         return component;
     }
