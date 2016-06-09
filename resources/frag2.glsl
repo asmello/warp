@@ -15,7 +15,7 @@ layout (std140) uniform lightsBlock
 layout (std140) uniform matricesBlock
 {
     mat4 viewProj;
-}le_viewProj;
+};
 
 layout(location = 1) in vec3 v_normal;
 layout(location = 3) in vec3 v_tangent;
@@ -49,7 +49,7 @@ void main()
 	vec4 ambientLight = vec4 (0.1, 0.06, 0.15, 1.0) * 1;
 	vec3 sunNormalized = vec3 (0.0, 1.0, 0.0);
 	vec4 specularColor = vec4 (1.0, 1.0, 1.0, 1.0);
-
+	
 	//UsefullVectors
 	vec3 normalNormalized = normalize (v_normal);
 	vec3 tangentNormalized = normalize (v_tangent);
@@ -67,6 +67,8 @@ void main()
 	vec4 specular = 1.0 * pow (max (0.0, dot (-HalfDirection, perturbedNormals)) , 50.0) * specularColor * texture(u_sampler0, v_texcoord.st) * texture(u_sampler0, v_texcoord.st).w;
 	vec4 rim      = 0.3 * pow(- max (0.0, dot (viewDirection, perturbedNormals)) + 1.0, 1.0) * ambientLight;
 
-    outColor = (difuse + specular + ambient + rim);// * 0.01 + vec4 (perturbedNormals, 1.0);
+	vec4 rosa = vec4 (1.0, 0.0, 1.0, 0.0);
+
+    outColor = rosa + 0.001 * (difuse + specular + ambient + rim);// * 0.01 + vec4 (perturbedNormals, 1.0);
 
 }

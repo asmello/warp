@@ -61,7 +61,7 @@ int main(int, char const**)
 	std::shared_ptr<warp::GameObject> go1 = scene->newGameObject();
 	std::shared_ptr<warp::Camera> camera = go1->newComponent<warp::Camera>();
 	camera->setPosition(glm::vec3(0, 0, 3));
-	camera->lookAt(glm::vec3(0, 0, 1), glm::vec3(0, 1, 0));
+	camera->lookAt(glm::vec3(1, 2, 0), glm::vec3(0, 1, 0));
 	go1->newComponent<Behaviour10>();
 	camera.reset();
 

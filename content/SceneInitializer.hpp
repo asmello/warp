@@ -70,10 +70,10 @@ public:
 		if (std::shared_ptr<warp::Mesh> squareMesh = meshManager->get(meshID))
 		{
 			squareMesh->setVertices({
-				-0.5f, 0.0f, -0.5f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-				-0.5f, 0.0f, 0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-				0.5f, 0.0f, 0.5f,    0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-				0.5f, 0.0f, -0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  1.0f, 1.0f
+				-0.5f, -0.5f, -0.0f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+				-0.5f, 0.5f, 0.0f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+				0.5f, -0.5f, -0.0f,    0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+				0.5f, 0.5f, 0.0f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  1.0f, 1.0f
 			});
 			squareMesh->setElements({
 				0, 2, 1,
@@ -89,8 +89,8 @@ public:
 		// Create a GameObject
 		static auto go = scene->newGameObject();
 		go->newComponent<warp::MeshRenderer>(materialID, meshID);
-		go->getTransform()->scale(10, 10, 10);
-		go->getTransform()->translate(0, -1, 0);
+		//go->getTransform()->scale(10, 10, 10);
+		//go->getTransform()->translate(0, -1, 0);
 		go->newComponent<Behaviour1>();
 
 	}
