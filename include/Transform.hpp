@@ -103,6 +103,8 @@ namespace warp
         void setPosition(glm::vec3 position);
         void setRotation(glm::quat q);
         void setParent(std::shared_ptr<Transform> parent);
+		glm::vec3 getPosition() { return position; } // TODO [Get/Set Local/Global scale/position]
+		glm::vec3 getScale() { return scaleFactors; } // ^
         void setTransformation(const aiMatrix4x4& aiTransform);
         bool isRoot() const;
         std::shared_ptr<Transform> getParent();

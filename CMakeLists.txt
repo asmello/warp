@@ -102,6 +102,16 @@ set(WARP_HEADERS
 	include/ResourceManager.hpp
 
 	content/SceneInitializer.hpp
+	content/Behaviour1.hpp
+	content/Behaviour2.hpp
+	content/Behaviour3.hpp
+	content/Behaviour4.hpp
+	content/Behaviour5.hpp
+	content/Behaviour6.hpp
+	content/Behaviour7.hpp
+	content/Behaviour8.hpp
+	content/Behaviour9.hpp
+	content/Behaviour10.hpp
 )
 add_executable(Warp ${WARP_SOURCES} ${WARP_HEADERS})
 target_link_libraries(Warp ${ALL_LIBS})

@@ -22,6 +22,7 @@
 
 #include "SceneInitializer.hpp"
 #include "SceneManager.hpp"
+#include "Behaviour10.hpp"
 
 
 
@@ -61,6 +62,7 @@ int main(int, char const**)
 	std::shared_ptr<warp::Camera> camera = go1->newComponent<warp::Camera>();
 	camera->setPosition(glm::vec3(0, 0, 3));
 	camera->lookAt(glm::vec3(0, 0, 1), glm::vec3(0, 1, 0));
+	go1->newComponent<Behaviour10>();
 	camera.reset();
 
 	// Populating scene
@@ -125,19 +127,18 @@ int main(int, char const**)
     // The scene renderer will listen to window events
     windowInput.addListener(sRenderer);
     
-	// TODO [scene.start]
+	// Start scene behaviour
+	scene->Behaviour_Start();
 
     // This is the main loop
     auto loop = std::make_shared<warp::GameLoop>(
-    [&windowInput, sRenderer, window]()
+    [&windowInput, sRenderer, window, scene]()
     {
         // Process window events
         windowInput.flush();
         
-		// TODO [scene.update]
-
-        // Handle continuous input
-        sRenderer->processInput(); // TODO [Tirar isso daqui... quem recebe inputs são os behaviours]
+		// Update scene behaviour
+		scene->Behaviour_Update();
         
         // Draw the scene
         sRenderer->render();

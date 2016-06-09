@@ -13,7 +13,7 @@ namespace warp
 	class Behaviour : public Component, public Object<Behaviour>
 	{
 	public:
-		Behaviour(GameObject::ID gameObject);
+		Behaviour();
 
 		virtual void Start() {} // TODO [First frame it is active]
 		virtual void Update() {} // TODO [Once every frame before animation]

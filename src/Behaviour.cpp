@@ -2,7 +2,7 @@
 
 using namespace warp;
 
-Behaviour::Behaviour(GameObject::ID gameObject) : Component()
+Behaviour::Behaviour()
 {
 
 }

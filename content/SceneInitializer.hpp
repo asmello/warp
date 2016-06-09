@@ -22,6 +22,8 @@
 #include "Mesh.hpp"
 #include "util.hpp"
 
+#include "Behaviour1.hpp"
+
 
 class SceneInitializer
 {
@@ -64,14 +66,14 @@ public:
 		auto materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
 
 		// Create a mesh representation
-		auto meshID = meshManager->create(); \
+		auto meshID = meshManager->create();
 		if (std::shared_ptr<warp::Mesh> squareMesh = meshManager->get(meshID))
 		{
 			squareMesh->setVertices({
-				-0.8f, 0.8f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-				-0.4f, 0.8f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-				-0.8f, 0.4f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-				-0.4f, 0.4f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,  1.0f, 1.0f
+				-0.5f, 0.0f, -0.5f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+				-0.5f, 0.0f, 0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+				0.5f, 0.0f, 0.5f,    0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+				0.5f, 0.0f, -0.5f,   0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  1.0f, 1.0f
 			});
 			squareMesh->setElements({
 				0, 2, 1,
@@ -87,6 +89,11 @@ public:
 		// Create a GameObject
 		auto go = scene->newGameObject();
 		go->newComponent<warp::MeshRenderer>(materialID, meshID);
+		go->getTransform()->scale(10, 10, 10);
+		go->getTransform()->translate(0, -1, 0);
+		go->newComponent<Behaviour1>();
+
+		util::printMat4(go->getTransform()->getTransformation());
 	}
 };
 

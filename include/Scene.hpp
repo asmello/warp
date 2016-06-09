@@ -2,6 +2,7 @@
 #define Scene_hpp
 
 #include "Object.hpp"
+#include "Behaviour.hpp"
 
 #include <vector>
 #include <memory>
@@ -14,7 +15,8 @@ namespace warp
 {
     class Transform;
     class Component;
-    class Scene;
+	class Scene;
+	class Behaviour;
     
     class GameObject : public Object<GameObject>, public std::enable_shared_from_this<GameObject>
     {
@@ -59,6 +61,8 @@ namespace warp
 		void Behaviour_Start();
 		void Behaviour_Update();
     };
+
+
     
     template <class T, typename... Args>
     std::shared_ptr<T> GameObject::newComponent(Args&&... args)
