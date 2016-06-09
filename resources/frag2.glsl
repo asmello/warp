@@ -64,7 +64,7 @@ vec4 ShadePhong (Light curLight, vec3 fragPos, vec3 normal, vec3 viewDirection, 
 	vec4 difuse = max (0.0, dot (lightDir, normal)) * textureColor * curLight.color * atten;
 	vec4 specular = 1.0 * pow (max (0.0, dot (viewDirection, lightReflect)) , roughness) * mix (curLight.color, textureColor, metalic) * textureColor.w;
 
-	vec4 finalColor = vec4 (1.0, 1.0, 1.0, 1.0) * dot (viewDirection, normal); //min (difuse + specularity * specular, 1.0);
+	vec4 finalColor = min (difuse + specularity * specular * 0.0, 1.0); //vec4 (1.0, 1.0, 1.0, 1.0) * dot (viewDirection, normal)
 	return finalColor;
 
 }
