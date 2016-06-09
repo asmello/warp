@@ -29,6 +29,18 @@ uniform sampler2D u_sampler1;
 uniform vec3 u_camPosition;
 //uniform DirectionalLight u_sun;
 
+float LightAttenuation (Light curLight, vec3 fragPosition){
+
+	float lightDistance = length (fragPosition -curLight.vector.xyz);
+
+	float pointAttenuation = 1.0 / (curLight.attenuation.x + curLight.attenuation.y * lightDistance + curLight.attenuation.z * lightDistance * lightDistance); 
+	float directionalAttenuation = 1.0;
+	float spotAttenuation = 1.0;
+
+	return mix (pointAttenuation, directionalAttenuation, curLight.vector.w);
+
+}
+
 vec3 CalcBumpedNormal (){
     vec3 Normal = normalize(v_normal);
     vec3 Tangent = normalize(v_tangent);
@@ -43,6 +55,20 @@ vec3 CalcBumpedNormal (){
     return NewNormal;
 }
 
+vec4 ShadePhong (Light curLight, vec3 fragPos, vec3 normal, vec3 viewDirection, vec4 textureColor, float specularity, float roughness, float metalic){
+	
+	vec3 lightDir = mix (normalize (curLight.vector.xyz - fragPos), -curLight.vector.xyz, curLight.vector.w);
+	vec3 lightReflect = reflect (lightDir, normal);
+	float atten = LightAttenuation (curLight, fragPos);
+
+	vec4 difuse = max (0.0, dot (lightDir, normal)) * textureColor * curLight.color * atten;
+	vec4 specular = 1.0 * pow (max (0.0, dot (viewDirection, lightReflect)) , roughness) * mix (curLight.color, textureColor, metalic) * textureColor.w;
+
+	vec4 finalColor = difuse + specularity * specular;
+	return finalColor;
+
+}
+
 void main()
 {
 	//Lights
@@ -50,7 +76,7 @@ void main()
 	vec3 sunNormalized = vec3 (0.0, 1.0, 0.0);
 	vec4 specularColor = vec4 (1.0, 1.0, 1.0, 1.0);
 	
-	//UsefullVectors
+	//UsefulVectors
 	vec3 normalNormalized = normalize (v_normal);
 	vec3 tangentNormalized = normalize (v_tangent);
 	vec3 bitangentNormalized = cross (tangentNormalized, normalNormalized);
@@ -63,12 +89,19 @@ void main()
 
 	//Calculate lightning
 	vec4 ambient  = ambientLight * texture(u_sampler0, v_texcoord.st);
-	vec4 difuse   = max (0.0, dot (-sunNormalized, perturbedNormals)) * texture(u_sampler0, v_texcoord.st);
-	vec4 specular = 1.0 * pow (max (0.0, dot (-HalfDirection, perturbedNormals)) , 50.0) * specularColor * texture(u_sampler0, v_texcoord.st) * texture(u_sampler0, v_texcoord.st).w;
 	vec4 rim      = 0.3 * pow(- max (0.0, dot (viewDirection, perturbedNormals)) + 1.0, 1.0) * ambientLight;
+
+	Light testLight = Light (vec4 (1.0, 0.9, 0.8, 1.0), vec4 (-0.5, -2.0, -0.5, 1.0), vec4 (0.0, 0.0, 0.0, 1.0));
+
+	vec4 difSpec = ShadePhong (testLight, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 1.0, 50.0, 0.0);
+
+	//vec4 difuse   = max (0.0, dot (-sunNormalized, perturbedNormals)) * texture(u_sampler0, v_texcoord.st);
+	//vec4 specular = 1.0 * pow (max (0.0, dot (-HalfDirection, perturbedNormals)) , 50.0) * specularColor * texture(u_sampler0, v_texcoord.st) * texture(u_sampler0, v_texcoord.st).w;
+
+
 
 	vec4 rosa = vec4 (1.0, 0.0, 1.0, 0.0);
 
-    outColor = (difuse + specular + ambient + rim);// * 0.01 + vec4 (perturbedNormals, 1.0);
+    outColor = (difSpec + ambient + rim);// * 0.01 + vec4 (perturbedNormals, 1.0);
 
 }
