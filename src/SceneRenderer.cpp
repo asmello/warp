@@ -16,6 +16,9 @@
 #include <SFML/Window.hpp>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 using namespace warp;
@@ -97,6 +100,11 @@ void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
                         glm::value_ptr(camera->getViewProjection()));
         glBindBuffer(GL_UNIFORM_BUFFER, 0);  
     }
+
+	// TODO [temporarly passing to u_position too since the above is not working properly]
+	if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
+		glUniformMatrix4fv(activeShader->getUniformLocation("u_Position"), 1, GL_FALSE, glm::value_ptr(camera->getViewProjection()));
+	}
 }
 
 void SceneRenderer::render()
