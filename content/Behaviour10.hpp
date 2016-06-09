@@ -38,32 +38,32 @@ public:
 		// Walk
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
-			parent->setPosition(parent->getPosition() + parent->forward() * speed);
+			parent->setPosition(parent->getLocalPosition() + parent->forward() * speed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
-			parent->setPosition(parent->getPosition() - parent->right() * speed);
+			parent->setPosition(parent->getLocalPosition() - parent->right() * speed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
-			parent->setPosition(parent->getPosition() - parent->forward() * speed);
+			parent->setPosition(parent->getLocalPosition() - parent->forward() * speed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
-			parent->setPosition(parent->getPosition() + parent->right() * speed);
+			parent->setPosition(parent->getLocalPosition() + parent->right() * speed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			parent->setPosition(parent->getPosition() + parent->up() * speed);
+			parent->setPosition(parent->getLocalPosition() + parent->up() * speed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
 		{
-			parent->setPosition(parent->getPosition() - parent->up() * speed);
+			parent->setPosition(parent->getLocalPosition() - parent->up() * speed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 
