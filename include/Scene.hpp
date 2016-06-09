@@ -54,7 +54,9 @@ namespace warp
         std::shared_ptr<GameObject> newGameObject();
         
         static std::shared_ptr<Scene> newScene();
-        
+
+		void Behaviour_Start();
+		void Behaviour_Update();
     };
     
     template <class T, typename... Args>

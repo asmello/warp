@@ -17,6 +17,7 @@ endif(APPLE)
 find_package(SFML COMPONENTS system window graphics network audio REQUIRED)
 
 include_directories(
+	content/
 	include/
 	external/glm/
 	external/jsoncpp/
@@ -99,6 +100,8 @@ set(WARP_HEADERS
 	include/TextureManager.hpp
 	include/MaterialManager.hpp
 	include/ResourceManager.hpp
+
+	content/SceneInitializer.hpp
 )
 add_executable(Warp ${WARP_SOURCES} ${WARP_HEADERS})
 target_link_libraries(Warp ${ALL_LIBS})

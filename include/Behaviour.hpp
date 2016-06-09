@@ -15,11 +15,11 @@ namespace warp
 	public:
 		Behaviour(GameObject::ID gameObject);
 
-		virtual void Start() {} // First frame it is active
-		virtual void Update() {} // Once every frame before animation
-		virtual void LateUpdate() {} // Once every frame after animation
-		virtual void OnEnable() {} // When enabled
-		virtual void OnDisable() {} // When disabled
+		virtual void Start() {} // TODO [First frame it is active]
+		virtual void Update() {} // TODO [Once every frame before animation]
+		virtual void LateUpdate() {} // TODO [Once every frame after animation]
+		virtual void OnEnable() {} // TODO [When enabled]
+		virtual void OnDisable() {} // TODO [When disabled]
 	};
 }
 
