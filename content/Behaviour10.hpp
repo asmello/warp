@@ -4,6 +4,8 @@
 #include "Behaviour.hpp"
 #include <iostream>
 #include <SFML/Window.hpp>
+#include <SFML/Window/Mouse.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include "util.hpp"
 #include "Camera.hpp"
@@ -13,7 +15,9 @@ class Behaviour10 : public warp::Behaviour
 
 private:
 	const float speed = 5.0 * 0.01666f;
-	const float rotationSpeed = 0.03f;
+	const float rotationSpeed = 0.1* 0.03f;
+
+	sf::Vector2i prevMousePos;
 
 public:
 
@@ -23,6 +27,7 @@ public:
 
 	virtual void Start()
 	{
+		prevMousePos = sf::Mouse::getPosition();
 	}
 
 	virtual void Update()
@@ -63,25 +68,13 @@ public:
 		}
 
 		// rotate
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		if (prevMousePos != sf::Mouse::getPosition() - prevMousePos)
 		{
-			transform->rotateX(rotationSpeed);
-			this->getGameObject()->getComponent<warp::Camera>()->update();
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-			transform->rotateX(-rotationSpeed);
-			this->getGameObject()->getComponent<warp::Camera>()->update();
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			parent->rotateY(rotationSpeed);
-			this->getGameObject()->getComponent<warp::Camera>()->update();
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-			parent->rotateY(-rotationSpeed);
-			this->getGameObject()->getComponent<warp::Camera>()->update();
+			sf::Vector2i deltaPos = sf::Mouse::getPosition() - prevMousePos;
+			transform->rotateX(-rotationSpeed *deltaPos.y);
+			parent->rotateY(-rotationSpeed *deltaPos.x);
+
+			prevMousePos = sf::Mouse::getPosition();
 		}
 	}
 };
