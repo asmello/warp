@@ -51,6 +51,16 @@ public:
 			parent->setPosition(parent->getPosition() + parent->right() * speed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			parent->setPosition(parent->getPosition() + parent->up() * speed);
+			this->getGameObject()->getComponent<warp::Camera>()->update();
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+		{
+			parent->setPosition(parent->getPosition() - parent->up() * speed);
+			this->getGameObject()->getComponent<warp::Camera>()->update();
+		}
 
 		// rotate
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
