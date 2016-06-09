@@ -18,17 +18,18 @@ namespace warp
     {
     public:
 		std::shared_ptr<warp::Scene> createFromFile(const std::string &filename, Object<Material>::ID material);
+		std::shared_ptr<GameObject> createFromFile(const std::string &filename, Object<Material>::ID material, std::shared_ptr<warp::Scene> scene);
         
     private:
         void loadNodeMeshes(const aiNode * pNode,
                             const aiScene * pScene,
                             std::shared_ptr<GameObject> node,
                             Object<Material>::ID materialID);
-        void loadHierarchy(const aiNode *pNode,
-                           const aiScene *pScene,
-                           std::shared_ptr<GameObject> node,
-                           std::shared_ptr<Scene> scene,
-                           Object<Material>::ID materialID);
+		std::shared_ptr<GameObject> loadHierarchy(const aiNode *pNode,
+												   const aiScene *pScene,
+												   std::shared_ptr<GameObject> node,
+												   std::shared_ptr<Scene> scene,
+												   Object<Material>::ID materialID);
     };
 }
 

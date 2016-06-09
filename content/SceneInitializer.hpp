@@ -23,6 +23,8 @@
 #include "util.hpp"
 
 #include "Behaviour1.hpp"
+#include "Behaviour10.hpp"
+#include "SceneManager.hpp"
 
 
 class SceneInitializer
@@ -39,12 +41,21 @@ public:
 		auto materialManager = warp::MaterialManager::getInstance();
 		auto meshManager = warp::MeshManager::getInstance();
 
+
+		// Create a camera object
+		std::shared_ptr<warp::GameObject> go1 = scene->newGameObject();
+		std::shared_ptr<warp::Camera> camera = go1->newComponent<warp::Camera>();
+		camera->setPosition(glm::vec3(0, 0, 3));
+		camera->lookAt(glm::vec3(1, 2, 0), glm::vec3(0, 1, 0));
+		go1->newComponent<Behaviour10>();
+		camera.reset();
+
 		////////////
 		// Lights //
 		////////////
 
 		// Create a directional light object
-		static auto go2 = scene->newGameObject(); // TODO Weak_ptr expiring when function exits? (componet references to the GO went missing if not static) FIX this
+		auto go2 = scene->newGameObject();
 		std::shared_ptr<warp::Light> light = go2->newComponent<warp::Light>(warp::Light::Type::Directional);
 		light->setVector(glm::vec3(-0.15f, -0.1f, -0.9f));
 		light->setColor(glm::vec3(1.0f, 1.0f, 0.93f));
@@ -55,18 +66,18 @@ public:
 		////////////////////////
 
 		// Load a shader from file
-		static auto shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
+		auto shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
 			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
-		static auto colorTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_CLM.bmp");
-		static auto normalTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_NRM.png");
+		auto colorTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_CLM.bmp");
+		auto normalTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_NRM.png");
 
 		// Create a material from shader and texture
-		static auto materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		auto materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
 
 		// Create a mesh representation
-		static auto meshID = meshManager->create();
+	/*	auto meshID = meshManager->create();
 		if (std::shared_ptr<warp::Mesh> squareMesh = meshManager->get(meshID))
 		{
 			squareMesh->setVertices({
@@ -87,12 +98,17 @@ public:
 		}
 
 		// Create a GameObject
-		static auto go = scene->newGameObject();
+		auto go = scene->newGameObject();
 		go->newComponent<warp::MeshRenderer>(materialID, meshID);
-		//go->getTransform()->scale(10, 10, 10);
-		//go->getTransform()->translate(0, -1, 0);
 		go->newComponent<Behaviour1>();
 
+		auto go5 = scene->newGameObject();
+		go->getTransform()->setParent(go5->getTransform());*/
+
+		auto go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "Gecko.fbx", materialID, scene);
+		go3->getTransform()->scale(1, 1, 1);
+
+		
 	}
 };
 

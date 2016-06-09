@@ -57,20 +57,12 @@ int main(int, char const**)
 	auto materialManager = warp::MaterialManager::getInstance();
 	auto meshManager = warp::MeshManager::getInstance();
 
-	// Create a camera object
-	std::shared_ptr<warp::GameObject> go1 = scene->newGameObject();
-	std::shared_ptr<warp::Camera> camera = go1->newComponent<warp::Camera>();
-	camera->setPosition(glm::vec3(0, 0, 3));
-	camera->lookAt(glm::vec3(1, 2, 0), glm::vec3(0, 1, 0));
-	go1->newComponent<Behaviour10>();
-	camera.reset();
-
 	// Populating scene
 	SceneInitializer::Init(scene);
 
-	/*
+	
 // These are resource managers
-	auto shaderManager = warp::ShaderManager::getInstance();
+	/*auto shaderManager = warp::ShaderManager::getInstance();
 	auto textureManager = warp::TextureManager::getInstance();
 	auto materialManager = warp::MaterialManager::getInstance();
 	auto meshManager = warp::MeshManager::getInstance();
@@ -110,14 +102,8 @@ int main(int, char const**)
 	std::shared_ptr<warp::Camera> camera = go1->newComponent<warp::Camera>();
 	camera->setPosition(glm::vec3(0, 0, 5));
 	camera->lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-	camera.reset();
-
-
-	// Create a GameObject
-	auto meshID = meshManager->create();
-	auto go = scene->newGameObject();
-	go->newComponent<warp::MeshRenderer>(materialID, meshID);
-	*/
+	camera.reset();*/
+	
 
 
 

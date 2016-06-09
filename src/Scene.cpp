@@ -44,6 +44,7 @@ std::shared_ptr<GameObject> Scene::newGameObject()
 {
     auto gameObject = std::make_shared<GameObject>(getTransform()->newChild());
     gameObject->transform->gameObject = gameObject;
+	gameObjectList.push_back(gameObject);
     return gameObject;
 }
 
