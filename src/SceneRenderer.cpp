@@ -134,7 +134,7 @@ void SceneRenderer::render()
 			// TODO [temporarly passing to u_position here too since the new method is not working]
 			if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
 				glUniformMatrix4fv(activeShader->getUniformLocation("u_ViewProj"), 1, GL_FALSE, glm::value_ptr(camera->getViewProjection()));
-				auto camPos = camera->getGameObject()->getTransform()->getPosition(); // TODO URGENTE [Precisão ser global, não local]
+				auto camPos = camera->getGameObject()->getTransform()->getGlobalPosition(); // TODO URGENTE [Precisão ser global, não local]
 				glUniform3f(activeShader->getUniformLocation("u_camPosition"), camPos.x, camPos.y, camPos.z);
 			}
 

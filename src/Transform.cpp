@@ -62,26 +62,22 @@ void Transform::rotate(float angle, glm::vec3 axis)
 
 void Transform::rotate(float angle, float x, float y, float z)
 {
-    rotation = glm::rotate(rotation, angle, glm::vec3(x, y, z));
-    invalidate();
+    rotate(angle, glm::vec3(x, y, z));
 }
 
 void Transform::rotateX(float angle)
 {
-    rotation = glm::rotate(rotation, angle, glm::vec3(1, 0, 0));
-    invalidate();
+	rotate(angle, glm::vec3(1, 0, 0));
 }
 
 void Transform::rotateY(float angle)
 {
-    rotation = glm::rotate(rotation, angle, glm::vec3(0, 1, 0));
-    invalidate();
+	rotate(angle, glm::vec3(0, 1, 0));
 }
 
 void Transform::rotateZ(float angle)
 {
-    rotation = glm::rotate(rotation, angle, glm::vec3(0, 0, 1));
-    invalidate();
+	rotate(angle, glm::vec3(0, 0, 1));
 }
 
 void Transform::translate(float x, float y, float z)
