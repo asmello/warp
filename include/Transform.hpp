@@ -111,6 +111,10 @@ namespace warp
         std::shared_ptr<Transform> getRoot();
         std::shared_ptr<Transform> newChild();
         glm::mat4 getTransformation();
+
+		glm::vec3 forward() { return rotation * glm::vec3(0, 0, -1); }
+		glm::vec3 right() { return rotation * glm::vec3(1, 0, 0); }
+		glm::vec3 up() { return rotation * glm::vec3(0, 1, 0); }
     };
 }
 

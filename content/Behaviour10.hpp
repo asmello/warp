@@ -17,75 +17,72 @@ private:
 
 public:
 
+	Behaviour10()
+	{
+	}
+
 	virtual void Start()
 	{
 	}
 
 	virtual void Update()
 	{
+		auto transform = this->getGameObject()->getTransform();
+		auto parent = transform->getParent();
+
 		// Walk
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
-			this->getGameObject()->getTransform()->translate(.0f, speed, .0f);
+			parent->setPosition(parent->getPosition() + parent->forward() * speed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
-			this->getGameObject()->getTransform()->translate(-speed, .0f, .0f);
+			parent->setPosition(parent->getPosition() - parent->right() * speed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
-			this->getGameObject()->getTransform()->translate(.0f, -speed, .0f);
+			parent->setPosition(parent->getPosition() - parent->forward() * speed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
-			this->getGameObject()->getTransform()->translate(speed, .0f, .0f);
+			parent->setPosition(parent->getPosition() + parent->right() * speed);
+			this->getGameObject()->getComponent<warp::Camera>()->update();
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			parent->setPosition(parent->getPosition() + parent->up() * speed);
+			this->getGameObject()->getComponent<warp::Camera>()->update();
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+		{
+			parent->setPosition(parent->getPosition() - parent->up() * speed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 
 		// rotate
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-			this->getGameObject()->getTransform()->rotateX(rotationSpeed);
+			transform->rotateX(rotationSpeed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			this->getGameObject()->getTransform()->rotateX(-rotationSpeed);
+			transform->rotateX(-rotationSpeed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
-			this->getGameObject()->getTransform()->rotateY(-rotationSpeed);
+			parent->rotateY(rotationSpeed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			this->getGameObject()->getTransform()->rotateY(rotationSpeed);
+			parent->rotateY(-rotationSpeed);
 			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
-
-	//	util::printMat4(this->getGameObject()->getTransform()->getTransformation());
-
-		/*
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-		{
-			getActiveGameObject()->getTransform()->rotateZ(0.025f);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-		{
-			getActiveGameObject()->getTransform()->rotateZ(-0.025f);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-		{
-			getActiveGameObject()->getTransform()->translate(.0f, .0f, -.01f);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
-		{
-			getActiveGameObject()->getTransform()->translate(.0f, .0f, .01f);
-		}*/
 	}
 };
 #endif

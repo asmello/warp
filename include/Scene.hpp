@@ -41,6 +41,9 @@ namespace warp
         std::shared_ptr<Transform> transform;
         
         std::shared_ptr<Scene> getScene();
+
+	private:
+		std::vector<std::shared_ptr<GameObject>> gameObjectList; // TODO [Temporary solution for missing gameObject refereces] Weak_ptr expiring when functions exit? (componet references to the GO went missing a lot of times) FIX this
     };
     
     class Scene : public GameObject

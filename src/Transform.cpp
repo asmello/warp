@@ -116,6 +116,7 @@ void Transform::lookAt(glm::vec3 point, glm::vec3 up)
 
 void Transform::setParent(std::shared_ptr<Transform> parent_)
 {
+	// TODO [remove from previous parent's children]
     parent = parent_;
     parent->children.push_back(shared_from_this());
     if (!parent->valid)
