@@ -91,6 +91,7 @@ void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
 {
     if (camera->update())
     {
+		util::printMat4(camera->getViewProjection());
         glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
         glBufferSubData(GL_UNIFORM_BUFFER,
                         0, NUM_UNIFORM_MATRICES*sizeof(glm::mat4),
