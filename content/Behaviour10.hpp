@@ -14,7 +14,7 @@ class Behaviour10 : public warp::Behaviour
 {
 
 private:
-	const float speed = 5.0 * 0.01666f;
+	const float speed = 35.0 * 0.01666f;
 	const float rotationSpeed = 0.1* 0.03f;
 
 	sf::Vector2i prevMousePos;

@@ -36,7 +36,7 @@ int main(int, char const**)
     settings.antialiasingLevel = 4;
     settings.attributeFlags = sf::ContextSettings::Core;
     
-    auto window = std::make_shared<sf::Window>(sf::VideoMode(800, 800, 32), "Warp",
+    auto window = std::make_shared<sf::Window>(sf::VideoMode(1024, 1024, 32), "Warp",
                                                sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize,
                                                settings);
     window->setVerticalSyncEnabled(true);

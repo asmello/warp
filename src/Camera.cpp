@@ -12,7 +12,7 @@
 using namespace warp;
 
 Camera::Camera() :
-fieldOfView(45.0f), aspectRatio(1.0f), nearField(0.1f), farField(100.0f),
+fieldOfView(45.0f), aspectRatio(1.0f), nearField(0.1f), farField(1000.0f),
 viewChanged(true), projectionChanged(false)
 {
     proj = glm::perspective(fieldOfView, aspectRatio, nearField, farField);

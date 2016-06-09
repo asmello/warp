@@ -37,7 +37,7 @@ float LightAttenuation (Light curLight, vec3 fragPosition){
 	float directionalAttenuation = 1.0;
 	float spotAttenuation = 1.0;
 
-	return mix (pointAttenuation, directionalAttenuation, curLight.vector.w);
+	return max (0.0, mix (pointAttenuation, directionalAttenuation, curLight.vector.w));
 
 }
 
@@ -72,7 +72,7 @@ vec4 ShadePhong (Light curLight, vec3 fragPos, vec3 normal, vec3 viewDirection, 
 void main()
 {
 	//Lights
-	vec4 ambientLight = vec4 (0.1, 0.06, 0.15, 1.0) * 1;
+	vec4 ambientLight = vec4 (0.01, 0.003, 0.001, 1.0) * 1;
 	vec3 sunNormalized = vec3 (0.0, 1.0, 0.0);
 	vec4 specularColor = vec4 (1.0, 1.0, 1.0, 1.0);
 	
@@ -91,9 +91,25 @@ void main()
 	vec4 ambient  = ambientLight * texture(u_sampler0, v_texcoord.st);
 	vec4 rim      = 0.3 * pow(- max (0.0, dot (viewDirection, perturbedNormals)) + 1.0, 1.0) * ambientLight;
 
-	Light testLight = Light (vec4 (1.0, 0.9, 0.8, 1.0) * 0.6, vec4 (-0.5, -2.0, -0.5, 1.0), vec4 (0.0, 0.0, 0.0, 1.0));
+	Light testLight1 = Light (vec4 (1.0, 0.054, 0.017, 1.0) * 200.0, vec4 (-0.0, 80.0, 0.0, 0.0),  vec4 (0.0, 1.0, 0.1, 1.0));
 
-	vec4 difSpec = ShadePhong (testLight, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
+	Light testLight2 = Light (vec4 (1.0, 0.211, 0.008, 1.0) * 30.0, vec4 (40.0, 14.0, 60.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
+	Light testLight3 = Light (vec4 (1.0, 0.211, 0.008, 1.0) * 30.0, vec4 (-40.0, 14.0, 60.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
+	Light testLight4 = Light (vec4 (1.0, 0.211, 0.008, 1.0) * 30.0, vec4 (40.0, 14.0, -60.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
+	Light testLight5 = Light (vec4 (1.0, 0.211, 0.008, 1.0) * 30.0, vec4 (-40.0, 14.0, -60.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
+
+	Light testLight6 = Light (vec4 (1.0, 0.039, 0.009, 1.0) * 45.0, vec4 (50.0, -20.0, 0.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
+	Light testLight7 = Light (vec4 (1.0, 0.039, 0.009, 1.0) * 45.0, vec4 (-50.0, -20.0, 0.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
+
+	vec4 difSpec =      ShadePhong (testLight1, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
+	difSpec = difSpec + ShadePhong (testLight2, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
+	difSpec = difSpec + ShadePhong (testLight3, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
+	difSpec = difSpec + ShadePhong (testLight4, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
+	difSpec = difSpec + ShadePhong (testLight5, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
+	difSpec = difSpec + ShadePhong (testLight6, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
+	difSpec = difSpec + ShadePhong (testLight7, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
+
+
 
 	//vec4 difuse   = max (0.0, dot (-sunNormalized, perturbedNormals)) * texture(u_sampler0, v_texcoord.st);
 	//vec4 specular = 1.0 * pow (max (0.0, dot (-HalfDirection, perturbedNormals)) , 50.0) * specularColor * texture(u_sampler0, v_texcoord.st) * texture(u_sampler0, v_texcoord.st).w;
