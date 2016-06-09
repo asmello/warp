@@ -46,7 +46,7 @@ public:
 		std::shared_ptr<warp::GameObject> go = scene->newGameObject();
 		std::shared_ptr<warp::GameObject> go1 = scene->newGameObject();
 		std::shared_ptr<warp::Camera> camera = go1->newComponent<warp::Camera>();
-		camera->setPosition(glm::vec3(0, 0, 3));
+		camera->setPosition(glm::vec3(0, 2, 10));
 		camera->lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 		go1->newComponent<Behaviour10>();
 		go1->getTransform()->setParent(go->getTransform());
