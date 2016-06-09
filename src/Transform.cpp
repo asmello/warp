@@ -31,6 +31,7 @@ void Transform::setTransformation(const aiMatrix4x4& aiTransform)
 
 void Transform::bind()
 {
+	std::cout << "Binding transform!\n";
     if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
         glUniformMatrix4fv(activeShader->getUniformLocation("u_Model"), 1, GL_FALSE, glm::value_ptr(getTransformation()));
     }

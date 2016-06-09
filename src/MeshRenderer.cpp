@@ -10,6 +10,9 @@
 
 #include <iostream>
 
+#include "Scene.hpp"
+#include "Transform.hpp"
+
 
 using namespace warp;
 
@@ -22,6 +25,7 @@ void MeshRenderer::activate()
 {
     Renderer::activate();
     MaterialManager::getInstance()->setActive(materialID);
+	this->getGameObject()->getTransform()->bind();
     MeshManager::getInstance()->setActive(meshID);
 }
 
@@ -29,7 +33,6 @@ void MeshRenderer::render()
 {
     if (std::shared_ptr<Mesh> mesh = MeshManager::getInstance()->get(meshID))
     {
-//		std::cout << mesh->vao << " " << mesh->ebo  << '\n';
         glBindVertexArray(mesh->vao);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->ebo);
         glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh->elements.size()), GL_UNSIGNED_INT, 0);

@@ -44,7 +44,7 @@ public:
 		////////////
 
 		// Create a directional light object
-		auto go2 = scene->newGameObject();
+		static auto go2 = scene->newGameObject(); // TODO Weak_ptr expiring when function exits? (componet references to the GO went missing if not static) FIX this
 		std::shared_ptr<warp::Light> light = go2->newComponent<warp::Light>(warp::Light::Type::Directional);
 		light->setVector(glm::vec3(-0.15f, -0.1f, -0.9f));
 		light->setColor(glm::vec3(1.0f, 1.0f, 0.93f));
@@ -55,18 +55,18 @@ public:
 		////////////////////////
 
 		// Load a shader from file
-		auto shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
+		static auto shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
 			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
-		auto colorTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_CLM.bmp");
-		auto normalTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_NRM.png");
+		static auto colorTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_CLM.bmp");
+		static auto normalTextureID = textureManager->createFromFile(util::resourcePath() + "Logo_NRM.png");
 
 		// Create a material from shader and texture
-		auto materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		static auto materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
 
 		// Create a mesh representation
-		auto meshID = meshManager->create();
+		static auto meshID = meshManager->create();
 		if (std::shared_ptr<warp::Mesh> squareMesh = meshManager->get(meshID))
 		{
 			squareMesh->setVertices({
@@ -87,13 +87,12 @@ public:
 		}
 
 		// Create a GameObject
-		auto go = scene->newGameObject();
+		static auto go = scene->newGameObject();
 		go->newComponent<warp::MeshRenderer>(materialID, meshID);
 		go->getTransform()->scale(10, 10, 10);
 		go->getTransform()->translate(0, -1, 0);
 		go->newComponent<Behaviour1>();
 
-		util::printMat4(go->getTransform()->getTransformation());
 	}
 };
 
