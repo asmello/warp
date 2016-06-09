@@ -79,7 +79,7 @@ public:
 		// Create a material from shader and texture
 		auto materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
 
-		auto go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "Gecko.fbx", materialID, scene);
+		auto go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "LogoLP_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(1, 1, 1);
 
 		
