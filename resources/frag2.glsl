@@ -64,7 +64,7 @@ vec4 ShadePhong (Light curLight, vec3 fragPos, vec3 normal, vec3 viewDirection, 
 	vec4 difuse = max (0.0, dot (lightDir, normal)) * textureColor * curLight.color * atten;
 	vec4 specular = 1.0 * pow (max (0.0, dot (viewDirection, lightReflect)) , roughness) * mix (curLight.color, textureColor, metalic) * textureColor.w;
 
-	vec4 finalColor = difuse + specularity * specular;
+	vec4 finalColor = vec4 (1.0, 1.0, 1.0, 1.0) * dot (viewDirection, normal); //min (difuse + specularity * specular, 1.0);
 	return finalColor;
 
 }
@@ -91,9 +91,9 @@ void main()
 	vec4 ambient  = ambientLight * texture(u_sampler0, v_texcoord.st);
 	vec4 rim      = 0.3 * pow(- max (0.0, dot (viewDirection, perturbedNormals)) + 1.0, 1.0) * ambientLight;
 
-	Light testLight = Light (vec4 (1.0, 0.9, 0.8, 1.0), vec4 (-0.5, -2.0, -0.5, 1.0), vec4 (0.0, 0.0, 0.0, 1.0));
+	Light testLight = Light (vec4 (1.0, 0.9, 0.8, 1.0) * 0.6, vec4 (-0.5, -2.0, -0.5, 1.0), vec4 (0.0, 0.0, 0.0, 1.0));
 
-	vec4 difSpec = ShadePhong (testLight, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 1.0, 50.0, 0.0);
+	vec4 difSpec = ShadePhong (testLight, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
 
 	//vec4 difuse   = max (0.0, dot (-sunNormalized, perturbedNormals)) * texture(u_sampler0, v_texcoord.st);
 	//vec4 specular = 1.0 * pow (max (0.0, dot (-HalfDirection, perturbedNormals)) , 50.0) * specularColor * texture(u_sampler0, v_texcoord.st) * texture(u_sampler0, v_texcoord.st).w;

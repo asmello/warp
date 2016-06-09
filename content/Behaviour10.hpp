@@ -12,8 +12,8 @@ class Behaviour10 : public warp::Behaviour
 {
 
 private:
-	const float speed = 5.0 * 0.01666f;
-	const float rotationSpeed = 0.03f;
+	const float speed = 1.0 * 0.01666f;
+	const float rotationSpeed = 0.01f;
 
 public:
 
