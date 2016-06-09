@@ -100,11 +100,6 @@ void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
                         glm::value_ptr(camera->getViewProjection()));
         glBindBuffer(GL_UNIFORM_BUFFER, 0);  
     }
-
-	// TODO [temporarly passing to u_position too since the above is not working properly]
-	if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
-		glUniformMatrix4fv(activeShader->getUniformLocation("u_Position"), 1, GL_FALSE, glm::value_ptr(camera->getViewProjection()));
-	}
 }
 
 void SceneRenderer::render()
@@ -135,6 +130,12 @@ void SceneRenderer::render()
         for (std::shared_ptr<MeshRenderer>& renderer : scene->getComponentsInChildren<MeshRenderer>()) // TODO [Should be mesh renderer... but get components does not work with inherited components]
         {
 			renderer->activate();
+
+			// TODO [temporarly passing to u_position here too since the new method is not working]
+			if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
+				glUniformMatrix4fv(activeShader->getUniformLocation("u_ViewProj"), 1, GL_FALSE, glm::value_ptr(camera->getViewProjection()));
+			}
+
             renderer->render();
         }
     }

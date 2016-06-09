@@ -36,7 +36,7 @@ uniform vec3 u_camPosition;
 
 void main()
 {
-    gl_Position     =  viewProj * u_Model * vec4(a_position, 1.0); //viewProj * u_Model * vec4(a_position, 1.0);
+    gl_Position     =  u_ViewProj * u_Model * vec4(a_position, 1.0); //viewProj * u_Model * vec4(a_position, 1.0);
     v_normal        = (u_Model * vec4(a_normal,   0.0)).xyz;
 	v_worldPosition = (u_Model * vec4(a_position, 1.0)).xyz;
 	v_tangent       = (u_Model * vec4(a_tangent,  0.0)).xyz;

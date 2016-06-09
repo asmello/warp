@@ -69,6 +69,6 @@ void main()
 
 	vec4 rosa = vec4 (1.0, 0.0, 1.0, 0.0);
 
-    outColor = rosa + 0.001 * (difuse + specular + ambient + rim);// * 0.01 + vec4 (perturbedNormals, 1.0);
+    outColor = (difuse + specular + ambient + rim);// * 0.01 + vec4 (perturbedNormals, 1.0);
 
 }
