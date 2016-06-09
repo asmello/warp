@@ -71,10 +71,10 @@ public:
 		if (prevMousePos != sf::Mouse::getPosition() - prevMousePos)
 		{
 			sf::Vector2i deltaPos = sf::Mouse::getPosition() - prevMousePos;
-			transform->rotateX(-rotationSpeed *deltaPos.y);
-			parent->rotateY(-rotationSpeed *deltaPos.x);
+			transform->rotate(-rotationSpeed *deltaPos.y, 1, 0, 0);
+			parent->rotate(-rotationSpeed *deltaPos.x, 0, 1, 0);
 
-			prevMousePos = sf::Mouse::getPosition();
+			sf::Mouse::setPosition(prevMousePos);
 		}
 	}
 };
