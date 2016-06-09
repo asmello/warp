@@ -100,7 +100,7 @@ Scene::ID SceneManager::createFromFile(const std::string &filename, Material::ID
                                               aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
     
     if (pScene) {
-        auto scene = std::make_shared<Scene>();
+        auto scene = Scene::newScene();
         loadHierarchy(pScene->mRootNode, pScene, scene, scene, material);
         resources.push_back(scene);
         return Scene::ID(resources.size()-1);
