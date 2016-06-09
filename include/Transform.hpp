@@ -108,6 +108,7 @@ namespace warp
 		glm::vec3 getScale() { return scaleFactors; } // ^
         void setTransformation(const aiMatrix4x4& aiTransform);
         bool isRoot() const;
+        std::vector<std::weak_ptr<Transform>> getChildren();
         std::shared_ptr<Transform> getParent();
         std::shared_ptr<Transform> getRoot();
         std::shared_ptr<Transform> newChild();

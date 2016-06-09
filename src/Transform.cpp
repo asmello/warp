@@ -182,3 +182,8 @@ std::shared_ptr<Transform> Transform::newChild()
     return child;
 }
 
+std::vector<std::weak_ptr<Transform>> Transform::getChildren()
+{
+    return children;
+}
+

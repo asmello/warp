@@ -3,6 +3,7 @@
 
 #include "Object.hpp"
 #include "Behaviour.hpp"
+#include "Transform.hpp"
 
 #include <vector>
 #include <memory>
@@ -115,9 +116,10 @@ namespace warp
 		{
 			filtered_components.push_back(std::static_pointer_cast<T>((*it).second));
 		}
-		for (int i = 0; i < getTransform()->children.size(); i++)
+        auto children = getTransform()->getChildren();
+		for (int i = 0; i < children.size(); i++)
 		{
-			auto tmp1 = getTransform()->children[i].lock();
+			auto tmp1 = children[i].lock();
 			if (tmp1)
 			{
 				auto tmp = tmp1->getGameObject()->getComponentsInChildren<T>();
