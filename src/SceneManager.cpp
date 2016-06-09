@@ -92,7 +92,7 @@ void SceneManager::loadHierarchy(const aiNode *pNode,
     }
 }
 
-Scene::ID SceneManager::createFromFile(const std::string &filename, Material::ID material)
+std::shared_ptr<warp::Scene> SceneManager::createFromFile(const std::string &filename, Material::ID material)
 {
     Assimp::Importer importer;
     
@@ -102,11 +102,10 @@ Scene::ID SceneManager::createFromFile(const std::string &filename, Material::ID
     if (pScene) {
         auto scene = Scene::newScene();
         loadHierarchy(pScene->mRootNode, pScene, scene, scene, material);
-        resources.push_back(scene);
-        return Scene::ID(resources.size()-1);
+        return scene;
     }
     else {
         fprintf(stderr, "Error parsing '%s': '%s'\n", filename.c_str(), importer.GetErrorString());
-        return Scene::ID(-1);
+        return nullptr;
     }
 }

@@ -18,7 +18,7 @@ namespace warp
     
     class GameObject : public Object<GameObject>, public std::enable_shared_from_this<GameObject>
     {
-        friend class Scene;
+		friend class Scene;
         
     public:
         // These constructors should not be used directly
@@ -27,7 +27,8 @@ namespace warp
         
         template <class T, typename... Args> std::shared_ptr<T> newComponent(Args&&... args);
         template <class T> std::shared_ptr<T> getComponent();
-        template <class T> std::vector<std::shared_ptr<T>> getComponents();
+		template <class T> std::vector<std::shared_ptr<T>> getComponents();
+		template <class T> std::vector<std::shared_ptr<T>> getComponentsInChildren();
         template <class T> void forEach(std::function<void(T)> mapper);
         
         std::shared_ptr<Transform> getTransform();
@@ -95,6 +96,30 @@ namespace warp
         }
         return filtered_components;
     }
+
+	template <class T>
+	std::vector<std::shared_ptr<T>> GameObject::getComponentsInChildren()
+	{
+		std::size_t type_code = typeid(T).hash_code();
+		std::vector<std::shared_ptr<T>> filtered_components;
+		auto range = components.equal_range(type_code);
+		filtered_components.reserve(std::distance(range.first, range.second));
+		for (auto it = range.first; it != range.second; ++it)
+		{
+			filtered_components.push_back(std::static_pointer_cast<T>((*it).second));
+		}
+		for (int i = 0; i < getTransform()->children.size(); i++)
+		{
+			auto tmp1 = getTransform()->children[i].lock();
+			if (tmp1)
+			{
+				auto tmp = tmp1->getGameObject()->getComponentsInChildren<T>();
+				for (int j = 0; j<tmp.size(); j++)
+					filtered_components.push_back(tmp[j]);
+			}
+		}
+		return filtered_components;
+	}
     
     template <class T>
     void GameObject::forEach(std::function<void(T)> mapper)

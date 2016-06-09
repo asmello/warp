@@ -64,32 +64,29 @@ public:
 		auto materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
 
 		// Create a mesh representation
-		auto meshID = meshManager->create();
-		// TODO [Carregar FBX]
+		auto meshID = meshManager->create(); \
+		if (std::shared_ptr<warp::Mesh> squareMesh = meshManager->get(meshID))
+		{
+			squareMesh->setVertices({
+				-0.8f, 0.8f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+				-0.4f, 0.8f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+				-0.8f, 0.4f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+				-0.4f, 0.4f, 0.0f,   0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,  1.0f, 1.0f
+			});
+			squareMesh->setElements({
+				0, 2, 1,
+				2, 3, 1
+			});
+			squareMesh->load();
+		}
+		else
+		{
+			std::cout << "erro!!!";
+		}
 
 		// Create a GameObject
 		auto go = scene->newGameObject();
 		go->newComponent<warp::MeshRenderer>(materialID, meshID);
-
-
-
-
-		/*
-
-		// Create the Gecko scene object
-		warp::Scene::ID geckoSceneID = sceneManager->createFromFile(util::resourcePath() + "LogoLP_MDL.fbx", geckoMaterialID);
-
-
-		// Adjust Gecko
-		if (std::shared_ptr<warp::GameObject> rootObject = gameObjectManager->get(warp::GameObject::ID(1)))
-		{
-			rootObject->getTransform()->scale(0.015);
-			rootObject->getTransform()->rotate(-90, 0, 1, 0);
-			rootObject->getTransform()->translate(0, -1.25, 0);
-		}
-
-		*/
-
 	}
 };
 

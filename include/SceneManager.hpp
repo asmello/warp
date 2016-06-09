@@ -17,7 +17,7 @@ namespace warp
     class SceneManager : public ResourceManager<Scene>, public Singleton<SceneManager>
     {
     public:
-        Object<GameObject>::ID createFromFile(const std::string &filename, Object<Material>::ID material);
+		std::shared_ptr<warp::Scene> createFromFile(const std::string &filename, Object<Material>::ID material);
         
     private:
         void loadNodeMeshes(const aiNode * pNode,

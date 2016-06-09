@@ -11,6 +11,8 @@
 #include "Mesh.hpp"
 #include "util.hpp"
 
+#include "MeshRenderer.hpp"
+
 #include <SFML/Window.hpp>
 
 #include <glm/glm.hpp>
@@ -100,6 +102,7 @@ void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
 void SceneRenderer::render()
 {
     std::shared_ptr<Scene> scene = std::static_pointer_cast<Scene>(gameObject.lock());
+
     
     // Clear the screen to black
     glClear(GL_COLOR_BUFFER_BIT);
@@ -114,14 +117,16 @@ void SceneRenderer::render()
     t_last = t_now; // Update last tick
     
     // For each camera in the scene
-    for (const std::shared_ptr<Camera>& camera : scene->getComponents<Camera>())
+//	std::cout << "Number of Cameras: " << scene->getComponentsInChildren<Camera>().size() <<"\n";
+    for (const std::shared_ptr<Camera>& camera : scene->getComponentsInChildren<Camera>())
     {
         updateCamera(camera);
         
         // Render visible objects
-        for (std::shared_ptr<Renderer>& renderer : scene->getComponents<Renderer>())
+//		std::cout << "Number of Renderers: " << scene->getComponentsInChildren<MeshRenderer>().size() << " Camera obj: " << "\n";
+        for (std::shared_ptr<MeshRenderer>& renderer : scene->getComponentsInChildren<MeshRenderer>()) // TODO [Should be mesh renderer... but get components does not work with inherited components]
         {
-            renderer->activate();
+			renderer->activate();
             renderer->render();
         }
     }

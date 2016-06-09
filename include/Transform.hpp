@@ -16,6 +16,8 @@ namespace warp
 {
     class Transform : public Component, public std::enable_shared_from_this<Transform>
     {
+		friend class GameObject; // TODO [Temporary]
+		friend class SceneRenderer; // TODO [Temporary]
     private:
         glm::vec3 position, scaleFactors;
         glm::quat rotation;
