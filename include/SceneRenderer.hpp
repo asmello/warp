@@ -24,7 +24,7 @@ namespace warp
         Object<Camera>::ID activeCameraID;
         double t_total;
         bool paused;
-        GLuint uboLights, uboMatrices;
+        GLuint uboLights, uboCamera;
         
         void updateCamera(const std::shared_ptr<Camera> camera);
         

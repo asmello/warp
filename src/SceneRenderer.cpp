@@ -105,31 +105,34 @@ void SceneRenderer::init()
     glBindBufferBase(GL_UNIFORM_BUFFER, 0, uboLights);
     
     // Create Matrix Uniform Buffer (MUB)
-    glGenBuffers(1, &uboMatrices);
-    glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-    glBufferData(GL_UNIFORM_BUFFER, NUM_UNIFORM_MATRICES*sizeof(glm::mat4), NULL, GL_STATIC_DRAW);
+    glGenBuffers(1, &uboCamera);
+    glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
+    glBufferData(GL_UNIFORM_BUFFER, sizeof(glm::mat4)+sizeof(glm::vec3), NULL, GL_STATIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
     
     // Two-way bind the MUB to shader binding point
-    // ShaderManager::getInstance()->setUniformBlockBinding("matricesBlock", 1); // !! DOES NOT WORK
+    // ShaderManager::getInstance()->setUniformBlockBinding("uboCamera", 1); // !! DOES NOT WORK
     
     // WORKAROUND
-    index = glGetUniformBlockIndex(shader_program, "matricesBlock");
+    index = glGetUniformBlockIndex(shader_program, "cameraBlock");
     glUniformBlockBinding(shader_program, index, 1);
     // WORKAROUND
     
-    glBindBufferBase(GL_UNIFORM_BUFFER, 1, uboMatrices);
+    glBindBufferBase(GL_UNIFORM_BUFFER, 1, uboCamera);
 }
 
 void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
 {
     if (camera->update())
     {
-//        glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-//        glBufferSubData(GL_UNIFORM_BUFFER,
-//                        0, NUM_UNIFORM_MATRICES*sizeof(glm::mat4),
-//                        glm::value_ptr(camera->getViewProjection()));
-//        glBindBuffer(GL_UNIFORM_BUFFER, 0);  
+        glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
+        glBufferSubData(GL_UNIFORM_BUFFER,
+                        0, sizeof(glm::mat4),
+                        glm::value_ptr(camera->getViewProjection()));
+        glBufferSubData(GL_UNIFORM_BUFFER,
+                        sizeof(glm::mat4), sizeof(glm::vec3),
+                        glm::value_ptr(camera->getGameObject()->getTransform()->getGlobalPosition()));
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);  
     }
 }
 
@@ -161,14 +164,6 @@ void SceneRenderer::render()
         for (std::shared_ptr<MeshRenderer>& renderer : scene->getComponentsInChildren<MeshRenderer>()) // TODO [Should be mesh renderer... but get components does not work with inherited components]
         {
 			renderer->activate();
-
-			// TODO [temporarly passing to u_position here too since the new method is not working]
-			if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
-				glUniformMatrix4fv(activeShader->getUniformLocation("u_ViewProj"), 1, GL_FALSE, glm::value_ptr(camera->getViewProjection()));
-				auto camPos = camera->getGameObject()->getTransform()->getGlobalPosition(); // TODO URGENTE [Precisão ser global, não local]
-				glUniform3f(activeShader->getUniformLocation("u_camPosition"), camPos.x, camPos.y, camPos.z);
-			}
-
             renderer->render();
         }
     }
