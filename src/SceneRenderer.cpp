@@ -25,21 +25,6 @@
 
 using namespace warp;
 
-SceneRenderer::SceneRenderer() : activeGameObjectID(0), activeCameraID(0), t_total(0.0), paused(false)
-{
-    
-}
-
-void SceneRenderer::pause()
-{
-    paused = !paused;
-}
-
-bool SceneRenderer::isPaused() const
-{
-    return paused;
-}
-
 // requires shaders ready
 void SceneRenderer::init()
 {
@@ -48,31 +33,11 @@ void SceneRenderer::init()
     // Set the background color
     glClearColor (0.1f, 0.06f, 0.15f, 1.0f);
     
-    // Start counting time
-    t_last = std::chrono::high_resolution_clock::now();
-    
     // Set geometry shader settings
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
-    
-//    GLuint uboTestBlock;
-//    glGenBuffers(1, &uboTestBlock);
-//    glBindBuffer(GL_UNIFORM_BUFFER, uboTestBlock);
-//    glBufferData(GL_UNIFORM_BUFFER, 4*sizeof(GLfloat), NULL, GL_STATIC_DRAW);
-//    glBindBuffer(GL_UNIFORM_BUFFER, 0);
-//    
-//    auto shader = ShaderManager::getInstance()->get(Shader::ID(0));
-//    GLint shader_program = shader->getNativeHandle();
-//    
-//    GLuint test_index = glGetUniformBlockIndex(shader_program, "test");
-//    glUniformBlockBinding(shader_program, test_index, 0);
-//    glBindBufferBase(GL_UNIFORM_BUFFER, 0, uboTestBlock);
-//    
-//    GLfloat color[] = { 1.0, 0.0, 1.0, 1.0 };
-//    glBindBuffer(GL_UNIFORM_BUFFER, uboTestBlock);
-//    glBufferSubData(GL_UNIFORM_BUFFER, 0, 4*sizeof(GLfloat), color);
     
     // Create Light Uniform Buffer (LUB)
     glGenBuffers(1, &uboLights);
@@ -85,10 +50,7 @@ void SceneRenderer::init()
     // Upload light data to LUB
     for (GLint i = 0; i < Light::MAX_LIGHTS && i < lights.size(); ++i)
     {
-        glBufferSubData(GL_UNIFORM_BUFFER,
-                        i*3*sizeof(glm::vec4),
-                        3*sizeof(glm::vec4),
-                        lights[i]->getData());
+        glBufferSubData(GL_UNIFORM_BUFFER, i*3*sizeof(glm::vec4), 3*sizeof(glm::vec4), lights[i]->getData());
     }
     
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
@@ -145,14 +107,6 @@ void SceneRenderer::render()
     // Clear the screen to black
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    auto t_now = std::chrono::high_resolution_clock::now();
-    
-    // Update total elapsed time (if not paused)
-    if (!paused) {
-        t_total += std::chrono::duration_cast<std::chrono::duration<double>>(t_now - t_last).count();
-    }
-    t_last = t_now; // Update last tick
-    
     std::vector<std::shared_ptr<Renderer>> renderers = scene->getComponents<Renderer>();
     
     // For each camera in the scene
@@ -161,133 +115,10 @@ void SceneRenderer::render()
         updateCamera(camera);
         
         // Render visible objects
-        for (std::shared_ptr<Renderer>& renderer : renderers)
+        for (const std::shared_ptr<Renderer>& renderer : renderers)
         {
 			renderer->activate(); //TODO: render only active renderers (instead of activating all of them)
             renderer->render();
         }
     }
 }
-
-void SceneRenderer::onKeyDown(Input::Key type)
-{
-    switch (type) {
-        case Input::Key::LBracket:
-            getActiveGameObject()->getTransform()->scale(1.25f, 1.25f, 1.25f);
-            break;
-        case Input::Key::RBracket:
-            getActiveGameObject()->getTransform()->scale(0.8f, 0.8f, 0.8f);
-            break;
-        case Input::Key::Space:
-            pause();
-            break;
-        case Input::Key::Num0:
-            activeGameObjectID = GameObject::ID(0);
-            break;
-        case Input::Key::Num1:
-            activeGameObjectID = GameObject::ID(1);
-            break;
-        case Input::Key::Num2:
-            activeGameObjectID = GameObject::ID(2);
-            break;
-        case Input::Key::Num3:
-            activeGameObjectID = GameObject::ID(3);
-            break;
-        case Input::Key::Num4:
-            activeGameObjectID = GameObject::ID(4);
-            break;
-        case Input::Key::Num5:
-            activeGameObjectID = GameObject::ID(5);
-            break;
-        case Input::Key::Num6:
-            activeGameObjectID = GameObject::ID(6);
-            break;
-        case Input::Key::Num7:
-            activeGameObjectID = GameObject::ID(7);
-            break;
-        case Input::Key::Num8:
-            activeGameObjectID = GameObject::ID(8);
-            break;
-        case Input::Key::Num9:
-            activeGameObjectID = GameObject::ID(9);
-            break;
-        default:
-            break;
-    }
-}
-
-void SceneRenderer::onMouseScrolled(float delta)
-{
-    float scaleFactor;
-    if (delta >= 0.0f) {
-        scaleFactor = 1.0f + delta/10.0f;
-    } else {
-        scaleFactor = 1.0f / (1.0f + -delta/10.0f);
-    }
-    getActiveGameObject()->getTransform()->scale(scaleFactor);
-}
-
-void SceneRenderer::onResized(int width, int height)
-{
-    std::shared_ptr<Scene> scene = std::static_pointer_cast<Scene>(gameObject.lock());
-    scene->getComponent<Camera>()->reshape(width, height);
-}
-
-std::shared_ptr<GameObject> SceneRenderer::getActiveGameObject()
-{
-    std::shared_ptr<Scene> scene = std::static_pointer_cast<Scene>(gameObject.lock());
-    return scene;
-}
-
-void SceneRenderer::processInput()
-{
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-    {
-        getActiveGameObject()->getTransform()->rotateZ(0.025f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-    {
-        getActiveGameObject()->getTransform()->rotateZ(-0.025f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    {
-        getActiveGameObject()->getTransform()->translate(-.025f, .0f, .0f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    {
-        getActiveGameObject()->getTransform()->translate(.0f, -.025f, .0f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    {
-        getActiveGameObject()->getTransform()->translate(.025f, .0f, .0f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    {
-        getActiveGameObject()->getTransform()->translate(.0f, .025f, .0f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-    {
-        getActiveGameObject()->getTransform()->rotateX(0.025f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-    {
-        getActiveGameObject()->getTransform()->rotateX(-0.025f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-        getActiveGameObject()->getTransform()->rotateY(-0.025f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-        getActiveGameObject()->getTransform()->rotateY(0.025f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-    {
-        getActiveGameObject()->getTransform()->translate(.0f, .0f, -.01f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
-    {
-        getActiveGameObject()->getTransform()->translate(.0f, .0f, .01f);
-    }
-}
-

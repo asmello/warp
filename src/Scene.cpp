@@ -1,4 +1,5 @@
 #include "Scene.hpp"
+#include "SceneRenderer.hpp"
 
 #include "Transform.hpp"
 #include "Behavior.hpp"
@@ -45,17 +46,21 @@ std::shared_ptr<Scene> Scene::newScene()
     return scene;
 }
 
-void Scene::behaviorStart()
+void Scene::start()
 {
     for (auto behavior : getComponents<Behavior>())
     {
         behavior->start();
     }
 }
-void Scene::behaviorUpdate()
+void Scene::update()
 {
     for (auto behavior : getComponents<Behavior>())
     {
         behavior->update();
+    }
+    if (auto renderer = getComponent<SceneRenderer>())
+    {
+        renderer->render();
     }
 }

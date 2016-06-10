@@ -13,8 +13,6 @@ namespace warp
 	class Behavior : public ComponentImplementation<Behavior>
 	{
 	public:
-		Behavior();
-
 		virtual void start() {} // TODO [First frame it is active]
 		virtual void update() {} // TODO [Once every frame before animation]
 		virtual void lateUpdate() {} // TODO [Once every frame after animation]

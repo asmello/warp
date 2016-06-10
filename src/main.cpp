@@ -1,28 +1,15 @@
 #include <GL/glew.h>
-
 #include <SFML/Window.hpp>
 
 #include <memory>
 
-#include "MaterialManager.hpp"
-#include "TextureManager.hpp"
-#include "ShaderManager.hpp"
-#include "SceneRenderer.hpp"
-#include "MeshRenderer.hpp"
-#include "MeshManager.hpp"
-#include "Transform.hpp"
 #include "GameLoop.hpp"
-#include "Texture.hpp"
-#include "Camera.hpp"
 #include "Input.hpp"
 #include "Scene.hpp"
-#include "Light.hpp"
-#include "Mesh.hpp"
-#include "util.hpp"
+#include "SceneRenderer.hpp"
 
-#include "scripts/SceneInitializer.hpp"
-#include "SceneManager.hpp"
 #include "scripts/Behavior10.hpp"
+#include "scripts/SceneInitializer.hpp"
 
 int main(int, char const**)
 {
@@ -39,7 +26,7 @@ int main(int, char const**)
                                                settings);
     window->setVerticalSyncEnabled(true);
     
-    warp::Input windowInput(window);
+    warp::Input::init(window);
     
     glewExperimental = GL_TRUE;
     glewInit();
@@ -47,37 +34,27 @@ int main(int, char const**)
 
 	// Create the scene object
 	std::shared_ptr<warp::Scene> scene = warp::Scene::newScene();
-	std::shared_ptr<warp::SceneRenderer> sRenderer = scene->newComponent<warp::SceneRenderer>();
 
 	// Populating scene
 	SceneInitializer::init(scene);
-
-    // Initialize rendering context
-    sRenderer->init();
     
-    // The scene renderer will listen to window events
-    windowInput.addListener(sRenderer);
-    
-	// Start scene behaviour
-	scene->behaviorStart();
+	// Set scene into motion
+	scene->start();
 
     // This is the main loop
     auto loop = std::make_shared<warp::GameLoop>(
-    [&windowInput, sRenderer, window, scene]()
+    [window, scene]()
     {
         // Process window events
-        windowInput.flush();
+        Input::flush();
         
-		// Update scene behaviour
-		scene->behaviorUpdate();
-        
-        // Draw the scene
-        sRenderer->render();
+		// Update scene
+        scene->update();
         
         // Swap buffers
         window->display();
     });
-    windowInput.addListener(loop);
+    Input::addListener(loop);
     
     loop->run();
     

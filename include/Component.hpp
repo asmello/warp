@@ -15,7 +15,6 @@ namespace warp
         friend class GameObject;
         friend class Scene;
     public:
-        Component();
         std::shared_ptr<GameObject> getGameObject() const;
         Object<GameObject>::ID getGameObjectID() const;
         

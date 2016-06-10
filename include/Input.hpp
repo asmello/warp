@@ -2,21 +2,29 @@
 #define InputHandler_hpp
 
 #include <SFML/Window.hpp>
+#include <glm/glm.hpp>
 
 #include <memory>
+
+#include "Singleton.hpp"
 
 namespace warp
 {
     class InputListener;
     
-    class Input {
+    class Input : public Singleton<Input>
+    {
     public:
         
         using Key = sf::Keyboard::Key;
         
-        Input(std::shared_ptr<sf::Window> window);
-        void addListener(std::shared_ptr<InputListener> listener);
-        void flush();
+        static void init(std::shared_ptr<sf::Window> window);
+        static void addListener(std::shared_ptr<InputListener> listener);
+        static void flush();
+        
+        static glm::vec2 getMousePos();
+        static void setMousePos(glm::vec2 pos);
+        static bool isKeyPressed(Key key);
         
     private:
         std::shared_ptr<sf::Window> window;

@@ -2,32 +2,25 @@
 #define Behavior10_hpp
 
 #include "Behavior.hpp"
-#include <iostream>
-#include <SFML/Window.hpp>
-#include <SFML/Window/Mouse.hpp>
-#include <SFML/System/Vector2.hpp>
-
-#include "util.hpp"
 #include "Camera.hpp"
+#include "Input.hpp"
 
-class Behavior10 : public warp::Behavior
+#include <glm/glm.hpp>
+
+using namespace warp;
+
+class Behavior10 : public Behavior, public InputListener
 {
 
 private:
 	const float speed = 35.0 * 0.01666f;
-	const float rotationSpeed = 0.1* 0.03f;
-
-	sf::Vector2i prevMousePos;
+	const float rotationSpeed = 0.1 * 0.03f;
+    glm::vec2 prevMousePos;
 
 public:
-
-	Behavior10()
-	{
-	}
-
 	virtual void start()
 	{
-		prevMousePos = sf::Mouse::getPosition();
+        prevMousePos = Input::getMousePos();
 	}
 
 	virtual void update()
@@ -36,46 +29,44 @@ public:
 		auto parent = transform->getParent();
 
 		// Walk
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        if (Input::isKeyPressed(Input::Key::W))
 		{
 			parent->setPosition(parent->getLocalPosition() + parent->forward() * speed);
-			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        if (Input::isKeyPressed(Input::Key::A))
 		{
 			parent->setPosition(parent->getLocalPosition() - parent->right() * speed);
-			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        if (Input::isKeyPressed(Input::Key::S))
 		{
 			parent->setPosition(parent->getLocalPosition() - parent->forward() * speed);
-			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        if (Input::isKeyPressed(Input::Key::D))
 		{
 			parent->setPosition(parent->getLocalPosition() + parent->right() * speed);
-			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        if (Input::isKeyPressed(Input::Key::Space))
 		{
 			parent->setPosition(parent->getLocalPosition() + parent->up() * speed);
-			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+        if (Input::isKeyPressed(Input::Key::LShift))
 		{
 			parent->setPosition(parent->getLocalPosition() - parent->up() * speed);
-			this->getGameObject()->getComponent<warp::Camera>()->update();
 		}
 
 		// rotate
-		if (prevMousePos != sf::Mouse::getPosition() - prevMousePos)
+        if (prevMousePos != Input::getMousePos() - prevMousePos)
 		{
-			sf::Vector2i deltaPos = sf::Mouse::getPosition() - prevMousePos;
-			transform->rotate(-rotationSpeed *deltaPos.y, 1, 0, 0);
-			parent->rotate(-rotationSpeed *deltaPos.x, 0, 1, 0);
-
-			sf::Mouse::setPosition(prevMousePos);
+            glm::vec2 deltaPos = Input::getMousePos() - prevMousePos;
+			transform->rotate(-rotationSpeed * deltaPos.y, 1, 0, 0);
+			parent->rotate(-rotationSpeed * deltaPos.x, 0, 1, 0);
+			Input::setMousePos(prevMousePos);
 		}
 	}
+    
+    virtual void onResized(int width, int height)
+    {
+        getGameObject()->getComponent<warp::Camera>()->reshape(width, height);
+    }
 };
 #endif

@@ -37,14 +37,14 @@ public:
 		auto materialManager = warp::MaterialManager::getInstance();
 //		auto meshManager = warp::MeshManager::getInstance();
 
-
 		// Create a camera object
 		std::shared_ptr<warp::GameObject> go = scene->newGameObject();
 		std::shared_ptr<warp::GameObject> go1 = scene->newGameObject();
 		std::shared_ptr<warp::Camera> camera = go1->newComponent<warp::Camera>();
 		camera->setPosition(glm::vec3(0, 2, 10));
 		camera->lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-		go1->newComponent<Behavior10>();
+		auto behavior = go1->newComponent<Behavior10>();
+        Input::addListener(behavior);
 		go1->getTransform()->setParent(go->getTransform());
 		camera.reset();
 
@@ -303,6 +303,9 @@ public:
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/StoneParts_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
+        
+        std::shared_ptr<warp::SceneRenderer> sRenderer = scene->newComponent<warp::SceneRenderer>();
+        sRenderer->init();
 	}
 };
 

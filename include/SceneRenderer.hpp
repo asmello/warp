@@ -16,29 +16,16 @@ namespace warp
     class Camera;
     class Light;
     
-    class SceneRenderer : public InputListener, public ComponentImplementation<SceneRenderer>
+    class SceneRenderer : public ComponentImplementation<SceneRenderer>
     {
     private:
-        std::chrono::time_point<std::chrono::high_resolution_clock> t_last;
-        Object<GameObject>::ID activeGameObjectID;
-        Object<Camera>::ID activeCameraID;
-        double t_total;
-        bool paused;
         GLuint uboLights, uboCamera;
         
         void updateCamera(const std::shared_ptr<Camera> camera);
         
     public:
-        SceneRenderer();
         void init();
         void render();
-        void pause();
-        bool isPaused() const;
-        void onKeyDown(Input::Key type);
-        void onMouseScrolled(float delta);
-        void onResized(int width, int height);
-        void processInput();
-        std::shared_ptr<GameObject> getActiveGameObject();
     };
 }
 

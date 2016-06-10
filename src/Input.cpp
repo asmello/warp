@@ -1,35 +1,55 @@
 #include "Input.hpp"
 
+#include <SFML/Window/Mouse.hpp>
+#include <SFML/System/Vector2.hpp>
+
 using namespace warp;
 
-Input::Input(std::shared_ptr<sf::Window> window_) : window(window_)
+void Input::init(std::shared_ptr<sf::Window> window)
 {
-
+    getInstance()->window = window;
 }
 
 void Input::addListener(std::shared_ptr<InputListener> listener)
 {
-    listeners.push_back(listener);
+    getInstance()->listeners.push_back(listener);
+}
+
+glm::vec2 Input::getMousePos()
+{
+    sf::Vector2i pos = sf::Mouse::getPosition();
+    return glm::vec2(pos.x, pos.y);
+}
+
+void Input::setMousePos(glm::vec2 pos)
+{
+    sf::Vector2i sfPos = sf::Vector2i(pos.x, pos.y);
+    sf::Mouse::setPosition(sfPos);
+}
+
+bool Input::isKeyPressed(Key key)
+{
+    return sf::Keyboard::isKeyPressed(key);
 }
 
 void Input::flush()
 {
     sf::Event windowEvent;
-    while (window->pollEvent(windowEvent))
+    while (getInstance()->window->pollEvent(windowEvent))
     {
         switch (windowEvent.type)
         {
             case sf::Event::Closed:
-                notifyClosed();
+                getInstance()->notifyClosed();
                 break;
             case sf::Event::KeyPressed:
-                notifyKeyDown(windowEvent.key.code);
+                getInstance()->notifyKeyDown(windowEvent.key.code);
                 break;
             case sf::Event::MouseWheelScrolled:
-                notifyMouseScrolled(windowEvent.mouseWheelScroll.delta);
+                getInstance()->notifyMouseScrolled(windowEvent.mouseWheelScroll.delta);
                 break;
             case sf::Event::Resized:
-                notifyResized(windowEvent.size.width, windowEvent.size.height);
+                getInstance()->notifyResized(windowEvent.size.width, windowEvent.size.height);
                 break;
             default:
                 break;
