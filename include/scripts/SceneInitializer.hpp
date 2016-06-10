@@ -1,11 +1,6 @@
 #ifndef SceneInitializer_hpp
 #define SceneInitializer_hpp
 
-#include <memory>
-
-#include <vector>
-
-
 #include "MaterialManager.hpp"
 #include "TextureManager.hpp"
 #include "ShaderManager.hpp"
@@ -22,9 +17,11 @@
 #include "Mesh.hpp"
 #include "util.hpp"
 
-#include "Behaviour10.hpp"
+#include "Behavior10.hpp"
 #include "SceneManager.hpp"
 
+#include <memory>
+#include <vector>
 
 class SceneInitializer
 {
@@ -32,13 +29,13 @@ private:
 	SceneInitializer() {}
 
 public: 
-	static void Init(std::shared_ptr<warp::Scene> scene)
+	static void init(std::shared_ptr<warp::Scene> scene)
 	{
 		// These are resource managers
 		auto shaderManager = warp::ShaderManager::getInstance();
 		auto textureManager = warp::TextureManager::getInstance();
 		auto materialManager = warp::MaterialManager::getInstance();
-		auto meshManager = warp::MeshManager::getInstance();
+//		auto meshManager = warp::MeshManager::getInstance();
 
 
 		// Create a camera object
@@ -47,7 +44,7 @@ public:
 		std::shared_ptr<warp::Camera> camera = go1->newComponent<warp::Camera>();
 		camera->setPosition(glm::vec3(0, 2, 10));
 		camera->lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-		go1->newComponent<Behaviour10>();
+		go1->newComponent<Behavior10>();
 		go1->getTransform()->setParent(go->getTransform());
 		camera.reset();
 
@@ -306,10 +303,6 @@ public:
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/StoneParts_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
-
-
-
-		
 	}
 };
 

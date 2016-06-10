@@ -1,7 +1,7 @@
 #include "Scene.hpp"
 
 #include "Transform.hpp"
-#include "Behaviour.hpp"
+#include "Behavior.hpp"
 
 using namespace warp;
 
@@ -45,17 +45,17 @@ std::shared_ptr<Scene> Scene::newScene()
     return scene;
 }
 
-void Scene::Behaviour_Start()
+void Scene::behaviorStart()
 {
-    for (auto behaviour : getComponents<Behaviour>())
+    for (auto behavior : getComponents<Behavior>())
     {
-        behaviour->Start();
+        behavior->start();
     }
 }
-void Scene::Behaviour_Update()
+void Scene::behaviorUpdate()
 {
-    for (auto behaviour : getComponents<Behaviour>())
+    for (auto behavior : getComponents<Behavior>())
     {
-        behaviour->Update();
+        behavior->update();
     }
 }

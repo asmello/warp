@@ -2,7 +2,7 @@
 #define Scene_hpp
 
 #include "Object.hpp"
-#include "Behaviour.hpp"
+#include "Behavior.hpp"
 #include "Transform.hpp"
 
 #include <vector>
@@ -62,8 +62,8 @@ namespace warp
         
         static std::shared_ptr<Scene> newScene();
 
-		void Behaviour_Start();
-		void Behaviour_Update();
+		void behaviorStart();
+		void behaviorUpdate();
     };
 
 

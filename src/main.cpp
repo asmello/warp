@@ -20,11 +20,9 @@
 #include "Mesh.hpp"
 #include "util.hpp"
 
-#include "SceneInitializer.hpp"
+#include "scripts/SceneInitializer.hpp"
 #include "SceneManager.hpp"
-#include "Behaviour10.hpp"
-
-
+#include "scripts/Behavior10.hpp"
 
 int main(int, char const**)
 {
@@ -52,7 +50,7 @@ int main(int, char const**)
 	std::shared_ptr<warp::SceneRenderer> sRenderer = scene->newComponent<warp::SceneRenderer>();
 
 	// Populating scene
-	SceneInitializer::Init(scene);
+	SceneInitializer::init(scene);
 
     // Initialize rendering context
     sRenderer->init();
@@ -61,7 +59,7 @@ int main(int, char const**)
     windowInput.addListener(sRenderer);
     
 	// Start scene behaviour
-	scene->Behaviour_Start();
+	scene->behaviorStart();
 
     // This is the main loop
     auto loop = std::make_shared<warp::GameLoop>(
@@ -71,7 +69,7 @@ int main(int, char const**)
         windowInput.flush();
         
 		// Update scene behaviour
-		scene->Behaviour_Update();
+		scene->behaviorUpdate();
         
         // Draw the scene
         sRenderer->render();

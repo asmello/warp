@@ -39,8 +39,6 @@ namespace warp
         void onResized(int width, int height);
         void processInput();
         std::shared_ptr<GameObject> getActiveGameObject();
-        
-        static const GLuint NUM_UNIFORM_MATRICES = 1;
     };
 }
 

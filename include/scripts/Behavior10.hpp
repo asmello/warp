@@ -1,7 +1,7 @@
-#ifndef Behaviour10_hpp
-#define Behaviour10_hpp
+#ifndef Behavior10_hpp
+#define Behavior10_hpp
 
-#include "Behaviour.hpp"
+#include "Behavior.hpp"
 #include <iostream>
 #include <SFML/Window.hpp>
 #include <SFML/Window/Mouse.hpp>
@@ -10,7 +10,7 @@
 #include "util.hpp"
 #include "Camera.hpp"
 
-class Behaviour10 : public warp::Behaviour
+class Behavior10 : public warp::Behavior
 {
 
 private:
@@ -21,16 +21,16 @@ private:
 
 public:
 
-	Behaviour10()
+	Behavior10()
 	{
 	}
 
-	virtual void Start()
+	virtual void start()
 	{
 		prevMousePos = sf::Mouse::getPosition();
 	}
 
-	virtual void Update()
+	virtual void update()
 	{
 		auto transform = this->getGameObject()->getTransform();
 		auto parent = transform->getParent();
