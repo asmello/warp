@@ -12,9 +12,10 @@ layout (std140) uniform lightsBlock
     Light lights[8];
 };
 
-layout (std140) uniform matricesBlock
+layout (std140) uniform cameraBlock
 {
-    mat4 viewProj;
+    mat4 u_viewProj;
+    vec3 u_camPosition;
 };
 
 layout(location = 1) in vec3 v_normal;
@@ -26,14 +27,13 @@ layout(location = 0) out vec4 outColor;
 
 uniform sampler2D u_sampler0;
 uniform sampler2D u_sampler1;
-uniform vec3 u_camPosition;
 //uniform DirectionalLight u_sun;
 
 float LightAttenuation (Light curLight, vec3 fragPosition){
 
 	float lightDistance = length (fragPosition -curLight.vector.xyz);
 
-	float pointAttenuation = 1.0 / (curLight.attenuation.x + curLight.attenuation.y * lightDistance + curLight.attenuation.z * lightDistance * lightDistance); 
+	float pointAttenuation = 1.0 / (curLight.attenuation.x + curLight.attenuation.y * lightDistance + curLight.attenuation.z * lightDistance * lightDistance);
 	float directionalAttenuation = 1.0;
 	float spotAttenuation = 1.0;
 
@@ -56,7 +56,7 @@ vec3 CalcBumpedNormal (){
 }
 
 vec4 ShadePhong (Light curLight, vec3 fragPos, vec3 normal, vec3 viewDirection, vec4 textureColor, float specularity, float roughness, float metalic){
-	
+
 	vec3 lightDir = mix (normalize (curLight.vector.xyz - fragPos), -curLight.vector.xyz, curLight.vector.w);
 	vec3 lightReflect = reflect (lightDir, normal);
 	float atten = LightAttenuation (curLight, fragPos);
@@ -75,7 +75,7 @@ void main()
 	vec4 ambientLight = vec4 (0.01, 0.003, 0.001, 1.0) * 1;
 	vec3 sunNormalized = vec3 (0.0, 1.0, 0.0);
 	vec4 specularColor = vec4 (1.0, 1.0, 1.0, 1.0);
-	
+
 	//UsefulVectors
 	vec3 normalNormalized = normalize (v_normal);
 	vec3 tangentNormalized = normalize (v_tangent);
@@ -109,15 +109,8 @@ void main()
 	difSpec = difSpec + ShadePhong (testLight6, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
 	difSpec = difSpec + ShadePhong (testLight7, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
 
-
-
 	//vec4 difuse   = max (0.0, dot (-sunNormalized, perturbedNormals)) * texture(u_sampler0, v_texcoord.st);
 	//vec4 specular = 1.0 * pow (max (0.0, dot (-HalfDirection, perturbedNormals)) , 50.0) * specularColor * texture(u_sampler0, v_texcoord.st) * texture(u_sampler0, v_texcoord.st).w;
 
-
-
-	vec4 rosa = vec4 (1.0, 0.0, 1.0, 0.0);
-
     outColor = (difSpec + ambient + rim);// * 0.01 + vec4 (perturbedNormals, 1.0);
-
 }
