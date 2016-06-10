@@ -99,10 +99,10 @@ void SceneRenderer::init()
     
     // WORKAROUND
     GLuint index = glGetUniformBlockIndex(shader_program, "lightsBlock");
-    glUniformBlockBinding(shader_program, index, 0);
+    glUniformBlockBinding(shader_program, index, 10);
     // WORKAROUND
     
-    glBindBufferBase(GL_UNIFORM_BUFFER, 0, uboLights);
+    glBindBufferBase(GL_UNIFORM_BUFFER, 10, uboLights);
     
     // Create Matrix Uniform Buffer (MUB)
     glGenBuffers(1, &uboCamera);
@@ -115,10 +115,10 @@ void SceneRenderer::init()
     
     // WORKAROUND
     index = glGetUniformBlockIndex(shader_program, "cameraBlock");
-    glUniformBlockBinding(shader_program, index, 1);
+    glUniformBlockBinding(shader_program, index, 11);
     // WORKAROUND
     
-    glBindBufferBase(GL_UNIFORM_BUFFER, 1, uboCamera);
+    glBindBufferBase(GL_UNIFORM_BUFFER, 11, uboCamera);
 }
 
 void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
