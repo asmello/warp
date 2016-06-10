@@ -55,6 +55,23 @@ void SceneRenderer::init()
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     
+//    GLuint uboTestBlock;
+//    glGenBuffers(1, &uboTestBlock);
+//    glBindBuffer(GL_UNIFORM_BUFFER, uboTestBlock);
+//    glBufferData(GL_UNIFORM_BUFFER, 4*sizeof(GLfloat), NULL, GL_STATIC_DRAW);
+//    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+//    
+//    auto shader = ShaderManager::getInstance()->get(Shader::ID(0));
+//    GLint shader_program = shader->getNativeHandle();
+//    
+//    GLuint test_index = glGetUniformBlockIndex(shader_program, "test");
+//    glUniformBlockBinding(shader_program, test_index, 0);
+//    glBindBufferBase(GL_UNIFORM_BUFFER, 0, uboTestBlock);
+//    
+//    GLfloat color[] = { 1.0, 0.0, 1.0, 1.0 };
+//    glBindBuffer(GL_UNIFORM_BUFFER, uboTestBlock);
+//    glBufferSubData(GL_UNIFORM_BUFFER, 0, 4*sizeof(GLfloat), color);
+    
     // Create Light Uniform Buffer (LUB)
     glGenBuffers(1, &uboLights);
     glBindBuffer(GL_UNIFORM_BUFFER, uboLights);
@@ -74,10 +91,18 @@ void SceneRenderer::init()
     
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
     
-    // Two-way bind the LUB to shader binding point
-    glBindBufferBase(GL_UNIFORM_BUFFER, 0, uboLights);
-    ShaderManager::getInstance()->setUniformBlockBinding("lightsBlock", 0);
+    auto shader = ShaderManager::getInstance()->get(Shader::ID(0));
+    GLint shader_program = shader->getNativeHandle();
     
+    // Two-way bind the LUB to shader binding point
+    // ShaderManager::getInstance()->setUniformBlockBinding("lightsBlock", 0); // !! DOES NOT WORK
+    
+    // WORKAROUND
+    GLuint index = glGetUniformBlockIndex(shader_program, "lightsBlock");
+    glUniformBlockBinding(shader_program, index, 0);
+    // WORKAROUND
+    
+    glBindBufferBase(GL_UNIFORM_BUFFER, 0, uboLights);
     
     // Create Matrix Uniform Buffer (MUB)
     glGenBuffers(1, &uboMatrices);
@@ -86,19 +111,25 @@ void SceneRenderer::init()
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
     
     // Two-way bind the MUB to shader binding point
+    // ShaderManager::getInstance()->setUniformBlockBinding("matricesBlock", 1); // !! DOES NOT WORK
+    
+    // WORKAROUND
+    index = glGetUniformBlockIndex(shader_program, "matricesBlock");
+    glUniformBlockBinding(shader_program, index, 1);
+    // WORKAROUND
+    
     glBindBufferBase(GL_UNIFORM_BUFFER, 1, uboMatrices);
-    ShaderManager::getInstance()->setUniformBlockBinding("matricesBlock", 1);
 }
 
 void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
 {
     if (camera->update())
     {
-        glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
-        glBufferSubData(GL_UNIFORM_BUFFER,
-                        0, NUM_UNIFORM_MATRICES*sizeof(glm::mat4),
-                        glm::value_ptr(camera->getViewProjection()));
-        glBindBuffer(GL_UNIFORM_BUFFER, 0);  
+//        glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
+//        glBufferSubData(GL_UNIFORM_BUFFER,
+//                        0, NUM_UNIFORM_MATRICES*sizeof(glm::mat4),
+//                        glm::value_ptr(camera->getViewProjection()));
+//        glBindBuffer(GL_UNIFORM_BUFFER, 0);  
     }
 }
 

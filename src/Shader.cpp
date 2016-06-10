@@ -132,7 +132,7 @@ void Shader::setUniformBlockBinding(const std::string& uniformBlockName, GLint l
     {
         throw std::runtime_error("invalid shader uniform block");
     }
-    glShaderStorageBlockBinding(shaderProgram, idx, loc);
+    glUniformBlockBinding(shaderProgram, idx, loc);
 }
 
 Shader::~Shader()
