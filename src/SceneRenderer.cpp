@@ -21,6 +21,8 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <typeinfo>
+
 using namespace warp;
 
 SceneRenderer::SceneRenderer() : activeGameObjectID(0), activeCameraID(0), t_total(0.0), paused(false)
@@ -95,7 +97,7 @@ void SceneRenderer::init()
     GLint shader_program = shader->getNativeHandle();
     
     // Two-way bind the LUB to shader binding point
-    // ShaderManager::getInstance()->setUniformBlockBinding("lightsBlock", 0); // !! DOES NOT WORK
+    // ShaderManager::getInstance()->setUniformBlockBinding("lightsBlock", 10); // !! DOES NOT WORK
     
     // WORKAROUND
     GLuint index = glGetUniformBlockIndex(shader_program, "lightsBlock");
@@ -111,7 +113,7 @@ void SceneRenderer::init()
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
     
     // Two-way bind the MUB to shader binding point
-    // ShaderManager::getInstance()->setUniformBlockBinding("uboCamera", 1); // !! DOES NOT WORK
+    // ShaderManager::getInstance()->setUniformBlockBinding("uboCamera", 11); // !! DOES NOT WORK
     
     // WORKAROUND
     index = glGetUniformBlockIndex(shader_program, "cameraBlock");
@@ -139,11 +141,9 @@ void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
 void SceneRenderer::render()
 {
     std::shared_ptr<Scene> scene = std::static_pointer_cast<Scene>(gameObject.lock());
-
     
     // Clear the screen to black
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClear(GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     auto t_now = std::chrono::high_resolution_clock::now();
     
@@ -153,17 +153,17 @@ void SceneRenderer::render()
     }
     t_last = t_now; // Update last tick
     
+    std::vector<std::shared_ptr<Renderer>> renderers = scene->getComponents<Renderer>();
+    
     // For each camera in the scene
-//	std::cout << "Number of Cameras: " << scene->getComponentsInChildren<Camera>().size() <<"\n";
-    for (const std::shared_ptr<Camera>& camera : scene->getComponentsInChildren<Camera>())
+    for (const std::shared_ptr<Camera>& camera : scene->getComponents<Camera>())
     {
         updateCamera(camera);
         
         // Render visible objects
-//		std::cout << "Number of Renderers: " << scene->getComponentsInChildren<MeshRenderer>().size() << " Camera obj: " << "\n";
-        for (std::shared_ptr<MeshRenderer>& renderer : scene->getComponentsInChildren<MeshRenderer>()) // TODO [Should be mesh renderer... but get components does not work with inherited components]
+        for (std::shared_ptr<Renderer>& renderer : renderers)
         {
-			renderer->activate();
+			renderer->activate(); //TODO: render only active renderers (instead of activating all of them)
             renderer->render();
         }
     }

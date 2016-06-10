@@ -10,7 +10,7 @@
 
 namespace warp
 {
-    class Camera : public Component
+    class Camera : public ComponentImplementation<Camera>
     {
     public:
         // These constructors should not be used directly

@@ -10,7 +10,7 @@
 
 namespace warp
 {
-	class Behaviour : public Component, public Object<Behaviour>
+	class Behaviour : public ComponentImplementation<Behaviour>
 	{
 	public:
 		Behaviour();

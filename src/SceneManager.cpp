@@ -111,12 +111,7 @@ std::shared_ptr<warp::Scene> SceneManager::createFromFile(const std::string &fil
     }
 }
 
-
-
-
-
-
-std::shared_ptr<GameObject> SceneManager::createFromFile(const std::string &filename, Object<Material>::ID material, std::shared_ptr<warp::Scene> scene)
+std::shared_ptr<GameObject> SceneManager::createFromFile(const std::string &filename, Object<Material>::ID material, std::shared_ptr<Scene> scene)
 {
 	Assimp::Importer importer;
 

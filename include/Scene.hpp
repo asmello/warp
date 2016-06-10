@@ -67,14 +67,12 @@ namespace warp
     };
 
 
-    
     template <class T, typename... Args>
     std::shared_ptr<T> GameObject::newComponent(Args&&... args)
     {
         std::shared_ptr<T> component = std::make_shared<T>(args...);
         component->gameObject = shared_from_this();
-        std::size_t type_code = typeid(T).hash_code();
-        component->type_code = type_code;
+        std::size_t type_code = component->type_code;
         components.insert(std::pair<std::size_t, std::shared_ptr<Component>>(type_code, component));
         if (typeid(this) != typeid(Scene))
         {
@@ -119,12 +117,13 @@ namespace warp
         auto children = getTransform()->getChildren();
 		for (int i = 0; i < children.size(); i++)
 		{
-			auto tmp1 = children[i].lock();
-			if (tmp1)
+			if (auto tmp1 = children[i].lock())
 			{
 				auto tmp = tmp1->getGameObject()->getComponentsInChildren<T>();
 				for (int j = 0; j<tmp.size(); j++)
-					filtered_components.push_back(tmp[j]);
+                {
+                    filtered_components.push_back(tmp[j]);
+                }
 			}
 		}
 		return filtered_components;

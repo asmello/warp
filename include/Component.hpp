@@ -4,6 +4,7 @@
 #include "Object.hpp"
 
 #include <memory>
+#include <typeinfo>
 
 namespace warp
 {
@@ -20,9 +21,13 @@ namespace warp
         
     protected:
         std::weak_ptr<GameObject> gameObject;
-        
-    private:
-        std::size_t type_code;
+    };
+    
+    template <class T>
+    class ComponentImplementation : public Component
+    {
+    public:
+        const std::size_t type_code = typeid(T).hash_code();
     };
 }
 

@@ -9,7 +9,7 @@
 
 namespace warp
 {
-    class Light : public Component
+    class Light : public ComponentImplementation<Light>
     {
     public:
         enum Type {

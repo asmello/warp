@@ -6,14 +6,15 @@
 
 #include <vector>
 #include <memory>
+#include <typeinfo>
 
 namespace warp
 {
-    class Renderer : public Component
+    class Renderer : public ComponentImplementation<Renderer>
     {
     public:
         Renderer();
-        void activate();
+        virtual void activate();
         virtual void render() = 0;
         
     protected:

@@ -16,7 +16,7 @@ namespace warp
     class Camera;
     class Light;
     
-    class SceneRenderer : public InputListener, public Renderer
+    class SceneRenderer : public InputListener, public ComponentImplementation<SceneRenderer>
     {
     private:
         std::chrono::time_point<std::chrono::high_resolution_clock> t_last;

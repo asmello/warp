@@ -1,17 +1,7 @@
 #include "Scene.hpp"
 
 #include "Transform.hpp"
-
-#include "Behaviour1.hpp"
-#include "Behaviour2.hpp"
-#include "Behaviour3.hpp"
-#include "Behaviour4.hpp"
-#include "Behaviour5.hpp"
-#include "Behaviour6.hpp"
-#include "Behaviour7.hpp"
-#include "Behaviour8.hpp"
-#include "Behaviour9.hpp"
-#include "Behaviour10.hpp"
+#include "Behaviour.hpp"
 
 using namespace warp;
 
@@ -55,50 +45,17 @@ std::shared_ptr<Scene> Scene::newScene()
     return scene;
 }
 
-
-void Scene::Behaviour_Start() // TODO [Fix getComponents not being able to get inherited]
+void Scene::Behaviour_Start()
 {
-	{ auto behaviourList = getComponentsInChildren<Behaviour1>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Start(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour2>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Start(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour3>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Start(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour4>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Start(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour5>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Start(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour6>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Start(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour7>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Start(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour8>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Start(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour9>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Start(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour10>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Start(); }
+    for (auto behaviour : getComponents<Behaviour>())
+    {
+        behaviour->Start();
+    }
 }
 void Scene::Behaviour_Update()
 {
-	{ auto behaviourList = getComponentsInChildren<Behaviour1>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Update(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour2>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Update(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour3>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Update(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour4>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Update(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour5>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Update(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour6>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Update(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour7>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Update(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour8>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Update(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour9>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Update(); }
-	{ auto behaviourList = getComponentsInChildren<Behaviour10>();
-	for (int i = 0; i < behaviourList.size(); i++) behaviourList[i]->Update(); }
+    for (auto behaviour : getComponents<Behaviour>())
+    {
+        behaviour->Update();
+    }
 }
