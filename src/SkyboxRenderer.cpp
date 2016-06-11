@@ -7,7 +7,7 @@ using namespace warp;
 
 SkyboxRenderer::SkyboxRenderer(Material::ID _materialID) : materialID(_materialID)
 {
-    priority = Renderer::MAX_PRIORITY;
+    priority = Renderer::MIN_PRIORITY;
     load();
 }
 
@@ -88,7 +88,7 @@ void SkyboxRenderer::load()
 
 void SkyboxRenderer::render()
 {
-    glDepthMask(GL_FALSE);
+    glDepthFunc(GL_LEQUAL);
     MaterialManager::getInstance()->setActive(materialID);
     this->getGameObject()->getTransform()->bind();
     
@@ -96,5 +96,5 @@ void SkyboxRenderer::render()
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
     
-    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LESS);
 }
