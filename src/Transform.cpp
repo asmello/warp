@@ -187,13 +187,13 @@ std::vector<std::weak_ptr<Transform>> Transform::getChildren()
     return children;
 }
 
-glm::vec3 Transform::getGlobalPosition()
+glm::vec3 Transform::getGlobalPosition() const
 {
     if (isRoot()) return position;
     return parent->getGlobalPosition() + position;
 }
 
-glm::vec3 Transform::getPosition()
+glm::vec3 Transform::getPosition() const
 {
     return position;
 }
