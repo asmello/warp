@@ -26,6 +26,7 @@ int main(int, char const**)
     window->setVerticalSyncEnabled(true);
     
     warp::Input::init(window);
+    warp::WindowManager::getInstance()->create(window);
     
     glewExperimental = GL_TRUE;
     glewInit();

@@ -88,7 +88,7 @@ void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
         glBufferSubData(GL_UNIFORM_BUFFER,
                         2*sizeof(glm::mat4), sizeof(glm::vec3),
                         glm::value_ptr(camera->getGameObject()->getTransform()->getGlobalPosition()));
-        glBindBuffer(GL_UNIFORM_BUFFER, 0);  
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);
     }
 }
 
