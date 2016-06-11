@@ -6,7 +6,6 @@
 #include "GameLoop.hpp"
 #include "Input.hpp"
 #include "Scene.hpp"
-#include "SceneRenderer.hpp"
 
 #include "scripts/Behavior10.hpp"
 #include "scripts/SceneInitializer.hpp"
