@@ -127,8 +127,8 @@ void Shader::setUniformBlockBinding(const std::string& uniformBlockName, GLint l
     {
         throw std::runtime_error("invalid location");
     }
-    GLint idx = glGetUniformBlockIndex(shaderProgram, uniformBlockName.c_str());
-    if (idx < 0)
+    GLuint idx = glGetUniformBlockIndex(shaderProgram, uniformBlockName.c_str());
+    if (idx == GL_INVALID_INDEX)
     {
         throw std::runtime_error("invalid shader uniform block");
     }

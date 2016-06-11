@@ -25,7 +25,7 @@ Shader::ID ShaderManager::createFromFile(const std::string& vertexShaderFile, co
 
 void ShaderManager::setUniformBlockBinding(const std::string &uniformBlockName, GLint location)
 {
-    for (std::shared_ptr<Shader> shader : resources)
+    for (std::shared_ptr<Shader>& shader : resources)
     {
         shader->setUniformBlockBinding(uniformBlockName, location);
     }
