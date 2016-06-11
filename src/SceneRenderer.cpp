@@ -56,14 +56,14 @@ void SceneRenderer::init()
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
     
     auto shader = ShaderManager::getInstance()->get(Shader::ID(0));
-    GLint shader_program = shader->getNativeHandle();
+    GLuint shader_program = shader->getNativeHandle();
     
     // Two-way bind the LUB to shader binding point
     ShaderManager::getInstance()->setUniformBlockBinding("lightsBlock", 10); // !! DOES NOT WORK
     
     // WORKAROUND
-    //GLuint index = glGetUniformBlockIndex(shader_program, "lightsBlock");
-    //glUniformBlockBinding(shader_program, index, 10);
+//    GLuint index = glGetUniformBlockIndex(shader_program, "lightsBlock");
+//    glUniformBlockBinding(shader_program, index, 10);
     // WORKAROUND
     
     glBindBufferBase(GL_UNIFORM_BUFFER, 10, uboLights);
@@ -78,8 +78,8 @@ void SceneRenderer::init()
     ShaderManager::getInstance()->setUniformBlockBinding("cameraBlock", 11); // !! DOES NOT WORK
     
     // WORKAROUND
-    //index = glGetUniformBlockIndex(shader_program, "cameraBlock");
-    //glUniformBlockBinding(shader_program, index, 11);
+//    index = glGetUniformBlockIndex(shader_program, "cameraBlock");
+//    glUniformBlockBinding(shader_program, index, 11);
     // WORKAROUND
     
     glBindBufferBase(GL_UNIFORM_BUFFER, 11, uboCamera);

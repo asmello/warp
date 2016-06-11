@@ -127,12 +127,33 @@ void Shader::setUniformBlockBinding(const std::string& uniformBlockName, GLint l
     {
         throw std::runtime_error("invalid location");
     }
-    GLint idx = glGetUniformBlockIndex(shaderProgram, uniformBlockName.c_str());
-    if (idx < 0)
+    GLuint idx = glGetUniformBlockIndex(shaderProgram, uniformBlockName.c_str());
+    if (idx == GL_INVALID_INDEX)
     {
         throw std::runtime_error("invalid shader uniform block");
     }
     glUniformBlockBinding(shaderProgram, idx, loc);
+}
+
+std::vector<std::string> Shader::getUniformBlockNames() const
+{
+    GLint numBlocks;
+    glGetProgramiv(shaderProgram, GL_ACTIVE_UNIFORM_BLOCKS, &numBlocks);
+    std::vector<std::string> blockNames;
+    blockNames.reserve(numBlocks);
+    for(int blockIx = 0; blockIx < numBlocks; ++blockIx)
+    {
+        GLint nameLen;
+        __glewGetActiveUniformBlockiv(shaderProgram, blockIx, GL_UNIFORM_BLOCK_NAME_LENGTH, &nameLen);
+        
+        std::vector<GLchar> name;
+        name.resize(nameLen);
+        __glewGetActiveUniformBlockName(shaderProgram, blockIx, nameLen, NULL, &name[0]);
+        
+        blockNames.push_back(std::string());
+        blockNames.back().assign(name.begin(), name.end() - 1); //Remove the null terminator.
+    }
+    return blockNames;
 }
 
 Shader::~Shader()

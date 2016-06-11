@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 
 #include <string>
+#include <vector>
 
 namespace warp
 {
@@ -29,6 +30,7 @@ namespace warp
         GLint getAttribLocation(const std::string& attributeName) const;
         GLint getUniformLocation(const std::string& uniformName) const;
         void setUniformBlockBinding(const std::string& uniformBlockName, GLint location);
+        std::vector<std::string> getUniformBlockNames() const;
     };
 }
 
