@@ -21,16 +21,12 @@ MeshRenderer::MeshRenderer(Material::ID material, Mesh::ID mesh) : Renderer(), m
     
 }
 
-void MeshRenderer::activate()
-{
-    Renderer::activate();
-    MaterialManager::getInstance()->setActive(materialID);
-	this->getGameObject()->getTransform()->bind();
-    MeshManager::getInstance()->setActive(meshID);
-}
-
 void MeshRenderer::render()
 {
+    MaterialManager::getInstance()->setActive(materialID);
+    this->getGameObject()->getTransform()->bind();
+    MeshManager::getInstance()->setActive(meshID);
+    
     if (std::shared_ptr<Mesh> mesh = MeshManager::getInstance()->get(meshID))
     {
         glBindVertexArray(mesh->vao);

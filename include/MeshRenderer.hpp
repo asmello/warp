@@ -20,7 +20,6 @@ namespace warp
         MeshRenderer(Object<Material>::ID materialID,
                      Object<Mesh>::ID meshID);
         virtual void render();
-        virtual void activate();
         
     private:
         Object<Material>::ID materialID;

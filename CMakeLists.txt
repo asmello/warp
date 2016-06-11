@@ -59,7 +59,6 @@ set(WARP_SOURCES
 	src/Shader.cpp
 	src/Camera.cpp
 	src/Texture.cpp
-	src/Renderer.cpp
 	src/GameLoop.cpp
 	src/Material.cpp
 	src/Behavior.cpp

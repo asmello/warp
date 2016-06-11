@@ -21,6 +21,7 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <algorithm>
 #include <typeinfo>
 
 using namespace warp;
@@ -96,6 +97,9 @@ void SceneRenderer::render()
     
     std::vector<std::shared_ptr<Renderer>> renderers = scene->getComponents<Renderer>();
     
+    // Sort renderers
+    Renderer::sort(renderers);
+    
     // For each camera in the scene
     for (const std::shared_ptr<Camera>& camera : scene->getComponents<Camera>())
     {
@@ -104,8 +108,7 @@ void SceneRenderer::render()
         // Render visible objects
         for (const std::shared_ptr<Renderer>& renderer : renderers)
         {
-			renderer->activate(); //TODO: render only active renderers (instead of activating all of them)
-            renderer->render();
+            if (renderer->isActive()) renderer->render();
         }
     }
 }
