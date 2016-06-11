@@ -22,7 +22,6 @@
 
 #include <memory>
 #include <vector>
-#include <iostream>
 
 class SceneInitializer
 {
@@ -68,16 +67,6 @@ public:
         
         // Load a shader from file
         auto shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl", util::resourcePath() + "frag2.glsl");
-        
-        std::cout << "Shader active uniform blocks: " << std::endl;
-        if (auto shader = shaderManager->get(shaderID))
-        {
-            auto names = shader->getUniformBlockNames();
-            for (int i = 0; i < names.size(); ++i)
-            {
-                std::cout << "[" << i << "] " << names[i] << std::endl;
-            }
-        }
 
 		////////////////////////
 		// SCENE CONSTRUCTION //
