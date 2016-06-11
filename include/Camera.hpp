@@ -26,6 +26,7 @@ namespace warp
         
         glm::mat4 getProjection() const;
         glm::mat4 getViewProjection() const;
+        glm::mat4 getView() const;
         
     private:
         glm::mat4 proj;

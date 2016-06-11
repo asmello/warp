@@ -2,6 +2,7 @@
 #define SceneInitializer_hpp
 
 #include "MaterialManager.hpp"
+#include "SkyboxRenderer.hpp"
 #include "TextureManager.hpp"
 #include "ShaderManager.hpp"
 #include "SceneRenderer.hpp"
@@ -21,6 +22,7 @@
 #include "SceneManager.hpp"
 
 #include <memory>
+#include <string>
 #include <vector>
 
 class SceneInitializer
@@ -263,6 +265,30 @@ public:
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/StoneParts_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
+        
+        ////////////
+        // Skybox //
+        ////////////
+        
+        // This uses a different shader
+        auto skyshaderID = shaderManager->createFromFile(util::resourcePath() + "skybox_v.glsl", util::resourcePath() + "skybox_f.glsl");
+//
+        std::vector<std::string> faces;
+        faces.push_back(util::resourcePath() + "Skybox/right.jpg");
+        faces.push_back(util::resourcePath() + "Skybox/left.jpg");
+        faces.push_back(util::resourcePath() + "Skybox/top.jpg");
+        faces.push_back(util::resourcePath() + "Skybox/bottom.jpg");
+        faces.push_back(util::resourcePath() + "Skybox/back.jpg");
+        faces.push_back(util::resourcePath() + "Skybox/front.jpg");
+        auto cubemapID = textureManager->createCubemapFromFiles(faces);
+        materialID = materialManager->create(cubemapID, skyshaderID);
+        
+        go3 = scene->newGameObject();
+        go3->newComponent<SkyboxRenderer>(materialID);
+        
+        ///////////////////
+        // SceneRenderer //
+        ///////////////////
         
         std::shared_ptr<warp::SceneRenderer> sRenderer = scene->newComponent<warp::SceneRenderer>();
         sRenderer->init();

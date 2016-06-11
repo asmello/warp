@@ -7,6 +7,7 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
 namespace warp
 {
@@ -20,7 +21,9 @@ namespace warp
         GLint uniSampler;
         bool initialized, loaded;
         
-        void loadFromFile(const std::string& filename);
+        void load2D(const std::string& path);
+        void loadCubemap(const std::string& path);
+        void loadCubemapFromMultiple(const std::vector<std::string>& paths);
         
     public:
         // These constructors should not be used directly

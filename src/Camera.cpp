@@ -34,6 +34,11 @@ glm::mat4 Camera::getViewProjection() const
     return proj * glm::inverse(getGameObject()->getTransform()->getTransformation());
 }
 
+glm::mat4 Camera::getView() const
+{
+    return glm::inverse(getGameObject()->getTransform()->getTransformation());
+}
+
 glm::mat4 Camera::getProjection() const
 {
     return proj;

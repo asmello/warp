@@ -39,6 +39,7 @@ void SceneRenderer::init()
     glCullFace(GL_BACK);
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
     
     // Create Light Uniform Buffer (LUB)
     glGenBuffers(1, &uboLights);
@@ -64,7 +65,7 @@ void SceneRenderer::init()
     // Create Matrix Uniform Buffer (MUB)
     glGenBuffers(1, &uboCamera);
     glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
-    glBufferData(GL_UNIFORM_BUFFER, sizeof(glm::mat4)+sizeof(glm::vec3), NULL, GL_STATIC_DRAW);
+    glBufferData(GL_UNIFORM_BUFFER, 2*sizeof(glm::mat4)+sizeof(glm::vec3), NULL, GL_STATIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
     
     // Two-way bind the MUB to shader binding point
@@ -80,9 +81,12 @@ void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
         glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
         glBufferSubData(GL_UNIFORM_BUFFER,
                         0, sizeof(glm::mat4),
-                        glm::value_ptr(camera->getViewProjection()));
+                        glm::value_ptr(camera->getView()));
         glBufferSubData(GL_UNIFORM_BUFFER,
-                        sizeof(glm::mat4), sizeof(glm::vec3),
+                        sizeof(glm::mat4), sizeof(glm::mat4),
+                        glm::value_ptr(camera->getProjection()));
+        glBufferSubData(GL_UNIFORM_BUFFER,
+                        2*sizeof(glm::mat4), sizeof(glm::vec3),
                         glm::value_ptr(camera->getGameObject()->getTransform()->getGlobalPosition()));
         glBindBuffer(GL_UNIFORM_BUFFER, 0);  
     }

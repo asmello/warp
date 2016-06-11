@@ -14,7 +14,8 @@ layout (std140) uniform lightsBlock
 
 layout (std140) uniform cameraBlock
 {
-    mat4 u_viewProj;
+    mat4 u_View;
+    mat4 u_Proj;
     vec3 u_camPosition;
 };
 
@@ -33,7 +34,7 @@ uniform mat4 u_Model;
 
 void main()
 {
-    gl_Position     =  u_viewProj * u_Model * vec4(a_position, 1.0);
+    gl_Position     = u_Proj * u_View * u_Model * vec4(a_position, 1.0);
     v_normal        = (u_Model * vec4(a_normal,   0.0)).xyz;
 	v_worldPosition = (u_Model * vec4(a_position, 1.0)).xyz;
 	v_tangent       = (u_Model * vec4(a_tangent,  0.0)).xyz;

@@ -69,6 +69,7 @@ set(WARP_SOURCES
 	src/SceneManager.cpp
 	src/SceneRenderer.cpp
 	src/ShaderManager.cpp
+	src/SkyboxRenderer.cpp
 	src/TextureManager.cpp
 	src/MaterialManager.cpp
 )
@@ -97,6 +98,7 @@ set(WARP_HEADERS
 	include/SceneRenderer.hpp
 	include/ShaderManager.hpp
 	include/TextureManager.hpp
+	include/SkyboxRenderer.hpp
 	include/MaterialManager.hpp
 	include/ResourceManager.hpp
 

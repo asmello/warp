@@ -106,7 +106,7 @@ GLint Shader::getAttribLocation(const std::string &attributeName) const
     GLint loc = glGetAttribLocation(shaderProgram, attributeName.c_str());
     if (loc < 0)
     {
-        throw std::runtime_error("invalid shader attribute");
+        fprintf(stderr, "WARN: invalid shader attribute %s\n", attributeName.c_str());
     }
     return loc;
 }
@@ -116,7 +116,7 @@ GLint Shader::getUniformLocation(const std::string &uniformName) const
     GLint loc = glGetUniformLocation(shaderProgram, uniformName.c_str());
     if (loc < 0)
     {
-        throw std::runtime_error("invalid shader uniform");
+        fprintf(stderr, "WARN: invalid shader uniform %s\n", uniformName.c_str());
     }
     return loc;
 }
@@ -125,12 +125,12 @@ void Shader::setUniformBlockBinding(const std::string& uniformBlockName, GLint l
 {
     if (loc < 0)
     {
-        fprintf(stderr, "WARN: invalid location. Uniform block %s not bound.", uniformBlockName.c_str());
+        fprintf(stderr, "WARN: invalid location. Uniform block %s not bound.\n", uniformBlockName.c_str());
     }
     GLuint idx = glGetUniformBlockIndex(shaderProgram, uniformBlockName.c_str());
     if (idx == GL_INVALID_INDEX)
     { 
-        fprintf(stderr, "WARN: uniform block %s not found. Not bound.", uniformBlockName.c_str());
+        fprintf(stderr, "WARN: uniform block %s not found. Not bound.\n", uniformBlockName.c_str());
     }
     glUniformBlockBinding(shaderProgram, idx, loc);
 }

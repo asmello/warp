@@ -3,14 +3,8 @@
 #include "Scene.hpp"
 #include "Material.hpp"
 #include "MaterialManager.hpp"
-#include "Camera.hpp"
-#include "Light.hpp"
 #include "Mesh.hpp"
 #include "MeshManager.hpp"
-
-#include <iostream>
-
-#include "Scene.hpp"
 #include "Transform.hpp"
 
 

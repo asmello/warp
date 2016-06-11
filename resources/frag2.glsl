@@ -14,7 +14,8 @@ layout (std140) uniform lightsBlock
 
 layout (std140) uniform cameraBlock
 {
-    mat4 u_viewProj;
+    mat4 u_View;
+    mat4 u_Proj;
     vec3 u_camPosition;
 };
 
@@ -27,7 +28,6 @@ layout(location = 0) out vec4 outColor;
 
 uniform sampler2D u_sampler0;
 uniform sampler2D u_sampler1;
-//uniform DirectionalLight u_sun;
 
 float LightAttenuation (Light curLight, vec3 fragPosition){
 

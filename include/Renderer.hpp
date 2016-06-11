@@ -24,7 +24,7 @@ namespace warp
             return priority < d.priority;
         }
         
-        static void sort(std::vector<std::shared_ptr<Renderer>> v)
+        static void sort(std::vector<std::shared_ptr<Renderer>>& v)
         {
             std::sort(v.begin(), v.end(),
                       [](const std::shared_ptr<Renderer>& lhs, const std::shared_ptr<Renderer>& rhs){
