@@ -80,9 +80,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Columns
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Column2.png");
@@ -95,9 +92,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Trims
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Trims.png");
@@ -110,9 +104,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Gargoyle
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Gargoyle.png");
@@ -125,9 +116,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//DungeonWall
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/DungeonWall.png");
@@ -140,9 +128,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Ceilling
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Celling.png");
@@ -155,9 +140,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Column3
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Column3.png");
@@ -170,9 +152,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Altar
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Altar.png");
@@ -185,9 +164,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Altar
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AltarDeamon.png");
@@ -200,9 +176,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Atlas
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AtlasTexture1.png");
@@ -215,9 +188,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Atlas2
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AtlasTexture2.png");
@@ -230,9 +200,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Carvings
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/S_carvings.png");
@@ -245,9 +212,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Cavern
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/CavernTexture_1.png");
@@ -260,9 +224,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Flat
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/FlatTexture2.png");
@@ -275,9 +236,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Lava
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Lava.png");
@@ -290,9 +248,6 @@ public:
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
 
 		//Lava
-		// Load a shader from file
-		shaderID = shaderManager->createFromFile(util::resourcePath() + "vertex2.glsl",
-			util::resourcePath() + "frag2.glsl");
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/StoneParts2.png");
