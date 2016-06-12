@@ -57,12 +57,12 @@ vec3 CalcBumpedNormal (){
 
 vec4 ShadePhong (Light curLight, vec3 fragPos, vec3 normal, vec3 viewDirection, vec4 textureColor, float specularity, float roughness, float metalic){
 
-	vec3 lightDir = mix (normalize (curLight.vector.xyz - fragPos), -curLight.vector.xyz, curLight.vector.w);
+	vec3 lightDir = mix (normalize (curLight.vector.xyz - fragPos), - normalize (curLight.vector.xyz), curLight.vector.w);
 	vec3 lightReflect = reflect (lightDir, normal);
 	float atten = LightAttenuation (curLight, fragPos);
 
 	vec4 difuse = max (0.0, dot (lightDir, normal)) * textureColor * curLight.color * atten;
-	vec4 specular = 1.0 * pow (max (0.0, dot (viewDirection, lightReflect)) , roughness) * mix (curLight.color, textureColor, metalic) * textureColor.w;
+	vec4 specular = pow (max (0.0, dot (viewDirection, lightReflect)) , roughness) * mix (curLight.color, textureColor, metalic) * textureColor.w * atten;
 
 	vec4 finalColor = min (difuse + specularity * specular * 0.0, 1.0); //vec4 (1.0, 1.0, 1.0, 1.0) * dot (viewDirection, normal)
 	return finalColor;
@@ -83,6 +83,10 @@ void main()
 	vec3 viewDirection = normalize (u_camPosition - v_worldPosition);
 	vec3 HalfDirection = normalize ((sunNormalized - viewDirection)*0.5);
 
+	vec4 albedo = texture (u_sampler0, v_texcoord.st);
+	float specularity = 1.0;
+	//float roughness = texture (u_sampler0, v_texcoord.st).w; 
+
 	//FindPerturbedNormals
 	//mat3 tangentToWorld = mat3 (tangentNormalized, bitangentNormalized, normalNormalized);
 	vec3 perturbedNormals = CalcBumpedNormal (); //transpose (tangentToWorld) * (2 * texture (u_sampler1, v_texcoord.st).xyz - 1);
@@ -101,16 +105,16 @@ void main()
 	Light testLight6 = Light (vec4 (1.0, 0.039, 0.009, 1.0) * 45.0, vec4 (50.0, -20.0, 0.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
 	Light testLight7 = Light (vec4 (1.0, 0.039, 0.009, 1.0) * 45.0, vec4 (-50.0, -20.0, 0.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
 
-	vec4 difSpec =      ShadePhong (testLight1, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
-	difSpec = difSpec + ShadePhong (testLight2, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
-	difSpec = difSpec + ShadePhong (testLight3, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
-	difSpec = difSpec + ShadePhong (testLight4, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
-	difSpec = difSpec + ShadePhong (testLight5, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
-	difSpec = difSpec + ShadePhong (testLight6, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
-	difSpec = difSpec + ShadePhong (testLight7, v_worldPosition, perturbedNormals, viewDirection, texture (u_sampler0, v_texcoord.st), 0.1, 10.0, 0.0);
+	vec4 difSpec =      ShadePhong (testLight1, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, 10.0, 0.0);
+	difSpec = difSpec + ShadePhong (testLight2, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, 10.0, 0.0);
+	difSpec = difSpec + ShadePhong (testLight3, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, 10.0, 0.0);
+	difSpec = difSpec + ShadePhong (testLight4, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, 10.0, 0.0);
+	difSpec = difSpec + ShadePhong (testLight5, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, 10.0, 0.0);
+	difSpec = difSpec + ShadePhong (testLight6, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, 10.0, 0.0);
+	difSpec = difSpec + ShadePhong (testLight7, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, 10.0, 0.0);
 
 	//vec4 difuse   = max (0.0, dot (-sunNormalized, perturbedNormals)) * texture(u_sampler0, v_texcoord.st);
 	//vec4 specular = 1.0 * pow (max (0.0, dot (-HalfDirection, perturbedNormals)) , 50.0) * specularColor * texture(u_sampler0, v_texcoord.st) * texture(u_sampler0, v_texcoord.st).w;
 
-    outColor = (difSpec + ambient + rim);// * 0.01 + vec4 (perturbedNormals, 1.0);
+    outColor = 0.00001 * dot (perturbedNormals, viewDirection) + 1.0 * (difSpec + ambient + rim);// * 0.01 + vec4 (perturbedNormals, 1.0);
 }
