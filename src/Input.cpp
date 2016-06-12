@@ -1,14 +1,11 @@
 #include "Input.hpp"
 
+#include "WindowManager.hpp"
+
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/System/Vector2.hpp>
 
 using namespace warp;
-
-void Input::init(std::shared_ptr<sf::Window> window)
-{
-    getInstance()->window = window;
-}
 
 void Input::addListener(std::shared_ptr<InputListener> listener)
 {
@@ -35,27 +32,29 @@ bool Input::isKeyPressed(Key key)
 void Input::flush()
 {
     sf::Event windowEvent;
-    while (getInstance()->window->pollEvent(windowEvent))
+    if (auto window = WindowManager::getInstance()->getActive())
     {
-        switch (windowEvent.type)
+        while (window->window->pollEvent(windowEvent))
         {
-            case sf::Event::Closed:
-                getInstance()->notifyClosed();
-                break;
-            case sf::Event::KeyPressed:
-                getInstance()->notifyKeyDown(windowEvent.key.code);
-                break;
-            case sf::Event::MouseWheelScrolled:
-                getInstance()->notifyMouseScrolled(windowEvent.mouseWheelScroll.delta);
-                break;
-            case sf::Event::Resized:
-                getInstance()->notifyResized(windowEvent.size.width, windowEvent.size.height);
-                break;
-            default:
-                break;
+            switch (windowEvent.type)
+            {
+                case sf::Event::Closed:
+                    getInstance()->notifyClosed();
+                    break;
+                case sf::Event::KeyPressed:
+                    getInstance()->notifyKeyDown(windowEvent.key.code);
+                    break;
+                case sf::Event::MouseWheelScrolled:
+                    getInstance()->notifyMouseScrolled(windowEvent.mouseWheelScroll.delta);
+                    break;
+                case sf::Event::Resized:
+                    getInstance()->notifyResized(windowEvent.size.width, windowEvent.size.height);
+                    break;
+                default:
+                    break;
+            }
         }
     }
-
 }
 
 void Input::notifyClosed()

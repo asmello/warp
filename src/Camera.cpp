@@ -2,6 +2,7 @@
 
 #include "Shader.hpp"
 #include "ShaderManager.hpp"
+#include "WindowManager.hpp"
 #include "Scene.hpp"
 #include "Transform.hpp"
 
@@ -15,6 +16,11 @@ Camera::Camera() :
 fieldOfView(45.0f), aspectRatio(1.0f), nearField(0.1f), farField(1000.0f),
 viewChanged(true), projectionChanged(false)
 {
+    if (auto window = WindowManager::getInstance()->getActive())
+    {
+        glm::vec2 size = window->getSize();
+        aspectRatio = size.x/size.y;
+    }
     proj = glm::perspective(fieldOfView, aspectRatio, nearField, farField);
 }
 

@@ -1,5 +1,7 @@
 #include "Window.hpp"
 
+#include "Input.hpp"
+
 using namespace warp;
 
 Window::Window(std::shared_ptr<sf::Window> _window) : window(_window)
@@ -16,8 +18,7 @@ glm::vec2 Window::getSize() const
 glm::vec2 Window::getCenter() const
 {
     sf::Vector2u size = window->getSize();
-    sf::Vector2i pos = window->getPosition();
-    return glm::vec2(pos.x + size.x/2, -pos.y);
+    return glm::vec2(size.x/2, size.y/2);
 }
 
 void Window::setMouseVisible(bool visible)
