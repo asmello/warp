@@ -18,7 +18,6 @@ namespace warp
         
         using Key = sf::Keyboard::Key;
         
-        static void init(std::shared_ptr<sf::Window> window);
         static void addListener(std::shared_ptr<InputListener> listener);
         static void flush();
         
@@ -27,7 +26,6 @@ namespace warp
         static bool isKeyPressed(Key key);
         
     private:
-        std::shared_ptr<sf::Window> window;
         std::vector<std::shared_ptr<InputListener>> listeners;
         void notifyMouseScrolled(float delta);
         void notifyKeyDown(Key type);

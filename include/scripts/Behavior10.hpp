@@ -21,9 +21,11 @@ private:
 public:
 	virtual void start()
 	{
-        auto window = WindowManager::getInstance()->get(Window::ID(0));
-        prevMousePos = window->getCenter();
-        window->setMouseVisible(false);
+        if (auto window = WindowManager::getInstance()->getActive())
+        {
+            prevMousePos = window->getCenter();
+            window->setMouseVisible(false);
+        }
 	}
 
 	virtual void update()

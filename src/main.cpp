@@ -21,11 +21,10 @@ int main(int, char const**)
     settings.attributeFlags = sf::ContextSettings::Core;
     
     auto window = std::make_shared<sf::Window>(sf::VideoMode(1024, 1024, 32), "Warp",
-                                               sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize,
+                                               sf::Style::Fullscreen, //sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize,
                                                settings);
     window->setVerticalSyncEnabled(true);
     
-    warp::Input::init(window);
     warp::WindowManager::getInstance()->create(window);
     
     glewExperimental = GL_TRUE;

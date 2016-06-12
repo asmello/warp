@@ -13,6 +13,7 @@ namespace warp {
     class Window : public Object<Window>
     {
         friend class WindowManager;
+        friend class Input;
         
     public:
         Window(std::shared_ptr<sf::Window> window);
