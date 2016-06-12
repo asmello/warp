@@ -56,6 +56,7 @@ set(WARP_SOURCES
 	src/Input.cpp
 	src/Scene.cpp
 	src/Light.cpp
+	src/Window.cpp
 	src/Shader.cpp
 	src/Camera.cpp
 	src/Texture.cpp
@@ -67,6 +68,7 @@ set(WARP_SOURCES
 	src/MeshManager.cpp
 	src/MeshRenderer.cpp
 	src/SceneManager.cpp
+	src/WindowManager.cpp
 	src/SceneRenderer.cpp
 	src/ShaderManager.cpp
 	src/SkyboxRenderer.cpp
@@ -79,6 +81,7 @@ set(WARP_HEADERS
 	include/Input.hpp
 	include/Scene.hpp
 	include/Light.hpp
+	include/Window.hpp
 	include/Object.hpp
 	include/Shader.hpp
 	include/Camera.hpp
@@ -94,6 +97,7 @@ set(WARP_HEADERS
 	include/MeshManager.hpp
 	include/MeshRenderer.hpp
 	include/SceneManager.hpp
+	include/WindowManager.hpp
 	include/InputListener.hpp
 	include/SceneRenderer.hpp
 	include/ShaderManager.hpp

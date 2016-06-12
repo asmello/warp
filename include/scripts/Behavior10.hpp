@@ -1,6 +1,7 @@
 #ifndef Behavior10_hpp
 #define Behavior10_hpp
 
+#include "WindowManager.hpp"
 #include "Behavior.hpp"
 #include "Camera.hpp"
 #include "Input.hpp"
@@ -20,7 +21,9 @@ private:
 public:
 	virtual void start()
 	{
-        prevMousePos = Input::getMousePos();
+        auto window = WindowManager::getInstance()->get(Window::ID(0));
+        prevMousePos = window->getCenter();
+        window->setMouseVisible(false);
 	}
 
 	virtual void update()
@@ -31,27 +34,27 @@ public:
 		// Walk
         if (Input::isKeyPressed(Input::Key::W))
 		{
-			parent->setPosition(parent->getLocalPosition() + parent->forward() * speed);
+			parent->setPosition(parent->getPosition() + parent->forward() * speed);
 		}
         if (Input::isKeyPressed(Input::Key::A))
 		{
-			parent->setPosition(parent->getLocalPosition() - parent->right() * speed);
+			parent->setPosition(parent->getPosition() - parent->right() * speed);
 		}
         if (Input::isKeyPressed(Input::Key::S))
 		{
-			parent->setPosition(parent->getLocalPosition() - parent->forward() * speed);
+			parent->setPosition(parent->getPosition() - parent->forward() * speed);
 		}
         if (Input::isKeyPressed(Input::Key::D))
 		{
-			parent->setPosition(parent->getLocalPosition() + parent->right() * speed);
+			parent->setPosition(parent->getPosition() + parent->right() * speed);
 		}
         if (Input::isKeyPressed(Input::Key::Space))
 		{
-			parent->setPosition(parent->getLocalPosition() + parent->up() * speed);
+			parent->setPosition(parent->getPosition() + parent->up() * speed);
 		}
         if (Input::isKeyPressed(Input::Key::LShift))
 		{
-			parent->setPosition(parent->getLocalPosition() - parent->up() * speed);
+			parent->setPosition(parent->getPosition() - parent->up() * speed);
 		}
 
 		// rotate

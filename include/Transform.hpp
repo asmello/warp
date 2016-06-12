@@ -16,8 +16,7 @@ namespace warp
 {
     class Transform : public Component, public std::enable_shared_from_this<Transform>
     {
-		friend class GameObject; // TODO [Temporary]
-		friend class SceneRenderer; // TODO [Temporary]
+		
     private:
         glm::vec3 position, scaleFactors;
         glm::quat rotation;
@@ -89,6 +88,7 @@ namespace warp
         Transform();
         
         void bind();
+        
         void scale(float xfactor, float yfactor, float zfactor);
         void scale(glm::vec3 factors);
         void scale(float factor);
@@ -100,23 +100,27 @@ namespace warp
         void translate(float x, float y, float z);
         void translate(glm::vec3 delta);
         void lookAt(glm::vec3 point, glm::vec3 up);
+        
         void setPosition(glm::vec3 position);
         void setRotation(glm::quat q);
         void setParent(std::shared_ptr<Transform> parent);
-		glm::vec3 getLocalPosition() { return position; } // TODO [Get/Set Local/Global scale/position]
-		glm::vec3 getGlobalPosition() { auto tmp = glm::vec4(position.x, position.y, position.z, 1) *getTransformation(); return glm::vec3(tmp.x, tmp.y, tmp.z); } // TODO [Get/Set Local/Global scale/position]
-		glm::vec3 getScale() { return scaleFactors; } // ^
         void setTransformation(const aiMatrix4x4& aiTransform);
+        
         bool isRoot() const;
-        std::vector<std::weak_ptr<Transform>> getChildren();
+        
         std::shared_ptr<Transform> getParent();
         std::shared_ptr<Transform> getRoot();
         std::shared_ptr<Transform> newChild();
+        std::vector<std::weak_ptr<Transform>> getChildren();
+        
         glm::mat4 getTransformation();
-
-		glm::vec3 forward() { return rotation * glm::vec3(0, 0, -1); }
-		glm::vec3 right() { return rotation * glm::vec3(1, 0, 0); }
-		glm::vec3 up() { return rotation * glm::vec3(0, 1, 0); }
+        
+        glm::vec3 getPosition() const;
+        glm::vec3 getGlobalPosition() const;
+        glm::vec3 getScale() const { return scaleFactors; }
+		glm::vec3 forward() const { return rotation * glm::vec3(0, 0, -1); }
+		glm::vec3 right() const { return rotation * glm::vec3(1, 0, 0); }
+		glm::vec3 up() const { return rotation * glm::vec3(0, 1, 0); }
     };
 }
 
