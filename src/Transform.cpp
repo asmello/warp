@@ -190,7 +190,7 @@ std::vector<std::weak_ptr<Transform>> Transform::getChildren()
 glm::vec3 Transform::getGlobalPosition() const
 {
     if (isRoot()) return position;
-    return parent->getGlobalPosition() + position;
+    return glm::vec3(parent->getTransformation() * glm::vec4(position, 1.0f));
 }
 
 glm::vec3 Transform::getPosition() const
