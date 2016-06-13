@@ -104,7 +104,7 @@ void SceneRenderer::init()
     // Create a texture of the same size as the screen
     glGenTextures(1, &ftxo);
     glBindTexture(GL_TEXTURE_2D, ftxo);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, size.x, size.y, 0, GL_RGBA, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -208,28 +208,28 @@ void SceneRenderer::render()
         }
     }
     
-    if (auto screenShader = ShaderManager::getInstance()->get(screenShaderID))
-    {
-        // Use the screen render target
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        
-        // Clear the screen to black
-        glClear(GL_COLOR_BUFFER_BIT);
-        
-        // Temporarily disable depth test
-        glDisable(GL_DEPTH_TEST);
-        
-        // Use the tonemapping shader
-        screenShader->bind();
-        
-        // Draw a quad to screen
-        glBindVertexArray(vao);
-        glBindTexture(GL_TEXTURE_2D, ftxo);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
+    // Use the screen render target
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+    // Clear the screen to black
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    // Temporarily disable depth test
+    glDisable(GL_DEPTH_TEST);
+    
+    // Use the tonemapping shader
+    ShaderManager::getInstance()->setActive(screenShaderID);
+    
+    // Setup the screen texture to render
+    if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
+        glUniform1i(activeShader->getUniformLocation("u_sampler0"), 0);
+        glUniform1f(activeShader->getUniformLocation("exposure"), 1.0f);
     }
-    else
-    {
-        throw std::runtime_error("ERROR: could not load screen tonemapping shader");
-    }
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, ftxo);
+    
+    // Draw a quad to screen
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindVertexArray(0);
 }
