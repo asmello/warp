@@ -3,6 +3,7 @@
 #include "Scene.hpp"
 #include "SceneManager.hpp"
 
+#include "WindowManager.hpp"
 #include "Shader.hpp"
 #include "ShaderManager.hpp"
 #include "Transform.hpp"
@@ -23,8 +24,20 @@
 
 #include <algorithm>
 #include <typeinfo>
+#include <stdexcept>
 
 using namespace warp;
+
+SceneRenderer::~SceneRenderer()
+{
+    glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1, &uboLights);
+    glDeleteBuffers(1, &uboCamera);
+    glDeleteTextures(1, &ftxo);
+    glDeleteRenderbuffers(1, &frbo);
+    glDeleteFramebuffers(1, &fbo);
+    glDeleteVertexArrays(1, &vao);
+}
 
 // requires shaders ready
 void SceneRenderer::init()
@@ -72,6 +85,79 @@ void SceneRenderer::init()
     ShaderManager::getInstance()->setUniformBlockBinding("cameraBlock", 11);
     
     glBindBufferBase(GL_UNIFORM_BUFFER, 11, uboCamera);
+    
+    // Create HDR framebuffer
+    glGenFramebuffers(1, &fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    
+    // Get screen size
+    glm::vec2 size(800, 600);
+    if (auto window = WindowManager::getInstance()->getActive())
+    {
+        size = window->getSize();
+    }
+    else
+    {
+        fprintf(stderr, "WARN: using default framebuffer resolution");
+    }
+    
+    // Create a texture of the same size as the screen
+    glGenTextures(1, &ftxo);
+    glBindTexture(GL_TEXTURE_2D, ftxo);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    
+    // Bind this texture to the framebuffer
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, ftxo, 0);
+    
+    // Create a renderbuffer to store depth (and stencil)
+    glGenRenderbuffers(1, &frbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, frbo);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    
+    // Bind this renderbuffer to the framebuffer
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, frbo);
+    
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    {
+        throw new std::runtime_error("ERROR: Framebuffer is not complete");
+    }
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0); // All set for offscreen rendering
+    
+    // Create the screen tonemapping shader
+    screenShaderID = ShaderManager::getInstance()->createFromFile(util::resourcePath() + "screen_v.glsl", util::resourcePath() + "screen_f.glsl");
+    
+    // Create a simple quad
+    GLfloat vertices[] = {
+        -1.0f,  1.0f,  0.0f, 1.0f,
+        -1.0f, -1.0f,  0.0f, 0.0f,
+        1.0f, -1.0f,  1.0f, 0.0f,
+        
+        -1.0f,  1.0f,  0.0f, 1.0f,
+        1.0f, -1.0f,  1.0f, 0.0f,
+        1.0f,  1.0f,  1.0f, 1.0f
+    };
+    
+    // Create Vertex Array Object
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+    
+    // Create a Vertex Buffer Object and copy the vertex data to it
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    
+    // Set up shader inputs
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(0));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(2 * sizeof(GLfloat)));
+    
+    glBindVertexArray(0);
 }
 
 void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
@@ -96,8 +182,14 @@ void SceneRenderer::render()
 {
     std::shared_ptr<Scene> scene = std::static_pointer_cast<Scene>(gameObject.lock());
     
+    // Use the offscreen render target
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    
     // Clear the screen to black
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    // (Re)enable depth test
+    glEnable(GL_DEPTH_TEST);
     
     std::vector<std::shared_ptr<Renderer>> renderers = scene->getComponents<Renderer>();
     
@@ -114,5 +206,30 @@ void SceneRenderer::render()
         {
             if (renderer->isActive()) renderer->render();
         }
+    }
+    
+    if (auto screenShader = ShaderManager::getInstance()->get(screenShaderID))
+    {
+        // Use the screen render target
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        
+        // Clear the screen to black
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        // Temporarily disable depth test
+        glDisable(GL_DEPTH_TEST);
+        
+        // Use the tonemapping shader
+        screenShader->bind();
+        
+        // Draw a quad to screen
+        glBindVertexArray(vao);
+        glBindTexture(GL_TEXTURE_2D, ftxo);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+    }
+    else
+    {
+        throw std::runtime_error("ERROR: could not load screen tonemapping shader");
     }
 }
