@@ -41,10 +41,11 @@ public:
 
 		// Create a camera object
 		std::shared_ptr<warp::GameObject> go = scene->newGameObject();
+        go->getTransform()->translate(0, 0, 400);
 		std::shared_ptr<warp::GameObject> go1 = scene->newGameObject();
 		std::shared_ptr<warp::Camera> camera = go1->newComponent<warp::Camera>();
-		camera->setPosition(glm::vec3(0, 2, 10));
-		camera->lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+		camera->setPosition(glm::vec3(0, 15, 10));
+//		camera->lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 		auto behavior = go1->newComponent<Behavior10>();
         Input::addListener(behavior);
 		go1->getTransform()->setParent(go->getTransform());

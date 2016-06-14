@@ -22,6 +22,7 @@ namespace warp
         void setNear(float distance);
         void setFar(float distance);
         void setFOV(float angle);
+        void rotate(float angle, float x, float y, float z);
         bool update();
         
         glm::mat4 getProjection() const;

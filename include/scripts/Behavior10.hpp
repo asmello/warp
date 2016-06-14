@@ -26,6 +26,7 @@ public:
             prevMousePos = window->getCenter();
             window->setMouseVisible(false);
         }
+        Input::setMousePos(prevMousePos);
 	}
 
 	virtual void update()
@@ -58,11 +59,12 @@ public:
 		{
 			parent->setPosition(parent->getPosition() - parent->up() * speed);
 		}
+        
+        glm::vec2 deltaPos = Input::getMousePos() - prevMousePos;
 
 		// rotate
-        if (prevMousePos != Input::getMousePos() - prevMousePos)
+        if (prevMousePos != deltaPos)
 		{
-            glm::vec2 deltaPos = Input::getMousePos() - prevMousePos;
 			transform->rotate(-rotationSpeed * deltaPos.y, 1, 0, 0);
 			parent->rotate(-rotationSpeed * deltaPos.x, 0, 1, 0);
 			Input::setMousePos(prevMousePos);

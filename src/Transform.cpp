@@ -106,7 +106,7 @@ void Transform::setRotation(glm::quat q)
 
 void Transform::lookAt(glm::vec3 point, glm::vec3 up)
 {
-    rotation = glm::toQuat(glm::lookAt(position, point, up));
+    rotation = glm::toQuat(glm::inverse(glm::lookAt(getGlobalPosition(), point, up)));
     invalidate();
 }
 
