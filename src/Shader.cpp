@@ -116,7 +116,7 @@ GLint Shader::getUniformLocation(const std::string &uniformName) const
     GLint loc = glGetUniformLocation(shaderProgram, uniformName.c_str());
     if (loc < 0)
     {
-        fprintf(stderr, "WARN: invalid shader uniform %s\n", uniformName.c_str());
+        //fprintf(stderr, "WARN: invalid shader uniform %s\n", uniformName.c_str());
     }
     return loc;
 }

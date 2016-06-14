@@ -54,11 +54,24 @@ public:
 		// Lights //
 		////////////
 
+		/*
+		Light testLight1 = Light(vec4(1.0, 0.054, 0.017, 1.0) * 200.0, vec4(-0.0, 80.0, 0.0, 0.0), vec4(0.0, 1.0, 0.1, 1.0));
+
+		Light testLight2 = Light(vec4(1.0, 0.211, 0.008, 1.0) * 30.0, vec4(40.0, 14.0, 60.0, 0.0), vec4(0.0, 1.0, 0.1, 1.0));
+		Light testLight3 = Light(vec4(1.0, 0.211, 0.008, 1.0) * 30.0, vec4(-40.0, 14.0, 60.0, 0.0), vec4(0.0, 1.0, 0.1, 1.0));
+		Light testLight4 = Light(vec4(1.0, 0.211, 0.008, 1.0) * 30.0, vec4(40.0, 14.0, -60.0, 0.0), vec4(0.0, 1.0, 0.1, 1.0));
+		Light testLight5 = Light(vec4(1.0, 0.211, 0.008, 1.0) * 30.0, vec4(-40.0, 14.0, -60.0, 0.0), vec4(0.0, 1.0, 0.1, 1.0));
+
+		Light testLight6 = Light(vec4(1.0, 0.039, 0.009, 1.0) * 45.0, vec4(50.0, -20.0, 0.0, 0.0), vec4(0.0, 1.0, 0.1, 1.0));
+		Light testLight7 = Light(vec4(1.0, 0.039, 0.009, 1.0) * 45.0, vec4(-50.0, -20.0, 0.0, 0.0), vec4(0.0, 1.0, 0.1, 1.0));
+		*/
+
 		// Create a directional light object
 		go = scene->newGameObject();
 		std::shared_ptr<warp::Light> light = go->newComponent<warp::Light>(warp::Light::Type::Directional);
-		light->setVector(glm::vec3(-0.15f, -0.1f, -0.9f));
-		light->setColor(glm::vec3(1.0f, 1.0f, 0.93f));
+		light->setColor(glm::vec3 (1.0* 200.0, 0.054* 200.0, 0.017* 200.0));
+		light->setVector(glm::vec3(-0.0, 80.0, 0.0));
+		light->setAttenuation(glm::vec4(0.0, 1.0, 0.1, 1.0));
 		light.reset();
 		go->getTransform()->translate(0, 0, 0);
         
@@ -74,26 +87,62 @@ public:
 		// SCENE CONSTRUCTION //
 		////////////////////////
 
+		auto noEmissionTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/BlackLight.png");
+
+		std::vector<std::string> faces;
+		faces.push_back(util::resourcePath() + "Skybox/Hell/right.png");
+		faces.push_back(util::resourcePath() + "Skybox/Hell/left.png");
+		faces.push_back(util::resourcePath() + "Skybox/Hell/top.png"); 
+		faces.push_back(util::resourcePath() + "Skybox/Hell/bottom.png");
+		faces.push_back(util::resourcePath() + "Skybox/Hell/back.png");
+		faces.push_back(util::resourcePath() + "Skybox/Hell/front.png");
+		auto cubemapID = textureManager->createCubemapFromFiles(faces);
+
+		std::vector<std::string> faces2;
+		faces2.push_back(util::resourcePath() + "Skybox/Hell/rightCM.png");
+		faces2.push_back(util::resourcePath() + "Skybox/Hell/leftCM.png");
+		faces2.push_back(util::resourcePath() + "Skybox/Hell/topCM.png");
+		faces2.push_back(util::resourcePath() + "Skybox/Hell/bottomCM.png");
+		faces2.push_back(util::resourcePath() + "Skybox/Hell/backCM.png");
+		faces2.push_back(util::resourcePath() + "Skybox/Hell/frontCM.png");
+		auto convolutedEM = textureManager->createCubemapFromFiles(faces2);
+
 		//Floor
 
 		// Load a texture from file
 		auto colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/FloorTiles1.png");
 		auto normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/FloorTiles1NM.png");
+		auto emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		auto materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		auto materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		auto go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/FloorTiles_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
+
+		//Floor
+
+		// Load a texture from file
+		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/FloorTiles1.png");
+		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/FloorTiles1NM.png");
+		emissionTextureID = noEmissionTextureID;
+
+		// Create a material from shader and texture
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
+
+		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "EsferaDaDiscordia_MDL.fbx", materialID, scene);
+		go3->getTransform()->scale(0.1, 0.1, 0.1);
+		go3->getTransform()->translate (30.0, 30.0, 60.0);
 
 		//Columns
 
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Column2.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Column2NM.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Column2_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -103,9 +152,10 @@ public:
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Trims.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/TrimsNM.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Trims_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -115,9 +165,10 @@ public:
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Gargoyle.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/GargoyleNM.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Gargoyle_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -127,9 +178,10 @@ public:
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/DungeonWall.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/DungeonWallNM.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/DungeonWall_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -139,9 +191,10 @@ public:
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Celling.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/CellingNM.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Ceiling_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -151,9 +204,10 @@ public:
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Column3.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Column3NM.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Column3_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -163,9 +217,10 @@ public:
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Altar.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AltarNM.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Altar_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -175,9 +230,10 @@ public:
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AltarDeamon.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AltarDeamonNM.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/AltarStatues_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -185,11 +241,12 @@ public:
 		//Atlas
 
 		// Load a texture from file
-		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AtlasTexture1.png");
+		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AtlasTexture1.bmp");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AtlasTexture1NM.png");
+		emissionTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AtlasTexture1Light.png");
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Atlas_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -197,11 +254,12 @@ public:
 		//Atlas2
 
 		// Load a texture from file
-		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AtlasTexture2.png");
+		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AtlasTexture2.bmp");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/AtlasTexture2NM.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Atlas2_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -211,9 +269,10 @@ public:
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/S_carvings.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/S_carvingsNM.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Carvings_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -223,9 +282,10 @@ public:
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/CavernTexture_1.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/CavernTexture_1NM.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Cavern_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -235,9 +295,10 @@ public:
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/FlatTexture2.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/FlatTexture2NM.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/FlatTexture2_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -247,9 +308,10 @@ public:
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/Lava.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/LavaNM.png");
+		emissionTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/LavaLight.png");
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Lava_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -259,9 +321,10 @@ public:
 		// Load a texture from file
 		colorTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/StoneParts2.png");
 		normalTextureID = textureManager->createFromFile(util::resourcePath() + "CatacombModels/Tex/StoneParts2.png");
+		emissionTextureID = noEmissionTextureID;
 
 		// Create a material from shader and texture
-		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID }), shaderID);
+		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM }), shaderID);
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/StoneParts_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -272,15 +335,6 @@ public:
         
         // This uses a different shader
         auto skyshaderID = shaderManager->createFromFile(util::resourcePath() + "skybox_v.glsl", util::resourcePath() + "skybox_f.glsl");
-//
-        std::vector<std::string> faces;
-        faces.push_back(util::resourcePath() + "Skybox/right.jpg");
-        faces.push_back(util::resourcePath() + "Skybox/left.jpg");
-        faces.push_back(util::resourcePath() + "Skybox/top.jpg");
-        faces.push_back(util::resourcePath() + "Skybox/bottom.jpg");
-        faces.push_back(util::resourcePath() + "Skybox/back.jpg");
-        faces.push_back(util::resourcePath() + "Skybox/front.jpg");
-        auto cubemapID = textureManager->createCubemapFromFiles(faces);
         materialID = materialManager->create(cubemapID, skyshaderID);
         
         go3 = scene->newGameObject();
