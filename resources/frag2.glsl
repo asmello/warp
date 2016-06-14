@@ -115,7 +115,7 @@ void main()
 
     outColor = (difSpec + ambient + rim);// * 0.01 + vec4 (perturbedNormals, 1.0);
 
-    float brightness = dot(outColor.rgb, vec3(1.0, 1.0, 1.0));
+    float brightness = dot(outColor.rgb, vec3(0.8, 0.8, 0.78));
     if (brightness > 1.0)
     {
         outBright = vec4(outColor.rgb, 1.0);
