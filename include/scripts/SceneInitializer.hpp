@@ -42,7 +42,7 @@ public:
 
 		// Create a camera object
 		std::shared_ptr<warp::GameObject> go = scene->newGameObject();
-        go->getTransform()->translate(0, 0, 100);
+        go->getTransform()->translate(0, 0, 400);
 		std::shared_ptr<warp::GameObject> go1 = scene->newGameObject();
 		std::shared_ptr<warp::Camera> camera = go1->newComponent<warp::Camera>();
 		camera->setPosition(glm::vec3(0, 15, 10));

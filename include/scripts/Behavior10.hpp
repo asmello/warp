@@ -14,7 +14,7 @@ class Behavior10 : public Behavior, public InputListener
 {
 
 private:
-	const float speed = 35.0 * 0.01666f;
+	const float speed = 15.0 * 0.01666f;
 	const float rotationSpeed = 0.1 * 0.03f;
     glm::vec2 prevMousePos;
 

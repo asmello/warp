@@ -14,7 +14,7 @@ class BehaviorCoin : public Behavior
 {
     
 private:
-    const float rotationSpeed = 0.01666666666 * 1.0f;
+    const float rotationSpeed = 0.01666666666 * 0.3333f;
     
 public:
     virtual void start()
