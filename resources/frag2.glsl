@@ -32,7 +32,7 @@ uniform sampler2D u_sampler1;
 uniform sampler2D u_sampler2;
 uniform samplerCube u_sampler3;
 uniform samplerCube u_sampler4;
-uniform samplerCube u_sampler5;
+uniform sampler2D u_sampler5;
 
 const float PI = 3.141592653589793238462643383;
 
@@ -190,10 +190,11 @@ void main(){
 	vec4 albedo = texture (u_sampler0, v_texcoord.st);
 	float specularity = 0.0;
 	float roughness = texture (u_sampler0, v_texcoord.st).w; 
-	float metalicness = texture (u_sampler0, v_texcoord.st).x;
+	float metalicness = texture (u_sampler5, v_texcoord.st).x;
 	float emission = 1.0;
 	vec4 normalMap = texture (u_sampler1, v_texcoord.st);
 	vec4 emissionColor = texture (u_sampler2, v_texcoord.st);
+	float transparency = texture (u_sampler5, v_texcoord.st).w;
 
 	//Vectors
 	vec3 normalNormalized = normalize (v_normal);
@@ -205,6 +206,11 @@ void main(){
 	vec4 emmit = emissionColor * emission;
 	
 	float lighStrength = 5.0;
+
+	if (transparency < 0.5){
+		discard;
+	}
+
 
 	Light sun = Light (vec4 (1.0, 1.0, 1.0, 1.0) * 1.0, vec4 ( -0.5, -1.0, 0.5, 1.0),  vec4 (0.0, 1.0, 0.1, 1.0));
 	Light black = Light (vec4 (0.0, 0.0, 0.0, 0.0), vec4 ( 0.0, 0.0, 0.0, 0.0),  vec4 (1.0, 0.0, 0.0, 0.0));
