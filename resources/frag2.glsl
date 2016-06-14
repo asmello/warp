@@ -34,6 +34,8 @@ uniform samplerCube u_sampler3;
 uniform samplerCube u_sampler4;
 uniform sampler2D u_sampler5;
 
+uniform float u_time;
+
 const float PI = 3.141592653589793238462643383;
 
 float LightAttenuation (Light curLight, vec3 fragPosition){
@@ -187,14 +189,17 @@ vec4 ShadePhong (Light curLight, vec3 fragPos, vec3 normal, vec3 viewDirection, 
 void main(){
 
 	//Shader parameters
-	vec4 albedo = texture (u_sampler0, v_texcoord.st);
+
+	float moveSpeed = 1.0;
+	vec2 movingUvs = v_texcoord.st + vec2 (0.0, 1.0) * moveSpeed * u_time;
+	vec4 albedo = texture (u_sampler0, movingUvs);
 	float specularity = 0.0;
-	float roughness = texture (u_sampler0, v_texcoord.st).w; 
-	float metalicness = texture (u_sampler5, v_texcoord.st).x;
+	float roughness = texture (u_sampler0, movingUvs).w; 
+	float metalicness = texture (u_sampler5, movingUvs).x;
 	float emission = 1.0;
-	vec4 normalMap = texture (u_sampler1, v_texcoord.st);
-	vec4 emissionColor = texture (u_sampler2, v_texcoord.st);
-	float transparency = texture (u_sampler5, v_texcoord.st).w;
+	vec4 normalMap = texture (u_sampler1, movingUvs);
+	vec4 emissionColor = texture (u_sampler2, movingUvs);
+	float transparency = texture (u_sampler5, movingUvs).w;
 
 	//Vectors
 	vec3 normalNormalized = normalize (v_normal);
