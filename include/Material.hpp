@@ -18,6 +18,7 @@ namespace warp
     private:
         Shader::ID shaderID;
         std::vector<Texture::ID> textureIDs;
+        float speed;
         
     public:
         // These constructors should not be used directly
@@ -27,6 +28,7 @@ namespace warp
         
         Shader::ID getShader();
         void bind();
+        void setSpeed(float speed);
     };
 }
 
