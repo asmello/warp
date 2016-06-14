@@ -137,7 +137,7 @@ public:
 		go3->getTransform()->rotateX (glm::pi<float>()*0.5);
 		go3->getTransform()->translate (0.0, 20.0, 0.0);
 
-		//Lava
+		//LavaFall
 
 		// Load a texture from file
 		colorTextureID = noEmissionTextureID;
@@ -147,6 +147,10 @@ public:
 
 		// Create a material from shader and texture
 		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM, metalicTextureID }), shaderID);
+		if (auto material = materialManager->get(materialID))
+		{
+			material->setSpeed (0.3);
+		}
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/AsLarvaDoVulcao_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);
@@ -329,6 +333,10 @@ public:
 
 		// Create a material from shader and texture
 		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM, noMetalicnessTextureID }), shaderID);
+		if (auto material = materialManager->get(materialID))
+		{
+			material->setSpeed(0.1);
+		}
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Lava_MDL.fbx", materialID, scene);
 		go3->getTransform()->scale(0.1, 0.1, 0.1);

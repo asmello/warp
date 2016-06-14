@@ -35,6 +35,7 @@ uniform samplerCube u_sampler4;
 uniform sampler2D u_sampler5;
 
 uniform float u_time;
+uniform float u_speed;
 
 const float PI = 3.141592653589793238462643383;
 
@@ -190,8 +191,7 @@ void main(){
 
 	//Shader parameters
 
-	float moveSpeed = 1.0;
-	vec2 movingUvs = v_texcoord.st + vec2 (0.0, 1.0) * moveSpeed * u_time;
+	vec2 movingUvs = v_texcoord.st + vec2 (0.0, 1.0) * u_speed * u_time;
 	vec4 albedo = texture (u_sampler0, movingUvs);
 	float specularity = 0.0;
 	float roughness = texture (u_sampler0, movingUvs).w; 
