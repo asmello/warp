@@ -14,7 +14,9 @@ class Behavior10 : public Behavior, public InputListener
 {
 
 private:
-	const float speed = 15.0 * 0.01666f;
+	bool shift = false;
+	float speed = 5.0 * 0.01666f;
+	const float shift_factor = 8.0f;
 	const float rotationSpeed = 0.1 * 0.03f;
     glm::vec2 prevMousePos;
 
@@ -55,7 +57,7 @@ public:
 		{
 			parent->setPosition(parent->getPosition() + parent->up() * speed);
 		}
-        if (Input::isKeyPressed(Input::Key::LShift))
+        if (Input::isKeyPressed(Input::Key::LControl))
 		{
 			parent->setPosition(parent->getPosition() - parent->up() * speed);
 		}
@@ -75,5 +77,23 @@ public:
     {
         getGameObject()->getComponent<warp::Camera>()->reshape(width, height);
     }
+
+	virtual void onKeyDown(Input::Key key)
+	{
+		if (key == Input::Key::LShift && !shift)
+		{
+			speed *= shift_factor;
+			shift = true;
+		}
+	}
+
+	virtual void onKeyUp(Input::Key key)
+	{
+		if (key == Input::Key::LShift && shift)
+		{
+			speed /= shift_factor;
+			shift = false;
+		}
+	}
 };
 #endif

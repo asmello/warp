@@ -44,6 +44,9 @@ void Input::flush()
                 case sf::Event::KeyPressed:
                     getInstance()->notifyKeyDown(windowEvent.key.code);
                     break;
+				case sf::Event::KeyReleased:
+					getInstance()->notifyKeyUp(windowEvent.key.code);
+					break;
                 case sf::Event::MouseWheelScrolled:
                     getInstance()->notifyMouseScrolled(windowEvent.mouseWheelScroll.delta);
                     break;
@@ -65,6 +68,11 @@ void Input::notifyClosed()
 void Input::notifyKeyDown(Input::Key type)
 {
     for (const auto listener : listeners) listener->onKeyDown(type);
+}
+
+void Input::notifyKeyUp(Input::Key type)
+{
+	for (const auto listener : listeners) listener->onKeyUp(type);
 }
 
 void Input::notifyMouseScrolled(float delta)

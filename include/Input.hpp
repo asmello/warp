@@ -29,6 +29,7 @@ namespace warp
         std::vector<std::shared_ptr<InputListener>> listeners;
         void notifyMouseScrolled(float delta);
         void notifyKeyDown(Key type);
+		void notifyKeyUp(Key type);
         void notifyResized(int width, int height);
         void notifyClosed();
     };
