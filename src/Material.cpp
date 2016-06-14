@@ -38,3 +38,8 @@ void Material::bind()
         }
     }
 }
+
+void Material::setSpeed(float speed_)
+{
+    speed = speed_;
+}
