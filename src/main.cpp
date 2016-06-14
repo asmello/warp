@@ -1,11 +1,13 @@
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
 
 #include <memory>
 
 #include "GameLoop.hpp"
 #include "Input.hpp"
 #include "Scene.hpp"
+#include "util.hpp"
 
 #include "scripts/Behavior10.hpp"
 #include "scripts/SceneInitializer.hpp"
@@ -24,6 +26,9 @@ int main(int, char const**)
                                                sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize, //sf::Style::Fullscreen, //sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize,
                                                settings);
     window->setVerticalSyncEnabled(true);
+    
+    sf::Music music;
+    if (!music.openFromFile(util::resourcePath() + "Audio/audio.ogg")) return -1;
     
     warp::WindowManager::getInstance()->create(window);
     
@@ -54,6 +59,8 @@ int main(int, char const**)
         window->display();
     });
     Input::addListener(loop);
+    
+    music.play();
     
     loop->run();
     
