@@ -25,6 +25,7 @@ layout(location = 0) in vec2 v_texcoord;
 layout(location = 2) in vec3 v_worldPosition;
 
 layout(location = 0) out vec4 outColor;
+layout(location = 1) out vec4 outBright;
 
 uniform sampler2D u_sampler0;
 uniform sampler2D u_sampler1;
@@ -113,4 +114,10 @@ void main()
 	//vec4 specular = 1.0 * pow (max (0.0, dot (-HalfDirection, perturbedNormals)) , 50.0) * specularColor * texture(u_sampler0, v_texcoord.st) * texture(u_sampler0, v_texcoord.st).w;
 
     outColor = (difSpec + ambient + rim);// * 0.01 + vec4 (perturbedNormals, 1.0);
+
+    float brightness = dot(outColor.rgb, vec3(1.0, 1.0, 1.0));
+    if (brightness > 1.0)
+    {
+        outBright = vec4(outColor.rgb, 1.0);
+    }
 }

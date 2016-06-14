@@ -20,8 +20,8 @@ namespace warp
     class SceneRenderer : public ComponentImplementation<SceneRenderer>
     {
     private:
-        GLuint fbo, ftxo, frbo, vbo, vao, uboLights, uboCamera;
-        Object<Shader>::ID screenShaderID;
+        GLuint fbo[3], ftxo[4], frbo, vbo, vao, uboLights, uboCamera;
+        Object<Shader>::ID screenShaderID, blurShaderID;
         
         void updateCamera(const std::shared_ptr<Camera> camera);
         
