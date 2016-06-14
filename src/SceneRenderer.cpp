@@ -86,10 +86,6 @@ void SceneRenderer::init()
     
     glBindBufferBase(GL_UNIFORM_BUFFER, 11, uboCamera);
     
-    // Create HDR framebuffer
-    glGenFramebuffers(3, fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo[0]);
-    
     // Get screen size
     glm::vec2 size(800, 600);
     if (auto window = WindowManager::getInstance()->getActive())
@@ -101,8 +97,32 @@ void SceneRenderer::init()
         fprintf(stderr, "WARN: using default framebuffer resolution");
     }
     
-    // Create a texture of the same size as the screen
+    ////////////////////////////////
+    // Generate OpenGL structures //
+    ////////////////////////////////
+    
+    glGenFramebuffers(3, fbo);
+    glGenRenderbuffers(1, &frbo);
     glGenTextures(4, ftxo);
+    glGenBuffers(1, &vbo);
+    glGenVertexArrays(1, &vao);
+    
+    ///////////////////////////////////
+    // Create postprocessing shaders //
+    ///////////////////////////////////
+    
+    // Create the screen tonemapping shader
+    screenShaderID = ShaderManager::getInstance()->createFromFile(util::resourcePath() + "screen_v.glsl", util::resourcePath() + "screen_f.glsl");
+    blurShaderID = ShaderManager::getInstance()->createFromFile(util::resourcePath() + "blur_v.glsl", util::resourcePath() + "blur_f.glsl");
+    
+    /////////
+    // HDR //
+    /////////
+    
+    // Create HDR framebuffer
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo[0]);
+    
+    // Create a texture of the same size as the screen
     for (int i = 0; i < 2; ++i)
     {
         glBindTexture(GL_TEXTURE_2D, ftxo[i]);
@@ -116,7 +136,6 @@ void SceneRenderer::init()
     }
     
     // Create a renderbuffer to store depth (and stencil)
-    glGenRenderbuffers(1, &frbo);
     glBindRenderbuffer(GL_RENDERBUFFER, frbo);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -132,9 +151,9 @@ void SceneRenderer::init()
         throw new std::runtime_error("ERROR: Framebuffer is not complete");
     }
     
-    // Create the screen tonemapping shader
-    screenShaderID = ShaderManager::getInstance()->createFromFile(util::resourcePath() + "screen_v.glsl", util::resourcePath() + "screen_f.glsl");
-    blurShaderID = ShaderManager::getInstance()->createFromFile(util::resourcePath() + "blur_v.glsl", util::resourcePath() + "blur_f.glsl");
+    //////////
+    // Quad //
+    //////////
     
     // Create a simple quad
     GLfloat vertices[] = {
@@ -148,11 +167,9 @@ void SceneRenderer::init()
     };
     
     // Create Vertex Array Object
-    glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
     
     // Create a Vertex Buffer Object and copy the vertex data to it
-    glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     
@@ -163,6 +180,10 @@ void SceneRenderer::init()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(2 * sizeof(GLfloat)));
     
     glBindVertexArray(0);
+    
+    //////////
+    // Blur //
+    //////////
     
     // Set up ping pong framebuffers
     for (GLuint i = 0; i < 2; i++)
@@ -232,6 +253,11 @@ void SceneRenderer::render()
         }
     }
     
+    // Temporarily disable depth test
+    glDisable(GL_DEPTH_TEST);
+    
+    glBindVertexArray(vao);
+    
     ///////////
     // Bloom //
     ///////////
@@ -248,12 +274,11 @@ void SceneRenderer::render()
     glBindTexture(GL_TEXTURE_2D, ftxo[1]);
     
     // Draw a quad to framebuffer
-    glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     
     GLboolean horizontal = false;
     
-    for (GLuint i = 0; i < 10; i++)
+    for (GLuint i = 0; i < 4; i++)
     {
         glBindFramebuffer(GL_FRAMEBUFFER, fbo[1 + horizontal]);
         // Setup the screen texture to render
@@ -268,8 +293,6 @@ void SceneRenderer::render()
         horizontal = !horizontal;
     }
     
-    glBindVertexArray(0);
-    
     ////////////
     // Screen //
     ////////////
@@ -279,12 +302,6 @@ void SceneRenderer::render()
     
     // Use the screen render target
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
-    // Clear the screen to black
-    glClear(GL_COLOR_BUFFER_BIT);
-    
-    // Temporarily disable depth test
-    glDisable(GL_DEPTH_TEST);
     
     // Setup the screen texture to render
     if (std::shared_ptr<Shader> activeShader = ShaderManager::getInstance()->getActive()) {
@@ -298,7 +315,6 @@ void SceneRenderer::render()
     glBindTexture(GL_TEXTURE_2D, ftxo[2 + !horizontal]);
     
     // Draw a quad to screen
-    glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
 }
