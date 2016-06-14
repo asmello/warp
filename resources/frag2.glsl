@@ -219,16 +219,14 @@ void main(){
 
 	Light sun = Light (vec4 (1.0, 1.0, 1.0, 1.0) * 1.0, vec4 ( -0.5, -1.0, 0.5, 1.0),  vec4 (0.0, 1.0, 0.1, 1.0));
 	Light black = Light (vec4 (0.0, 0.0, 0.0, 0.0), vec4 ( 0.0, 0.0, 0.0, 0.0),  vec4 (1.0, 0.0, 0.0, 0.0));
-
 	Light testLight1 = Light (vec4 (1.0, 0.054, 0.017, 1.0) * 200.0 * lighStrength, vec4 (-0.0, 80.0, 0.0, 0.0),  vec4 (0.0, 1.0, 0.1, 1.0));
-
 	Light testLight2 = Light (vec4 (1.0, 0.211, 0.008, 1.0) * 30.0 * lighStrength, vec4 (40.0, 14.0, 60.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
 	Light testLight3 = Light (vec4 (1.0, 0.211, 0.008, 1.0) * 30.0 * lighStrength, vec4 (-40.0, 14.0, 60.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
 	Light testLight4 = Light (vec4 (1.0, 0.211, 0.008, 1.0) * 30.0 * lighStrength, vec4 (40.0, 14.0, -60.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
 	Light testLight5 = Light (vec4 (1.0, 0.211, 0.008, 1.0) * 30.0 * lighStrength, vec4 (-40.0, 14.0, -60.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
-
 	Light testLight6 = Light (vec4 (1.0, 0.039, 0.009, 1.0) * 45.0 * lighStrength, vec4 (50.0, -20.0, 0.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
 	Light testLight7 = Light (vec4 (1.0, 0.039, 0.009, 1.0) * 45.0 * lighStrength, vec4 (-50.0, -20.0, 0.0, 0.0), vec4 (0.0, 1.0, 0.1, 1.0));
+	Light testLight8 = Light (vec4 (1.0, 1.0, 1.0, 1.0) * 2.0 * lighStrength, vec4 (3.0, 18.0, 6.0, 0.0),  vec4 (0.0, 1.0, 0.1, 1.0));
 
 	vec4 difSpec =      ShadeCookTorr (testLight1, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, roughness, metalicness);
 	difSpec = difSpec + ShadeCookTorr (testLight2, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, roughness, metalicness);
@@ -237,7 +235,8 @@ void main(){
 	difSpec = difSpec + ShadeCookTorr (testLight5, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, roughness, metalicness);
 	difSpec = difSpec + ShadeCookTorr (testLight6, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, roughness, metalicness);
 	difSpec = difSpec + ShadeCookTorr (testLight7, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, roughness, metalicness);
-	
+	difSpec = difSpec + ShadeCookTorr (testLight8, v_worldPosition, perturbedNormals, viewDirection, albedo, specularity, roughness, metalicness);
+
 	//difSpec = 1.0 * CookTorrAmbient (u_sampler3, u_sampler4, 10, black, v_worldPosition, perturbedNormals, tangentNormalized, viewDirection, albedo, specularity, roughness, metalicness);
 
 	//vec4 cubecolor = texture (u_sampler3, reflect (-viewDirection, perturbedNormals));
