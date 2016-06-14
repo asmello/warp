@@ -48,7 +48,8 @@ std::shared_ptr<Scene> Scene::newScene()
 
 void Scene::start()
 {
-    for (auto behavior : getComponents<Behavior>())
+    auto behaviors = getComponents<Behavior>();
+    for (auto behavior : behaviors)
     {
         behavior->start();
     }

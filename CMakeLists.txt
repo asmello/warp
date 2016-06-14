@@ -108,6 +108,7 @@ set(WARP_HEADERS
 
 	include/scripts/SceneInitializer.hpp
 	include/scripts/Behavior10.hpp
+	include/scripts/BehaviorCoin.hpp
 )
 add_executable(Warp ${WARP_SOURCES} ${WARP_HEADERS})
 target_link_libraries(Warp ${ALL_LIBS})
