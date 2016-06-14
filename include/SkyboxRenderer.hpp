@@ -15,7 +15,7 @@ namespace warp {
     public:
         SkyboxRenderer(Object<Material>::ID materialID);
         ~SkyboxRenderer();
-        virtual void render();
+        virtual void render(float time);
         
     private:
         Object<Material>::ID materialID;

@@ -16,7 +16,7 @@ namespace warp
     public:
         Renderer() : active(true), priority(0) { }
         
-        virtual void render() = 0;
+        virtual void render(float time) = 0;
         void activate() { active = true; }
         bool isActive() const { return active; }
         

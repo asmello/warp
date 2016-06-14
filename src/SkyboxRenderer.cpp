@@ -86,7 +86,7 @@ void SkyboxRenderer::load()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void SkyboxRenderer::render()
+void SkyboxRenderer::render(float time)
 {
     glDepthFunc(GL_LEQUAL);
     MaterialManager::getInstance()->setActive(materialID);

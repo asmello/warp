@@ -19,7 +19,7 @@ namespace warp
     public:
         MeshRenderer(Object<Material>::ID materialID,
                      Object<Mesh>::ID meshID);
-        virtual void render();
+        virtual void render(float time);
         
     private:
         Object<Material>::ID materialID;

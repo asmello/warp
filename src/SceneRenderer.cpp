@@ -203,6 +203,9 @@ void SceneRenderer::init()
     }
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // All set for offscreen rendering
+    
+    // Start counting time
+    t_last = std::chrono::high_resolution_clock::now();
 }
 
 void SceneRenderer::updateCamera(const std::shared_ptr<Camera> camera)
@@ -236,6 +239,14 @@ void SceneRenderer::render()
     // (Re)enable depth test
     glEnable(GL_DEPTH_TEST);
     
+    auto t_now = std::chrono::high_resolution_clock::now();
+    
+    // Update total elapsed time (if not paused)
+    if (!paused) {
+        t_total += std::chrono::duration_cast<std::chrono::duration<double>>(t_now - t_last).count();
+    }
+    t_last = t_now; // Update last tick
+    
     std::vector<std::shared_ptr<Renderer>> renderers = scene->getComponents<Renderer>();
     
     // Sort renderers
@@ -249,7 +260,7 @@ void SceneRenderer::render()
         // Render visible objects
         for (const std::shared_ptr<Renderer>& renderer : renderers)
         {
-            if (renderer->isActive()) renderer->render();
+            if (renderer->isActive()) renderer->render(t_total);
         }
     }
     
@@ -317,4 +328,14 @@ void SceneRenderer::render()
     // Draw a quad to screen
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
+}
+
+void SceneRenderer::pause()
+{
+    paused = !paused;
+}
+
+bool SceneRenderer::isPaused() const
+{
+    return paused;
 }
