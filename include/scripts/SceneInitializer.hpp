@@ -149,7 +149,7 @@ public:
 		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM, metalicTextureID }), shaderID);
 		if (auto material = materialManager->get(materialID))
 		{
-			material->setSpeed (0.3);
+			material->setSpeed (-0.08);
 		}
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/AsLarvaDoVulcao_MDL.fbx", materialID, scene);
@@ -335,7 +335,7 @@ public:
 		materialID = materialManager->create(std::vector<warp::Texture::ID>({ colorTextureID, normalTextureID, emissionTextureID, cubemapID, convolutedEM, noMetalicnessTextureID }), shaderID);
 		if (auto material = materialManager->get(materialID))
 		{
-			material->setSpeed(0.1);
+			material->setSpeed(0.01);
 		}
 
 		go3 = warp::SceneManager::getInstance()->createFromFile(util::resourcePath() + "CatacombModels/Lava_MDL.fbx", materialID, scene);

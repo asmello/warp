@@ -30,13 +30,16 @@ layout(location = 3) out vec3 v_tangent;
 layout(location = 0) out vec2 v_texcoord;
 
 uniform mat4 u_Model;
-//uniform DirectionalLight u_sun;
+uniform float u_time;
+uniform float u_speed;
 
 void main()
 {
-    gl_Position     = u_Proj * u_View * u_Model * vec4(a_position, 1.0);
+   // gl_Position     = u_Proj * u_View * u_Model * vec4(a_position, 1.0);
     v_normal        = (u_Model * vec4(a_normal,   0.0)).xyz;
-	v_worldPosition = (u_Model * vec4(a_position, 1.0)).xyz;
+	vec3 worldPosition = (u_Model * vec4(a_position, 1.0)).xyz;
+	v_worldPosition = worldPosition + v_normal * u_speed * 0.6 * cos (0.20 * worldPosition.y + -2.0 * u_time);
 	v_tangent       = (u_Model * vec4(a_tangent,  0.0)).xyz;
 	v_texcoord      = a_texcoord;
+	gl_Position     = u_Proj * u_View * vec4(v_worldPosition, 1.0);
 }
