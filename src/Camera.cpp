@@ -85,3 +85,9 @@ void Camera::setFar(float distance)
     farField = distance;
     projectionChanged = true;
 }
+
+void Camera::rotate(float angle, float x, float y, float z)
+{
+    getGameObject()->getTransform()->rotate(angle, x, y, z);
+    viewChanged = true;
+}
