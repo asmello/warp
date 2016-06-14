@@ -25,12 +25,14 @@ layout(location = 0) in vec2 v_texcoord;
 layout(location = 2) in vec3 v_worldPosition;
 
 layout(location = 0) out vec4 outColor;
+layout(location = 1) out vec4 outBright;
 
 uniform sampler2D u_sampler0;
 uniform sampler2D u_sampler1;
 uniform sampler2D u_sampler2;
 uniform samplerCube u_sampler3;
 uniform samplerCube u_sampler4;
+uniform samplerCube u_sampler5;
 
 const float PI = 3.141592653589793238462643383;
 
@@ -188,7 +190,7 @@ void main(){
 	vec4 albedo = texture (u_sampler0, v_texcoord.st);
 	float specularity = 0.0;
 	float roughness = texture (u_sampler0, v_texcoord.st).w; 
-	float metalicness = 0.0;
+	float metalicness = texture (u_sampler0, v_texcoord.st).x;
 	float emission = 1.0;
 	vec4 normalMap = texture (u_sampler1, v_texcoord.st);
 	vec4 emissionColor = texture (u_sampler2, v_texcoord.st);
@@ -230,4 +232,10 @@ void main(){
 	//vec4 cubecolor = texture (u_sampler3, reflect (-viewDirection, perturbedNormals));
 
     outColor = difSpec + emmit;
+	//outBright = step (dot (outColor.xyz, vec3 (0.8, 0.8, 0.78)), 1.0) * outColor;
+	if (dot (outColor.xyz, vec3 (0.8, 0.8, 0.78)) > 1.0)
+	{
+		outBright = vec4(outColor.rgb, 1.0);
+	}
+
 }

@@ -14,16 +14,19 @@ namespace warp
 {
     class Scene;
     class Camera;
+    class Shader;
     class Light;
     
     class SceneRenderer : public ComponentImplementation<SceneRenderer>
     {
     private:
-        GLuint uboLights, uboCamera;
+        GLuint fbo[3], ftxo[4], frbo, vbo, vao, uboLights, uboCamera;
+        Object<Shader>::ID screenShaderID, blurShaderID;
         
         void updateCamera(const std::shared_ptr<Camera> camera);
         
     public:
+        ~SceneRenderer();
         void init();
         void render();
     };
