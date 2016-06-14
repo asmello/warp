@@ -278,7 +278,7 @@ void SceneRenderer::render()
     
     GLboolean horizontal = false;
     
-    for (GLuint i = 0; i < 4; i++)
+    for (GLuint i = 0; i < 7; i++)
     {
         glBindFramebuffer(GL_FRAMEBUFFER, fbo[1 + horizontal]);
         // Setup the screen texture to render
